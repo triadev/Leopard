@@ -50,4 +50,48 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     {
         return $this->esClient->search($params);
     }
+    
+    /**
+     * Put mapping statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function putMappingStatement(array $params): array
+    {
+        return $this->esClient->indices()->putMapping($params);
+    }
+    
+    /**
+     * Index statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function indexStatement(array $params) : array
+    {
+        return $this->esClient->index($params);
+    }
+    
+    /**
+     * Exist statement
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function existStatement(array $params) : bool
+    {
+        return $this->esClient->exists($params);
+    }
+    
+    /**
+     * Delete statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function deleteStatement(array $params) : array
+    {
+        return $this->esClient->delete($params);
+    }
 }

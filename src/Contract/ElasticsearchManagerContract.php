@@ -27,4 +27,12 @@ interface ElasticsearchManagerContract
      * @return array
      */
     public function searchStatement(array $params) : array;
+    
+    /**
+     * Put mapping statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function putMappingStatement(array $params) : array;
 }

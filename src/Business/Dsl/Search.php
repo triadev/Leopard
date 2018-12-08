@@ -1,6 +1,7 @@
 <?php
 namespace Triadev\Es\ODM\Business\Dsl;
 
+use Illuminate\Database\Eloquent\Model;
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\InnerHit\NestedInnerHit;
 use ONGR\ElasticsearchDSL\InnerHit\ParentInnerHit;
@@ -38,6 +39,7 @@ use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Triadev\Es\ODM\Business\Dsl\Compound\FunctionScore;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 use Triadev\Es\ODM\Model\Location;
+use Triadev\Es\ODM\Searchable;
 use Triadev\Es\ODM\Model\SearchResult;
 
 class Search
@@ -53,6 +55,9 @@ class Search
     
     /** @var string */
     private $type;
+    
+    /** @var Model */
+    private $model;
     
     /** @var ElasticsearchManagerContract */
     private $manager;
@@ -121,9 +126,34 @@ class Search
      * @param string $type
      * @return Search
      */
-    public function overwriteType(?string $type = null) : Search
+    public function overwriteType(string $type) : Search
     {
         $this->type = $type;
+        return $this;
+    }
+    
+    /**
+     * Add model
+     *
+     * @param Model|Searchable $model
+     * @return Search
+     */
+    public function model(Model $model) : Search
+    {
+        $traits = class_uses_recursive(get_class($model));
+    
+        if (!isset($traits[Searchable::class])) {
+            throw new \InvalidArgumentException(get_class($model).' does not use the searchable trait.');
+        }
+        
+        $this->model = $model;
+        
+        if (is_string($index = $model->getDocumentIndex())) {
+            $this->overwriteIndex($index);
+        }
+    
+        $this->overwriteType($model->getDocumentType());
+        
         return $this;
     }
     
