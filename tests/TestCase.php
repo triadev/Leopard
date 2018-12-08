@@ -3,6 +3,8 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Triadev\Es\ODM\Provider\ServiceProvider;
+use Triadev\Es\Provider\ElasticsearchServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -43,6 +45,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+        
+        $app['config']->set('triadev-elasticsearch.hosts', 'http://127.0.0.1:9222');
     }
 
     /**
@@ -57,6 +61,9 @@ class TestCase extends \Orchestra\Testbench\TestCase
      */
     protected function getPackageProviders($app)
     {
-        return [];
+        return [
+            ServiceProvider::class,
+            ElasticsearchServiceProvider::class
+        ];
     }
 }

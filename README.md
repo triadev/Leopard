@@ -30,7 +30,7 @@ Elasticsearch odm for laravel.
 [![Elasticsearch 6.4][icon-e64]][link-elasticsearch]
 
 ## Main features
-...
+- DSL for elasticsearch
 
 ## Installation
 
@@ -49,8 +49,10 @@ php artisan vendor:publish --provider="Triadev\Es\ODM\Provider\ServiceProvider" 
 This will create a file ```config/triadev-elasticsearch-odm.php```.
 
 ### Configuration
-| Key        | Env | Value           | Description  | Example | Default |
-|:-------------:|:-------------:|:-------------:|:-----:|:-----:|:-----:|
+| Key        | Env | Value           | Description | Default |
+|:-------------:|:-------------:|:-------------:|:-----:|:-----:|
+| index | TRIADEV_ELASTICSEARCH_ODM_INDEX | STRING | elasticsearch index | default_index |
+| type | TRIADEV_ELASTICSEARCH_ODM_TYPE | STRING | elasticsearch type | null |
 
 ## Reporting Issues
 If you do find an issue, please feel free to report it with GitHub's bug tracker for this project.
