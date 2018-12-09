@@ -35,6 +35,7 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermsQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TypeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\WildcardQuery;
+use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Triadev\Es\Contract\ElasticsearchContract;
 use Triadev\Es\ODM\Business\Dsl\Compound\FunctionScore;
 use Triadev\Es\ODM\Model\Location;
@@ -718,6 +719,25 @@ class Search
     public function minScore(int $minScore) : Search
     {
         $this->search->setMinScore($minScore);
+        return $this;
+    }
+    
+    /**
+     * Sort
+     *
+     * @param string $field
+     * @param string $order
+     * @param array $params
+     * @return Search
+     */
+    public function sort(string $field, string $order = FieldSort::DESC, array $params = []) : Search
+    {
+        $this->search->addSort(new FieldSort(
+            $field,
+            $order,
+            $params
+        ));
+        
         return $this;
     }
 }

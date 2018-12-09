@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Unit\Business\Dsl;
 
+use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Tests\TestCase;
 use Triadev\Es\ODM\Business\Dsl\Search;
 use Triadev\Es\ODM\Model\Location;
@@ -469,6 +470,38 @@ class SearchTest extends TestCase
                 ]
             ],
             'min_score' => 5
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_sorted_query()
+    {
+        $result = $this->searchDsl
+            ->term('FIELD', 'VALUE')
+            ->sort('FIELD1', FieldSort::DESC)
+            ->sort('FIELD2', FieldSort::ASC)
+            ->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'term' => [
+                    'FIELD' => 'VALUE'
+                ]
+            ],
+            'sort' => [
+                [
+                    'FIELD1' => [
+                        'order' => 'desc'
+                    ]
+                ],
+                [
+                    'FIELD2' => [
+                        'order' => 'asc'
+                    ]
+                ]
+            ]
         ], $result);
     }
 }
