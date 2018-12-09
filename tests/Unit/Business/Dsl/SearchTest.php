@@ -438,7 +438,7 @@ class SearchTest extends TestCase
     {
         $result = $this->searchDsl
             ->term('FIELD', 'VALUE')
-            ->paginate(10, 25)
+            ->paginate(3, 25)
             ->toDsl();
     
         $this->assertEquals([
@@ -447,8 +447,28 @@ class SearchTest extends TestCase
                     'FIELD' => 'VALUE'
                 ]
             ],
-            'from' => 10,
+            'from' => 50,
             'size' => 25
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_min_score_query()
+    {
+        $result = $this->searchDsl
+            ->term('FIELD', 'VALUE')
+            ->minScore(5)
+            ->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'term' => [
+                    'FIELD' => 'VALUE'
+                ]
+            ],
+            'min_score' => 5
         ], $result);
     }
 }

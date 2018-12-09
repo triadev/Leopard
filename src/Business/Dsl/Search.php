@@ -696,13 +696,28 @@ class Search
     /**
      * Paginate
      *
-     * @param int $from
+     * @param int $page
      * @param int $limit
      * @return Search
      */
-    public function paginate(int $from, int $limit) : Search
+    public function paginate(int $page, int $limit = 25) : Search
     {
-        $this->search->setFrom($from)->setSize($limit);
+        $this->search
+            ->setFrom($limit * ($page - 1))
+            ->setSize($limit);
+        
+        return $this;
+    }
+    
+    /**
+     * Min score
+     *
+     * @param int $minScore
+     * @return Search
+     */
+    public function minScore(int $minScore) : Search
+    {
+        $this->search->setMinScore($minScore);
         return $this;
     }
 }
