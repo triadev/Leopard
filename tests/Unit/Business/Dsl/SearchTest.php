@@ -430,4 +430,45 @@ class SearchTest extends TestCase
             ]
         ], $result);
     }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_paginate_query()
+    {
+        $result = $this->searchDsl
+            ->term('FIELD', 'VALUE')
+            ->paginate(3, 25)
+            ->toDsl();
+    
+        $this->assertEquals([
+            'query' => [
+                'term' => [
+                    'FIELD' => 'VALUE'
+                ]
+            ],
+            'from' => 50,
+            'size' => 25
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_min_score_query()
+    {
+        $result = $this->searchDsl
+            ->term('FIELD', 'VALUE')
+            ->minScore(5)
+            ->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'term' => [
+                    'FIELD' => 'VALUE'
+                ]
+            ],
+            'min_score' => 5
+        ], $result);
+    }
 }
