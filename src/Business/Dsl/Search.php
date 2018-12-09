@@ -692,4 +692,17 @@ class Search
         $this->search->addInnerHit(new ParentInnerHit($name, $path, $searchForNested));
         return $this;
     }
+    
+    /**
+     * Paginate
+     *
+     * @param int $from
+     * @param int $limit
+     * @return Search
+     */
+    public function paginate(int $from, int $limit) : Search
+    {
+        $this->search->setFrom($from)->setSize($limit);
+        return $this;
+    }
 }

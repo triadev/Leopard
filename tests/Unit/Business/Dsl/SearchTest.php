@@ -430,4 +430,25 @@ class SearchTest extends TestCase
             ]
         ], $result);
     }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_paginate_query()
+    {
+        $result = $this->searchDsl
+            ->term('FIELD', 'VALUE')
+            ->paginate(10, 25)
+            ->toDsl();
+    
+        $this->assertEquals([
+            'query' => [
+                'term' => [
+                    'FIELD' => 'VALUE'
+                ]
+            ],
+            'from' => 10,
+            'size' => 25
+        ], $result);
+    }
 }
