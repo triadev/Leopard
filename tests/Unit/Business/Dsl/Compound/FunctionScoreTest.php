@@ -4,12 +4,12 @@ namespace Tests\Unit\Business\Dsl\Compound;
 use Tests\TestCase;
 use Triadev\Es\ODM\Business\Dsl\Compound\FunctionScore;
 use Triadev\Es\ODM\Business\Dsl\Search;
-use Triadev\Es\ODM\Contract\ElasticsearchDslContract;
+use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 
 class FunctionScoreTest extends TestCase
 {
-    /** @var ElasticsearchDslContract */
-    private $service;
+    /** @var ElasticsearchManagerContract */
+    private $manager;
     
     /**
      * Setup the test environment.
@@ -18,7 +18,7 @@ class FunctionScoreTest extends TestCase
     {
         parent::setUp();
         
-        $this->service = app(ElasticsearchDslContract::class);
+        $this->manager = app(ElasticsearchManagerContract::class);
     }
     
     /**
@@ -26,7 +26,7 @@ class FunctionScoreTest extends TestCase
      */
     public function it_builds_a_weight_function_score_query()
     {
-        $result = $this->service->search()->functionScore(
+        $result = $this->manager->search()->functionScore(
             function (Search $search) {
                 $search->term('FIELD1', 'VALUE1');
             },
@@ -68,7 +68,7 @@ class FunctionScoreTest extends TestCase
      */
     public function it_builds_a_random_function_score_query()
     {
-        $result = $this->service->search()->functionScore(
+        $result = $this->manager->search()->functionScore(
             function (Search $search) {
                 $search->term('FIELD1', 'VALUE1');
             },

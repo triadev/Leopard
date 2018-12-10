@@ -18,7 +18,9 @@ class SearchTest extends TestCase
     {
         parent::setUp();
         
-        $this->searchDsl = new Search(new \ONGR\ElasticsearchDSL\Search());
+        $this->searchDsl = app()->makeWith(Search::class, [
+            'search' => new \ONGR\ElasticsearchDSL\Search()
+        ]);
     }
     
     /**

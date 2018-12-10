@@ -160,7 +160,7 @@ class FunctionScore
         $query = null;
     
         if ($search) {
-            $searchBuilder = new Search(new \ONGR\ElasticsearchDSL\Search());
+            $searchBuilder = app()->make(Search::class);
             $search($searchBuilder);
         
             $query = $searchBuilder->getQuery();

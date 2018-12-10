@@ -2,8 +2,8 @@
 namespace Triadev\Es\ODM\Provider;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Triadev\Es\ODM\Contract\ElasticsearchDslContract;
-use Triadev\Es\ODM\ElasticsearchDsl;
+use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
+use Triadev\Es\ODM\ElasticsearchManager;
 use Triadev\Es\Provider\ElasticsearchServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
@@ -32,9 +32,9 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->app->register(ElasticsearchServiceProvider::class);
-        
-        $this->app->singleton(ElasticsearchDslContract::class, function () {
-            return app()->make(ElasticsearchDsl::class);
+    
+        $this->app->singleton(ElasticsearchManagerContract::class, function () {
+            return app()->make(ElasticsearchManager::class);
         });
     }
 }

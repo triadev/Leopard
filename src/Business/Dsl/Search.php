@@ -1,7 +1,6 @@
 <?php
 namespace Triadev\Es\ODM\Business\Dsl;
 
-use Elasticsearch\Client;
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\InnerHit\NestedInnerHit;
 use ONGR\ElasticsearchDSL\InnerHit\ParentInnerHit;
@@ -36,9 +35,10 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TermsQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TypeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\WildcardQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
-use Triadev\Es\Contract\ElasticsearchContract;
 use Triadev\Es\ODM\Business\Dsl\Compound\FunctionScore;
+use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 use Triadev\Es\ODM\Model\Location;
+use Triadev\Es\ODM\Model\SearchResult;
 
 class Search
 {
@@ -48,23 +48,26 @@ class Search
     /** @var string */
     private $boolState = BoolQuery::MUST;
     
-    /** @var Client */
-    private $esClient;
-    
     /** @var string */
     private $index;
     
     /** @var string */
     private $type;
     
+    /** @var ElasticsearchManagerContract */
+    private $manager;
+    
     /**
      * Search constructor.
+     * @param ElasticsearchManagerContract $manager
      * @param \ONGR\ElasticsearchDSL\Search|null $search
      */
-    public function __construct(?\ONGR\ElasticsearchDSL\Search $search = null)
-    {
+    public function __construct(
+        ElasticsearchManagerContract $manager,
+        ?\ONGR\ElasticsearchDSL\Search $search = null
+    ) {
+        $this->manager = $manager;
         $this->search = $search ?: new \ONGR\ElasticsearchDSL\Search();
-        $this->esClient = app(ElasticsearchContract::class)->getClient();
         
         $this->index = config('triadev-elasticsearch-odm.index');
         $this->type = config('triadev-elasticsearch-odm.type');
@@ -127,20 +130,30 @@ class Search
     /**
      * Get
      *
+     * @return SearchResult
+     */
+    public function get() : SearchResult
+    {
+        return new SearchResult($this->getRaw());
+    }
+    
+    /**
+     * Get raw search result
+     *
      * @return array
      */
-    public function get() : array
+    public function getRaw() : array
     {
-        $payload = [
+        $params = [
             'index' => $this->index,
             'body' => $this->toDsl()
         ];
-        
+    
         if ($this->type) {
-            $payload['type'] = $this->type;
+            $params['type'] = $this->type;
         }
         
-        return $this->esClient->search($payload);
+        return $this->manager->searchStatement($params);
     }
     
     /**
@@ -521,7 +534,7 @@ class Search
      */
     public function nested(string $path, \Closure $search, array $params = []) : Search
     {
-        $searchBuilder = new self(new \ONGR\ElasticsearchDSL\Search());
+        $searchBuilder = new self($this->manager, new \ONGR\ElasticsearchDSL\Search());
         $search($searchBuilder);
         
         return $this->append(
@@ -543,7 +556,7 @@ class Search
      */
     public function hasChild(string $type, \Closure $search, array $params = []): Search
     {
-        $searchBuilder = new self(new \ONGR\ElasticsearchDSL\Search());
+        $searchBuilder = new self($this->manager, new \ONGR\ElasticsearchDSL\Search());
         $search($searchBuilder);
         
         return $this->append(new HasChildQuery($type, $searchBuilder->getQuery(), $params));
@@ -559,7 +572,7 @@ class Search
      */
     public function hasParent(string $type, \Closure $search, array $params = []): Search
     {
-        $searchBuilder = new self(new \ONGR\ElasticsearchDSL\Search());
+        $searchBuilder = new self($this->manager, new \ONGR\ElasticsearchDSL\Search());
         $search($searchBuilder);
         
         return $this->append(new HasParentQuery($type, $searchBuilder->getQuery(), $params));
@@ -601,7 +614,7 @@ class Search
      */
     public function functionScore(\Closure $search, \Closure $functionScore, array $params = []) : Search
     {
-        $searchBuilder = new self(new \ONGR\ElasticsearchDSL\Search());
+        $searchBuilder = new self($this->manager, new \ONGR\ElasticsearchDSL\Search());
         $search($searchBuilder);
         
         $functionScoreBuilder = new FunctionScore($searchBuilder->getQuery(), $params);
@@ -620,7 +633,7 @@ class Search
      */
     public function constantScore(\Closure $search, array $params = []) : Search
     {
-        $searchBuilder = new self(new \ONGR\ElasticsearchDSL\Search());
+        $searchBuilder = new self($this->manager, new \ONGR\ElasticsearchDSL\Search());
         $search($searchBuilder);
         
         $this->append(new ConstantScoreQuery($searchBuilder->getQuery(), $params));
@@ -661,7 +674,7 @@ class Search
         $searchForNested = null;
         
         if ($search) {
-            $searchBuilder = new self(new \ONGR\ElasticsearchDSL\Search());
+            $searchBuilder = new self($this->manager, new \ONGR\ElasticsearchDSL\Search());
             $search($searchBuilder);
     
             $searchForNested = $searchBuilder->getSearch();
@@ -684,7 +697,7 @@ class Search
         $searchForNested = null;
     
         if ($search) {
-            $searchBuilder = new self(new \ONGR\ElasticsearchDSL\Search());
+            $searchBuilder = new self($this->manager, new \ONGR\ElasticsearchDSL\Search());
             $search($searchBuilder);
         
             $searchForNested = $searchBuilder->getSearch();
