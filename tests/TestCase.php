@@ -45,8 +45,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
-        
-        $app['config']->set('triadev-elasticsearch.hosts', 'http://127.0.0.1:9222');
     }
 
     /**

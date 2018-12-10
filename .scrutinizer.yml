@@ -6,7 +6,7 @@ build:
 
       environment:
         variables:
-          ELASTICSEARCH_PORT: 9200
+          ELASTICSEARCH_HOSTS: http://127.0.0.1:9200
 
       cache:
         directories:
