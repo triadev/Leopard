@@ -42,8 +42,12 @@ class Bucketing extends Aggs
      * @param string|null $format
      * @return Bucketing
      */
-    public function dateHistogram(string $name, ?string $field = null, ?string $interval = null, ?string $format = null) : Bucketing
-    {
+    public function dateHistogram(
+        string $name,
+        ?string $field = null,
+        ?string $interval = null,
+        ?string $format = null
+    ) : Bucketing {
         $this->addAggregation(new DateHistogramAggregation($name, $field, $interval, $format));
         return $this;
     }
@@ -57,8 +61,12 @@ class Bucketing extends Aggs
      * @param array $ranges
      * @return Bucketing
      */
-    public function dateRange(string $name, ?string $field = null, ?string $format = null, array $ranges = []) : Bucketing
-    {
+    public function dateRange(
+        string $name,
+        ?string $field = null,
+        ?string $format = null,
+        array $ranges = []
+    ) : Bucketing {
         $this->addAggregation(new DateRangeAggregation($name, $field, $format, $ranges));
         return $this;
     }
