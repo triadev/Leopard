@@ -91,4 +91,12 @@ interface ElasticsearchManagerContract
      * @return array
      */
     public function suggestStatement(array $params) : array;
+    
+    /**
+     * Bulk statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function bulkStatement(array $params) : array;
 }

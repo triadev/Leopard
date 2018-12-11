@@ -22,6 +22,7 @@ use Triadev\Es\ODM\Business\Dsl\Suggestion;
  * @method static array deleteStatement(array $params)
  * @method static array getStatement(array $params)
  * @method static array suggestStatement(array $params)
+ * @method static array bulkStatement(array $params)
  */
 class EsManager extends Facade
 {

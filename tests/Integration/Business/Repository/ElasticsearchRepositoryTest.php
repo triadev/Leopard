@@ -116,4 +116,30 @@ class ElasticsearchRepositoryTest extends TestCase
     
         $this->assertNull(EsManager::getStatement($this->getSearchParamsFromModel()));
     }
+    
+    /**
+     * @test
+     */
+    public function it_creates_a_document_via_bulk()
+    {
+        $this->assertNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        
+        $this->repository->bulkSave([$this->model]);
+        
+        $this->assertNotNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+    }
+    
+    /**
+     * @test
+     */
+    public function it_deletes_a_document_via_bulk()
+    {
+        $this->repository->save($this->model);
+        
+        $this->assertNotNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        
+        $this->repository->bulkDelete([$this->model]);
+        
+        $this->assertNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+    }
 }

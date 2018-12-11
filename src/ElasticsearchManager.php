@@ -143,4 +143,15 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     {
         return $this->esClient->suggest($params);
     }
+    
+    /**
+     * Bulk statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function bulkStatement(array $params): array
+    {
+        return $this->esClient->bulk($params);
+    }
 }

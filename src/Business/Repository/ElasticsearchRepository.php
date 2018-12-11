@@ -77,4 +77,58 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
         
         return true;
     }
+    
+    /**
+     * Bulk save
+     *
+     * @param array $models
+     * @return array
+     */
+    public function bulkSave(array $models) : array
+    {
+        $params = [];
+        
+        foreach ($models as $model) {
+            /** @var Model|Searchable $model */
+            $this->isModelSearchable($model);
+            
+            $params['body'][] = [
+                'index' => [
+                    '_index' => $model->getDocumentIndex() ?: config('triadev-elasticsearch-odm.index'),
+                    '_type' => $model->getDocumentType(),
+                    '_id' => $model->getKey()
+                ]
+            ];
+            
+            $params['body'][] = $model->getDocumentData();
+        }
+        
+        return EsManager::bulkStatement($params);
+    }
+    
+    /**
+     * Bulk delete
+     *
+     * @param array $models
+     * @return array
+     */
+    public function bulkDelete(array $models): array
+    {
+        $params = [];
+    
+        foreach ($models as $model) {
+            /** @var Model|Searchable $model */
+            $this->isModelSearchable($model);
+        
+            $params['body'][] = [
+                'delete' => [
+                    '_index' => $model->getDocumentIndex() ?: config('triadev-elasticsearch-odm.index'),
+                    '_type' => $model->getDocumentType(),
+                    '_id' => $model->getKey()
+                ]
+            ];
+        }
+    
+        return EsManager::bulkStatement($params);
+    }
 }

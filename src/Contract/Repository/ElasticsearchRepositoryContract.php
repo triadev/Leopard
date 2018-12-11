@@ -35,4 +35,20 @@ interface ElasticsearchRepositoryContract
      * @throws \InvalidArgumentException
      */
     public function delete(Model $model) : bool;
+    
+    /**
+     * Bulk save
+     *
+     * @param array $models
+     * @return array
+     */
+    public function bulkSave(array $models) : array;
+    
+    /**
+     * Bulk delete
+     *
+     * @param array $models
+     * @return array
+     */
+    public function bulkDelete(array $models) : array;
 }
