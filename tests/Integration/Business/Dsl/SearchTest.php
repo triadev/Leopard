@@ -12,6 +12,28 @@ class SearchTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+    
+        if (EsManager::getEsClient()->indices()->exists(['index' => 'phpunit'])) {
+            EsManager::getEsClient()->indices()->delete(['index' => 'phpunit']);
+        }
+    
+        EsManager::getEsClient()->indices()->create([
+            'index' => 'phpunit',
+            'body' => [
+                'settings' => [
+                    'refresh_interval' => '1s'
+                ],
+                'mappings' => [
+                    'test' => [
+                        'properties' => [
+                            'test' => [
+                                'type' => 'keyword'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]);
     }
     
     /**
@@ -19,9 +41,20 @@ class SearchTest extends TestCase
      */
     public function it_returns_an_elasticsearch_search_result_object()
     {
+        EsManager::indexStatement([
+            'index' => 'phpunit',
+            'type' => 'test',
+            'id' => 1,
+            'body' => [
+                'test' => 'phpunit'
+            ]
+        ]);
+    
+        EsManager::getEsClient()->indices()->refresh();
+        
         $result = EsManager::search()
-            ->overwriteIndex('index')
-            ->overwriteType('type')
+            ->overwriteIndex('phpunit')
+            ->overwriteType('test')
             ->term('test', 'phpunit')
             ->get();
         
