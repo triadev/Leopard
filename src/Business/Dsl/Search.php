@@ -121,6 +121,16 @@ class Search
     }
     
     /**
+     * Get index
+     *
+     * @return string
+     */
+    public function getIndex() : string
+    {
+        return $this->index;
+    }
+    
+    /**
      * Overwrite default type
      *
      * @param string $type
@@ -130,6 +140,16 @@ class Search
     {
         $this->type = $type;
         return $this;
+    }
+    
+    /**
+     * Get type
+     *
+     * @return string|null
+     */
+    public function getType() : ?string
+    {
+        return $this->type;
     }
     
     /**

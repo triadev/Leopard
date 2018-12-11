@@ -1,10 +1,15 @@
 <?php
 namespace Tests\Unit\Business\Dsl;
 
+use Illuminate\Database\Eloquent\Model;
+use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\TermsQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Tests\TestCase;
+use Triadev\Es\ODM\Business\Dsl\Aggregation;
 use Triadev\Es\ODM\Business\Dsl\Search;
 use Triadev\Es\ODM\Model\Location;
+use Triadev\Es\ODM\Searchable;
 
 class SearchTest extends TestCase
 {
@@ -38,6 +43,47 @@ class SearchTest extends TestCase
                 'match_all' => new \stdClass()
             ]
         ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_gets_the_search_instance()
+    {
+        $this->assertInstanceOf(
+            \ONGR\ElasticsearchDSL\Search::class,
+            $this->searchDsl->getSearch()
+        );
+    }
+    
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
+     */
+    public function it_throws_an_exception_if_the_eloquent_model_is_not_searchable()
+    {
+        $model = new class extends Model {};
+        $this->searchDsl->model($model);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_appends_an_searchable_eloquent_model()
+    {
+        $this->assertNotEquals('INDEX', $this->searchDsl->getIndex());
+        $this->assertNotEquals('TYPE', $this->searchDsl->getType());
+        
+        $this->searchDsl->model(new class extends Model {
+            use Searchable;
+            
+            public $documentIndex = 'INDEX';
+            
+            public $documentType = 'TYPE';
+        });
+    
+        $this->assertEquals('INDEX', $this->searchDsl->getIndex());
+        $this->assertEquals('TYPE', $this->searchDsl->getType());
     }
     
     /**
@@ -245,6 +291,7 @@ class SearchTest extends TestCase
     {
         $result = $this->searchDsl
             ->filter()
+                ->geoShape([])
                 ->geoBoundingBox('FIELD', [
                     new Location(1, 2),
                     new Location(3, 4)
@@ -255,6 +302,10 @@ class SearchTest extends TestCase
                     new Location(3, 4)
                 ])
             ->toDsl();
+        
+        $this->assertEquals([
+            'geo_shape' => []
+        ], array_get($result, 'query.bool.filter.0'));
         
         $this->assertEquals([
             'geo_bounding_box' => [
@@ -269,7 +320,7 @@ class SearchTest extends TestCase
                     ]
                 ]
             ]
-        ], array_get($result, 'query.bool.filter.0'));
+        ], array_get($result, 'query.bool.filter.1'));
     
         $this->assertEquals([
             'geo_distance' => [
@@ -279,7 +330,7 @@ class SearchTest extends TestCase
                     'lon' => 2.0
                 ]
             ]
-        ], array_get($result, 'query.bool.filter.1'));
+        ], array_get($result, 'query.bool.filter.2'));
     
         $this->assertEquals([
             'geo_polygon' => [
@@ -296,7 +347,7 @@ class SearchTest extends TestCase
                     ]
                 ]
             ]
-        ], array_get($result, 'query.bool.filter.2'));
+        ], array_get($result, 'query.bool.filter.3'));
     }
     
     /**
@@ -501,6 +552,154 @@ class SearchTest extends TestCase
                 [
                     'FIELD2' => [
                         'order' => 'asc'
+                    ]
+                ]
+            ]
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_an_aggregation_query()
+    {
+        $result = $this->searchDsl->aggregation(function (Aggregation $aggregation) {
+            $aggregation->metric(function (Aggregation\Metric $metric) {
+                $metric->avg('AVG');
+            });
+        })->toDsl();
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'AVG' => [
+                    'avg' => []
+                ]
+            ]
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_boosting_query()
+    {
+        $result = $this->searchDsl->boosting(
+            new TermQuery('FIELD1', 'VALUE1'),
+            new TermQuery('FIELD2', 'VALUE2'),
+            1.2
+        )->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'boosting' => [
+                    'positive' => [
+                        'term' => [
+                            'FIELD1' => 'VALUE1'
+                        ]
+                    ],
+                    'negative' => [
+                        'term' => [
+                            'FIELD2' => 'VALUE2'
+                        ]
+                    ],
+                    'negative_boost' => 1.2
+                ]
+            ]
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_constant_score_query()
+    {
+        $result = $this->searchDsl->constantScore(function (Search $search) {
+            $search->term('FIELD', 'VALUE');
+        })->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'term' => [
+                            'FIELD' => 'VALUE'
+                        ]
+                    ]
+                ]
+            ]
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_dis_max_query()
+    {
+        $result = $this->searchDsl->disMax([
+            new TermQuery('FIELD', 'VALUE')
+        ])->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'dis_max' => [
+                    'queries' => [
+                        [
+                            'term' => [
+                                'FIELD' => 'VALUE'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_nested_inner_hit_query()
+    {
+        $result = $this->searchDsl->nestedInnerHit('NAME', 'PATH', function (Search $search) {
+            $search->term('FIELD', 'VALUE');
+        })->toDsl();
+        
+        $this->assertEquals([
+            'inner_hits' => [
+                'NAME' => [
+                    'path' => [
+                        'PATH' => [
+                            'query' => [
+                                'term' => [
+                                    'FIELD' => 'VALUE'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_parent_inner_hit_query()
+    {
+        $result = $this->searchDsl->parentInnerHit('NAME', 'PATH', function (Search $search) {
+            $search->term('FIELD', 'VALUE');
+        })->toDsl();
+        
+        $this->assertEquals([
+            'inner_hits' => [
+                'NAME' => [
+                    'type' => [
+                        'PATH' => [
+                            'query' => [
+                                'term' => [
+                                    'FIELD' => 'VALUE'
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]
