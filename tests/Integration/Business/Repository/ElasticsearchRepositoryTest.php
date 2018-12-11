@@ -65,6 +65,47 @@ class ElasticsearchRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_updates_a_document()
+    {
+        $this->assertNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        
+        $result = $this->repository->save($this->model);
+        
+        $this->assertEquals('created', array_get($result, 'result'));
+        $this->assertEquals('phpunit', array_get($result, '_index'));
+        $this->assertEquals('test', array_get($result, '_type'));
+        $this->assertEquals('1', array_get($result, '_id'));
+        
+        $this->assertEquals(
+            'PHPUNIT',
+            array_get(
+                EsManager::getStatement($this->getSearchParamsFromModel()),
+                '_source.name'
+            )
+        );
+        
+        $updateModel = clone $this->model;
+        $updateModel->name = 'UPDATE';
+    
+        $result = $this->repository->update($updateModel);
+    
+        $this->assertEquals('updated', array_get($result, 'result'));
+        $this->assertEquals('phpunit', array_get($result, '_index'));
+        $this->assertEquals('test', array_get($result, '_type'));
+        $this->assertEquals('1', array_get($result, '_id'));
+    
+        $this->assertEquals(
+            'UPDATE',
+            array_get(
+                EsManager::getStatement($this->getSearchParamsFromModel()),
+                '_source.name'
+            )
+        );
+    }
+    
+    /**
+     * @test
+     */
     public function it_deletes_a_document()
     {
         $this->repository->save($this->model);

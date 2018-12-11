@@ -32,6 +32,28 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
     }
     
     /**
+     * Update
+     *
+     * @param Model|Searchable $model
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function update(Model $model): array
+    {
+        $this->isModelSearchable($model);
+        
+        return EsManager::updateStatement([
+            'index' => $model->getDocumentIndex(),
+            'type' => $model->getDocumentType(),
+            'id' => $model->getKey(),
+            'body' => [
+                'doc' => $model->getDocumentData()
+            ]
+        ]);
+    }
+    
+    /**
      * Delete
      *
      * @param Model|Searchable $model

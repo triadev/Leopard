@@ -75,6 +75,17 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     }
     
     /**
+     * Update statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function updateStatement(array $params) : array
+    {
+        return $this->esClient->update($params);
+    }
+    
+    /**
      * Exist statement
      *
      * @param array $params

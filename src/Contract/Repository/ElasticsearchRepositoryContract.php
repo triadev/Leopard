@@ -17,6 +17,16 @@ interface ElasticsearchRepositoryContract
     public function save(Model $model) : array;
     
     /**
+     * Update
+     *
+     * @param Model|Searchable $model
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function update(Model $model) : array;
+    
+    /**
      * Delete
      *
      * @param Model|Searchable $model

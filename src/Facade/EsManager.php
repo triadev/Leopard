@@ -15,6 +15,7 @@ use Triadev\Es\ODM\Business\Dsl\Search;
  * @method static array searchStatement(array $params)
  * @method static array putMappingStatement(array $params)
  * @method static array indexStatement(array $params)
+ * @method static array updateStatement(array $params)
  * @method static bool existStatement(array $params)
  * @method static array deleteStatement(array $params)
  * @method static array getStatement(array $params)
