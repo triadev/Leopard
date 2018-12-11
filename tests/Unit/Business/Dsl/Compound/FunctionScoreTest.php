@@ -24,6 +24,103 @@ class FunctionScoreTest extends TestCase
     /**
      * @test
      */
+    public function it_builds_a_field_function_score_query()
+    {
+        $result = $this->manager->search()->functionScore(
+            function (Search $search) {
+                $search->term('FIELD1', 'VALUE1');
+            },
+            function (FunctionScore $functionScore) {
+                $functionScore->field(
+                    'FIELD2',
+                    0.2,
+                    'none',
+                    function (Search $search) {
+                        $search->term('FIELD3', 'VALUE3');
+                    }
+                );
+            }
+        )->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'function_score' => [
+                    'query' => [
+                        'term' => [
+                            'FIELD1' => 'VALUE1'
+                        ]
+                    ],
+                    'functions' => [
+                        [
+                            'field_value_factor' => [
+                                'field' => 'FIELD2',
+                                'factor' => 0.2,
+                                'modifier' => 'none'
+                            ],
+                            'filter' => [
+                                'term' => [
+                                    'FIELD3' => 'VALUE3'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_decay_function_score_query()
+    {
+        $result = $this->manager->search()->functionScore(
+            function (Search $search) {
+                $search->term('FIELD1', 'VALUE1');
+            },
+            function (FunctionScore $functionScore) {
+                $functionScore->decay(
+                    'TYPE',
+                    'FIELD',
+                    [],
+                    [],
+                    function (Search $search) {
+                        $search->term('FIELD3', 'VALUE3');
+                    },
+                    2
+                );
+            }
+        )->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'function_score' => [
+                    'query' => [
+                        'term' => [
+                            'FIELD1' => 'VALUE1'
+                        ]
+                    ],
+                    'functions' => [
+                        [
+                            'TYPE' => [
+                                'FIELD' => []
+                            ],
+                            'weight' => 2,
+                            'filter' => [
+                                'term' => [
+                                    'FIELD3' => 'VALUE3'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
     public function it_builds_a_weight_function_score_query()
     {
         $result = $this->manager->search()->functionScore(
