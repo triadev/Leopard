@@ -2,12 +2,15 @@
 namespace Triadev\Es\ODM\Business\Repository;
 
 use Illuminate\Database\Eloquent\Model;
+use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
 use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
 use Triadev\Es\ODM\Facade\EsManager;
 use Triadev\Es\ODM\Searchable;
 
 class ElasticsearchRepository implements ElasticsearchRepositoryContract
 {
+    use IsModelSearchable;
+    
     /**
      * Save
      *
@@ -51,14 +54,5 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
         }
         
         return true;
-    }
-    
-    private function isModelSearchable(Model $model)
-    {
-        $traits = class_uses_recursive(get_class($model));
-        
-        if (!isset($traits[Searchable::class])) {
-            throw new \InvalidArgumentException(get_class($model).' does not use the searchable trait.');
-        }
     }
 }

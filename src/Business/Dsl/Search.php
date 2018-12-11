@@ -37,6 +37,7 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TypeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\WildcardQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Triadev\Es\ODM\Business\Dsl\Compound\FunctionScore;
+use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 use Triadev\Es\ODM\Model\Location;
 use Triadev\Es\ODM\Searchable;
@@ -44,6 +45,8 @@ use Triadev\Es\ODM\Model\SearchResult;
 
 class Search
 {
+    use IsModelSearchable;
+    
     /** @var \ONGR\ElasticsearchDSL\Search */
     private $search;
     
@@ -157,14 +160,12 @@ class Search
      *
      * @param Model|Searchable $model
      * @return Search
+     *
+     * @throws \InvalidArgumentException
      */
     public function model(Model $model) : Search
     {
-        $traits = class_uses_recursive(get_class($model));
-    
-        if (!isset($traits[Searchable::class])) {
-            throw new \InvalidArgumentException(get_class($model).' does not use the searchable trait.');
-        }
+        $this->isModelSearchable($model);
         
         $this->model = $model;
         

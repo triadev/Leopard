@@ -1,12 +1,14 @@
 <?php
 namespace Triadev\Es\ODM\Business\Mapping;
 
-use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Model;
+use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
 use Triadev\Es\ODM\Searchable;
 
 abstract class Mapping
 {
+    use IsModelSearchable;
+    
     /** @var Searchable */
     protected $model;
     
@@ -18,16 +20,14 @@ abstract class Mapping
     
     /**
      * Mapping constructor.
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct()
     {
         $this->model = $this->getMappedEloquentModel();
     
-        $traits = class_uses_recursive(get_class($this->model));
-    
-        if (!isset($traits[Searchable::class])) {
-            throw new InvalidArgumentException(get_class($this->model).' does not use the searchable trait.');
-        }
+        $this->isModelSearchable($this->model);
     }
     
     /**
