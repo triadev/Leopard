@@ -38,9 +38,9 @@ abstract class Mapping
     abstract public function getMappedEloquentModel() : Model;
     
     /**
-     * Build a mapping
+     * Map
      */
-    abstract public function buildMapping();
+    abstract public function map();
     
     /**
      * @param string $index

@@ -2,6 +2,7 @@
 namespace Triadev\Es\ODM;
 
 use Elasticsearch\Client;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Triadev\Es\Contract\ElasticsearchContract;
 use Triadev\Es\ODM\Business\Dsl\Search;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
@@ -93,5 +94,20 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     public function deleteStatement(array $params) : array
     {
         return $this->esClient->delete($params);
+    }
+    
+    /**
+     * Get statement
+     *
+     * @param array $params
+     * @return array|null
+     */
+    public function getStatement(array $params) : ?array
+    {
+        try {
+            return $this->esClient->get($params);
+        } catch (Missing404Exception $e) {
+            return null;
+        }
     }
 }

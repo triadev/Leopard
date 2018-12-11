@@ -30,7 +30,9 @@ Elasticsearch odm for laravel.
 [![Elasticsearch 6.4][icon-e64]][link-elasticsearch]
 
 ## Main features
-- DSL for elasticsearch
+- DSL for elasticsearch search
+- Update elasticsearch mapping via file
+- Storing eloquent model content in elasticsearch
 
 ## Installation
 

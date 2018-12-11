@@ -17,6 +17,7 @@ use Triadev\Es\ODM\Business\Dsl\Search;
  * @method static array indexStatement(array $params)
  * @method static bool existStatement(array $params)
  * @method static array deleteStatement(array $params)
+ * @method static array getStatement(array $params)
  */
 class EsManager extends Facade
 {

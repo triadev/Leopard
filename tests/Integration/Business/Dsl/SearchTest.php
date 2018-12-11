@@ -2,52 +2,16 @@
 namespace Tests\Integration\Business\Dsl;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
+use Triadev\Es\ODM\Facade\EsManager;
 
 class SearchTest extends TestCase
 {
-    /** @var ElasticsearchManagerContract */
-    private $manager;
-    
     /**
      * Setup the test environment.
      */
     public function setUp()
     {
         parent::setUp();
-        
-        $this->manager = app(ElasticsearchManagerContract::class);
-        
-        if (!$this->manager->getEsClient()->indices()->exists(['index' => 'index'])) {
-            $this->manager->getEsClient()->indices()->create([
-                'index' => 'index',
-                'body' => [
-                    'settings' => [
-                        'refresh_interval' => '1s'
-                    ],
-                    'mappings' => [
-                        'type' => [
-                            'properties' => [
-                                'test' => [
-                                    'type' => 'keyword'
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]);
-    
-            $this->manager->getEsClient()->index([
-                'index' => 'index',
-                'type' => 'type',
-                'id' => 1,
-                'body' => [
-                    'test' => 'phpunit'
-                ]
-            ]);
-            
-            $this->manager->getEsClient()->indices()->refresh();
-        }
     }
     
     /**
@@ -55,7 +19,7 @@ class SearchTest extends TestCase
      */
     public function it_returns_an_elasticsearch_search_result_object()
     {
-        $result = $this->manager->search()
+        $result = EsManager::search()
             ->overwriteIndex('index')
             ->overwriteType('type')
             ->term('test', 'phpunit')

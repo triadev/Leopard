@@ -1,8 +1,7 @@
 <?php
-namespace Tests\Database\Elasticsearch;
 
 use Illuminate\Database\Eloquent\Model;
-use Tests\Database\Eloquent\TestModel;
+use Tests\Integration\Model\Entity\TestModel;
 use Triadev\Es\ODM\Business\Mapping\Blueprint;
 use Triadev\Es\ODM\Business\Mapping\Builder;
 use Triadev\Es\ODM\Business\Mapping\Mapping;
@@ -20,12 +19,14 @@ class TestMapping extends Mapping
     }
     
     /**
-     * Build a mapping
+     * Map
      */
-    public function buildMapping()
+    public function map()
     {
         Builder::create(function (Blueprint $blueprint) {
-            $blueprint->text('TEXT');
+            $blueprint->integer('id');
+            $blueprint->text('name');
+            $blueprint->keyword('email');
         }, $this->getDocumentIndex(), $this->getDocumentType());
     }
 }

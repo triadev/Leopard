@@ -26,6 +26,10 @@ class ServiceProvider extends BaseServiceProvider
         ], 'config');
     
         $this->mergeConfigFrom($source, 'triadev-elasticsearch-odm');
+    
+        $this->publishes([
+            __DIR__.'/Resources/Database' => database_path(),
+        ], 'database');
         
         $this->app->bind(
             ElasticsearchRepositoryContract::class,

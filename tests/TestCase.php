@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Triadev\Es\ODM\Facade\EsManager;
 use Triadev\Es\ODM\Provider\ServiceProvider;
 use Triadev\Es\Provider\ElasticsearchServiceProvider;
 
@@ -16,6 +17,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
     public function setUp()
     {
         parent::setUp();
+    
+        $this->loadMigrationsFrom(__DIR__ . '/Resources/Database/migrations');
     }
     
     /**
@@ -63,5 +66,19 @@ class TestCase extends \Orchestra\Testbench\TestCase
             ServiceProvider::class,
             ElasticsearchServiceProvider::class
         ];
+    }
+    
+    /**
+     * Refresh elasticsearch mappings
+     */
+    public function refreshElasticsearchMappings()
+    {
+        if (EsManager::getEsClient()->indices()->exists(['index' => 'phpunit'])) {
+            EsManager::getEsClient()->indices()->delete(['index' => 'phpunit']);
+        }
+    
+        EsManager::getEsClient()->indices()->create([
+            'index' => 'phpunit'
+        ]);
     }
 }
