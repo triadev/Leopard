@@ -15,6 +15,13 @@ interface ElasticsearchManagerContract
     public function getEsClient() : Client;
     
     /**
+     * Get es default index
+     *
+     * @return string
+     */
+    public function getEsDefaultIndex() : string;
+    
+    /**
      * Search
      *
      * @return Search

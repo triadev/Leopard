@@ -12,6 +12,7 @@ use Triadev\Es\ODM\Business\Dsl\Suggestion;
  * @package Triadev\Es\ODM\Facade
  *
  * @method static Client getEsClient()
+ * @method static string getEsDefaultIndex()
  * @method static Search search()
  * @method static Suggestion suggest()
  * @method static array searchStatement(array $params)

@@ -87,6 +87,8 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
     public function bulkSave(array $models) : array
     {
         $params = [];
+    
+        $defaultIndex = EsManager::getEsDefaultIndex();
         
         foreach ($models as $model) {
             /** @var Model|Searchable $model */
@@ -94,7 +96,7 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
             
             $params['body'][] = [
                 'index' => [
-                    '_index' => $model->getDocumentIndex() ?: config('triadev-elasticsearch-odm.index'),
+                    '_index' => $model->getDocumentIndex() ?: $defaultIndex,
                     '_type' => $model->getDocumentType(),
                     '_id' => $model->getKey()
                 ]
@@ -116,13 +118,15 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
     {
         $params = [];
     
+        $defaultIndex = EsManager::getEsDefaultIndex();
+        
         foreach ($models as $model) {
             /** @var Model|Searchable $model */
             $this->isModelSearchable($model);
         
             $params['body'][] = [
                 'delete' => [
-                    '_index' => $model->getDocumentIndex() ?: config('triadev-elasticsearch-odm.index'),
+                    '_index' => $model->getDocumentIndex() ?: $defaultIndex,
                     '_type' => $model->getDocumentType(),
                     '_id' => $model->getKey()
                 ]

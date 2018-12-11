@@ -33,6 +33,16 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     }
     
     /**
+     * Get es default index
+     *
+     * @return string
+     */
+    public function getEsDefaultIndex() : string
+    {
+        return config('triadev-elasticsearch-odm.index');
+    }
+    
+    /**
      * Search
      *
      * @return Search
