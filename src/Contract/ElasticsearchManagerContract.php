@@ -3,6 +3,7 @@ namespace Triadev\Es\ODM\Contract;
 
 use Elasticsearch\Client;
 use Triadev\Es\ODM\Business\Dsl\Search;
+use Triadev\Es\ODM\Business\Dsl\Suggestion;
 
 interface ElasticsearchManagerContract
 {
@@ -21,6 +22,13 @@ interface ElasticsearchManagerContract
     public function search() : Search;
     
     /**
+     * Suggestion
+     *
+     * @return Suggestion
+     */
+    public function suggest() : Suggestion;
+    
+    /**
      * Search statement
      *
      * @param array $params
@@ -35,4 +43,52 @@ interface ElasticsearchManagerContract
      * @return array
      */
     public function putMappingStatement(array $params) : array;
+    
+    /**
+     * Index statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function indexStatement(array $params) : array;
+    
+    /**
+     * Update statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function updateStatement(array $params) : array;
+    
+    /**
+     * Exist statement
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function existStatement(array $params) : bool;
+    
+    /**
+     * Delete statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function deleteStatement(array $params) : array;
+    
+    /**
+     * Get statement
+     *
+     * @param array $params
+     * @return array|null
+     */
+    public function getStatement(array $params) : ?array;
+    
+    /**
+     * Suggest statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function suggestStatement(array $params) : array;
 }

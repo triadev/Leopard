@@ -5,6 +5,7 @@ use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Triadev\Es\Contract\ElasticsearchContract;
 use Triadev\Es\ODM\Business\Dsl\Search;
+use Triadev\Es\ODM\Business\Dsl\Suggestion;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 
 class ElasticsearchManager implements ElasticsearchManagerContract
@@ -39,6 +40,16 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     public function search(): Search
     {
         return app()->make(Search::class);
+    }
+    
+    /**
+     * Suggestion
+     *
+     * @return Suggestion
+     */
+    public function suggest() : Suggestion
+    {
+        return app()->make(Suggestion::class);
     }
     
     /**
@@ -120,5 +131,16 @@ class ElasticsearchManager implements ElasticsearchManagerContract
         } catch (Missing404Exception $e) {
             return null;
         }
+    }
+    
+    /**
+     * Suggest statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function suggestStatement(array $params): array
+    {
+        return $this->esClient->suggest($params);
     }
 }
