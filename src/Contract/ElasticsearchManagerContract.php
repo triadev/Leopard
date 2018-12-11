@@ -45,6 +45,14 @@ interface ElasticsearchManagerContract
     public function putMappingStatement(array $params) : array;
     
     /**
+     * Put setting statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function putSettingStatement(array $params) : array;
+    
+    /**
      * Index statement
      *
      * @param array $params

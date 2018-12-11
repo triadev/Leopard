@@ -16,6 +16,7 @@ use Triadev\Es\ODM\Business\Dsl\Suggestion;
  * @method static Suggestion suggest()
  * @method static array searchStatement(array $params)
  * @method static array putMappingStatement(array $params)
+ * @method static array putSettingStatement(array $params)
  * @method static array indexStatement(array $params)
  * @method static array updateStatement(array $params)
  * @method static bool existStatement(array $params)

@@ -69,9 +69,20 @@ class ElasticsearchManager implements ElasticsearchManagerContract
      * @param array $params
      * @return array
      */
-    public function putMappingStatement(array $params): array
+    public function putMappingStatement(array $params) : array
     {
         return $this->esClient->indices()->putMapping($params);
+    }
+    
+    /**
+     * Put setting statement
+     *
+     * @param array $params
+     * @return array
+     */
+    public function putSettingStatement(array $params) : array
+    {
+        return $this->esClient->indices()->putSettings($params);
     }
     
     /**
