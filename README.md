@@ -50,6 +50,12 @@ php artisan vendor:publish --provider="Triadev\Es\ODM\Provider\ServiceProvider" 
 
 This will create a file ```config/triadev-elasticsearch-odm.php```.
 
+```php
+php artisan vendor:publish --provider="Triadev\Es\ODM\Provider\ServiceProvider" --tag="database"
+```
+
+This will create a mapping directory at ```database/mappings```.
+
 ### Configuration
 | Key        | Env | Value           | Description | Default |
 |:-------------:|:-------------:|:-------------:|:-----:|:-----:|
