@@ -12,24 +12,16 @@ class SearchTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-    
-        if (EsManager::getEsClient()->indices()->exists(['index' => 'phpunit'])) {
-            EsManager::getEsClient()->indices()->delete(['index' => 'phpunit']);
-        }
-    
-        EsManager::getEsClient()->indices()->create([
+        
+        $this->refreshElasticsearchMappings();
+        
+        EsManager::getEsClient()->indices()->putMapping([
             'index' => 'phpunit',
+            'type' => 'test',
             'body' => [
-                'settings' => [
-                    'refresh_interval' => '1s'
-                ],
-                'mappings' => [
+                'properties' => [
                     'test' => [
-                        'properties' => [
-                            'test' => [
-                                'type' => 'keyword'
-                            ]
-                        ]
+                        'type' => 'keyword'
                     ]
                 ]
             ]
