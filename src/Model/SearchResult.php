@@ -74,6 +74,14 @@ class SearchResult
     }
     
     /**
+     * @param Collection $hits
+     */
+    public function setHits(Collection $hits)
+    {
+        $this->hits = $hits;
+    }
+    
+    /**
      * @return int
      */
     public function getTotalHits(): int

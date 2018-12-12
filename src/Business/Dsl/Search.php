@@ -37,8 +37,10 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TypeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\WildcardQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Triadev\Es\ODM\Business\Dsl\Compound\FunctionScore;
+use Triadev\Es\ODM\Business\Filler\EloquentFiller;
 use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
+use Triadev\Es\ODM\Contract\FillerContract;
 use Triadev\Es\ODM\Model\Location;
 use Triadev\Es\ODM\Searchable;
 use Triadev\Es\ODM\Model\SearchResult;
@@ -180,11 +182,19 @@ class Search
     /**
      * Get
      *
+     * @param FillerContract|null $filler
      * @return SearchResult
      */
-    public function get() : SearchResult
+    public function get(?FillerContract $filler = null) : SearchResult
     {
-        return new SearchResult($this->getRaw());
+        $searchResult = new SearchResult($this->getRaw());
+        
+        if ($this->model) {
+            $filler = $filler ?: new EloquentFiller();
+            $filler->fill($this->model, $searchResult);
+        }
+        
+        return $searchResult;
     }
     
     /**

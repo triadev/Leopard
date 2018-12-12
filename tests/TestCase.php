@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Integration\Model\Entity\TestModel;
 use Triadev\Es\ODM\Facade\EsManager;
 use Triadev\Es\ODM\Provider\ServiceProvider;
 use Triadev\Es\Provider\ElasticsearchServiceProvider;
@@ -73,12 +74,14 @@ class TestCase extends \Orchestra\Testbench\TestCase
      */
     public function refreshElasticsearchMappings()
     {
-        if (EsManager::getEsClient()->indices()->exists(['index' => 'phpunit'])) {
-            EsManager::getEsClient()->indices()->delete(['index' => 'phpunit']);
+        $model = new TestModel();
+        
+        if (EsManager::getEsClient()->indices()->exists(['index' => $model->getDocumentIndex()])) {
+            EsManager::getEsClient()->indices()->delete(['index' => $model->getDocumentIndex()]);
         }
     
         EsManager::getEsClient()->indices()->create([
-            'index' => 'phpunit'
+            'index' => $model->getDocumentIndex()
         ]);
     }
 }
