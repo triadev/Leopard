@@ -18,12 +18,22 @@ use Triadev\Es\ODM\Facade\EsManager;
  * @property array $searchable
  *
  * @method static ElasticsearchManagerContract search()
+ * @methdo static ElasticsearchManagerContract suggest()
  * @method array buildDocument()
  * @method array toArray()
  * @method string getTable()
  */
 trait Searchable
 {
+    /** @var bool */
+    public $isDocument = false;
+    
+    /** @var float|null */
+    public $documentScore;
+    
+    /** @var int|null */
+    public $documentVersion;
+    
     /**
      * Searchable boot model.
      */
@@ -139,6 +149,10 @@ trait Searchable
     {
         if ($name == 'search') {
             return EsManager::search()->model($this);
+        }
+        
+        if ($name = 'suggest') {
+            return EsManager::suggest();
         }
         
         return parent::__call($name, $arguments);
