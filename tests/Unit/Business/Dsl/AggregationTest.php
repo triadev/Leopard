@@ -133,6 +133,205 @@ class AggregationTest extends TestCase
     /**
      * @test
      */
+    public function it_builds_a_metric_avg_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->avg('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'avg' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_metric_cardinality_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->cardinality('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'cardinality' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_metric_geo_bounds_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->geoBounds('NAME', 'FIELD', true);
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'geo_bounds' => [
+                        'field' => 'FIELD',
+                        'wrap_longitude' => true
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_metric_geo_centroid_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->geoCentroid('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'geo_centroid' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_metric_max_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->max('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'max' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_metric_min_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->min('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'min' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_metric_stats_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->stats('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'stats' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_metric_sum_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->sum('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'sum' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_metric_top_hits_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->topHits('NAME');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'top_hits' => new \stdClass()
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_metric_value_count_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->valueCount('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'value_count' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
     public function it_builds_a_pipeline_avg_aggregation()
     {
         $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
