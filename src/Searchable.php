@@ -92,7 +92,12 @@ trait Searchable
         return $this->getTable();
     }
     
-    private function shouldSyncDocument() : bool
+    /**
+     * Should sync document
+     *
+     * @return bool
+     */
+    public function shouldSyncDocument() : bool
     {
         if (property_exists($this, 'syncDocument')) {
             return (bool)$this->syncDocument;
