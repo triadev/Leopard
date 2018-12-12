@@ -49,6 +49,11 @@ class BlueprintTest extends TestCase
         $this->blueprint->object('OBJECT')->callback(function (Blueprint $blueprint) {
             $blueprint->keyword('OBJECT_KEYWORD');
         });
+        $this->blueprint->geoPoint('GEO_POINT');
+        $this->blueprint->geoShape('GEO_SHAPE');
+        $this->blueprint->ip('IP');
+        $this->blueprint->completion('COMPLETION');
+        $this->blueprint->tokenCount('TOKEN_COUNT');
         
         $this->assertEquals([
             'TEXT' => [
@@ -124,6 +129,21 @@ class BlueprintTest extends TestCase
                         'type' => 'keyword'
                     ]
                 ]
+            ],
+            'GEO_POINT' => [
+                'type' => 'geo_point'
+            ],
+            'GEO_SHAPE' => [
+                'type' => 'geo_shape'
+            ],
+            'IP' => [
+                'type' => 'ip'
+            ],
+            'COMPLETION' => [
+                'type' => 'completion'
+            ],
+            'TOKEN_COUNT' => [
+                'type' => 'token_count'
             ]
         ], $this->blueprint->toDsl());
     }
