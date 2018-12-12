@@ -6,6 +6,7 @@ use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Triadev\Es\Contract\ElasticsearchContract;
 use Triadev\Es\ODM\Business\Dsl\Search;
 use Triadev\Es\ODM\Business\Dsl\Suggestion;
+use Triadev\Es\ODM\Business\Mapping\Builder;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 
 class ElasticsearchManager implements ElasticsearchManagerContract
@@ -60,6 +61,18 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     public function suggest() : Suggestion
     {
         return app()->make(Suggestion::class);
+    }
+    
+    /**
+     * Map
+     *
+     * @param \Closure $blueprint
+     * @param string $index
+     * @param string $type
+     */
+    public function map(\Closure $blueprint, string $index, string $type)
+    {
+        (new Builder())->create($blueprint, $index, $type);
     }
     
     /**

@@ -3,8 +3,8 @@
 use Illuminate\Database\Eloquent\Model;
 use Tests\Integration\Model\Entity\TestModel;
 use Triadev\Es\ODM\Business\Mapping\Blueprint;
-use Triadev\Es\ODM\Business\Mapping\Builder;
 use Triadev\Es\ODM\Business\Mapping\Mapping;
+use Triadev\Es\ODM\Facade\EsManager;
 
 class TestMapping extends Mapping
 {
@@ -23,7 +23,7 @@ class TestMapping extends Mapping
      */
     public function map()
     {
-        Builder::create(function (Blueprint $blueprint) {
+        EsManager::map(function (Blueprint $blueprint) {
             $blueprint->integer('id');
             $blueprint->text('name');
             $blueprint->keyword('email');

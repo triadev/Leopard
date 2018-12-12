@@ -10,7 +10,7 @@ class Builder
      * @param string $index
      * @param string $type
      */
-    public static function create(\Closure $blueprint, string $index, string $type)
+    public function create(\Closure $blueprint, string $index, string $type)
     {
         $blueprintMapping = new Blueprint();
         $blueprint($blueprintMapping);
