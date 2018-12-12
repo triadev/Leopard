@@ -78,7 +78,6 @@ class Search
         $this->search = $search ?: new \ONGR\ElasticsearchDSL\Search();
         
         $this->index = config('triadev-elasticsearch-odm.index');
-        $this->type = config('triadev-elasticsearch-odm.type');
     }
     
     /**

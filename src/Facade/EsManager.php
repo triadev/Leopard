@@ -15,6 +15,7 @@ use Triadev\Es\ODM\Business\Dsl\Suggestion;
  * @method static string getEsDefaultIndex()
  * @method static Search search()
  * @method static Suggestion suggest()
+ * @method static map(\Closure $blueprint, string $index, string $type)
  * @method static array searchStatement(array $params)
  * @method static array putMappingStatement(array $params)
  * @method static array indexStatement(array $params)

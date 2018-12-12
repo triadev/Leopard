@@ -14,11 +14,11 @@ class Bucketing extends Aggs
      * Children
      *
      * @param string $name
+     * @param string $children
      * @param \Closure $bucketing
-     * @param string|null $children
      * @return Bucketing
      */
-    public function children(string $name, \Closure $bucketing, ?string $children = null) : Bucketing
+    public function children(string $name, string $children, \Closure $bucketing) : Bucketing
     {
         $resultAgg = new ChildrenAggregation($name, $children);
         
@@ -37,17 +37,34 @@ class Bucketing extends Aggs
      * Date histogram
      *
      * @param string $name
-     * @param string|null $field
-     * @param string|null $interval
+     * @param string $field
+     * @param string $interval
      * @param string|null $format
      * @return Bucketing
+     *
+     * @throws \InvalidArgumentException
      */
     public function dateHistogram(
         string $name,
-        ?string $field = null,
-        ?string $interval = null,
+        string $field,
+        string $interval,
         ?string $format = null
     ) : Bucketing {
+        $validInterval = [
+            'year',
+            'quarter',
+            'month',
+            'week',
+            'day',
+            'hour',
+            'minute',
+            'second'
+        ];
+        
+        if (!in_array($interval, $validInterval)) {
+            throw new \InvalidArgumentException();
+        }
+        
         $this->addAggregation(new DateHistogramAggregation($name, $field, $interval, $format));
         return $this;
     }
@@ -56,15 +73,15 @@ class Bucketing extends Aggs
      * Date range
      *
      * @param string $name
-     * @param string|null $field
-     * @param string|null $format
+     * @param string $field
+     * @param string $format
      * @param array $ranges
      * @return Bucketing
      */
     public function dateRange(
         string $name,
-        ?string $field = null,
-        ?string $format = null,
+        string $field,
+        string $format,
         array $ranges = []
     ) : Bucketing {
         $this->addAggregation(new DateRangeAggregation($name, $field, $format, $ranges));
