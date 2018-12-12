@@ -3,6 +3,7 @@ namespace Triadev\Es\ODM\Business\Mapping;
 
 use Illuminate\Database\Eloquent\Model;
 use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
+use Triadev\Es\ODM\Facade\EsManager;
 use Triadev\Es\ODM\Searchable;
 
 abstract class Mapping
@@ -65,7 +66,11 @@ abstract class Mapping
      */
     public function getDocumentIndex() : string
     {
-        return $this->index ?: $this->model->getDocumentIndex();
+        if ($this->index) {
+            return $this->index;
+        }
+        
+        return $this->model->getDocumentIndex() ?: EsManager::getEsDefaultIndex();
     }
     
     /**
