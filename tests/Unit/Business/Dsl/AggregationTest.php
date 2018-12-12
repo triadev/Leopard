@@ -129,4 +129,246 @@ class AggregationTest extends TestCase
             ]
         ], $this->search->toArray());
     }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_avg_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->avg('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'avg_bucket' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_max_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->max('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'max_bucket' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_min_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->min('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'min_bucket' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_percentiles_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->percentiles('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'percentiles_bucket' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_stats_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->stats('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'stats_bucket' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_sum_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->sum('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'sum_bucket' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_serial_differencing_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->serialDifferencing('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'serial_diff' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_extended_stats_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->extendedStats('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'extended_stats_bucket' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_derivative_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->derivative('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'derivative' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_cumulative_sum_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->cumulativeSum('NAME', 'BUCKETS_PATH');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'cumulative_sum' => [
+                        'buckets_path' => 'BUCKETS_PATH'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_bucket_selector_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->bucketSelector('NAME', 'BUCKETS_PATH', 'SCRIPT');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'bucket_selector' => [
+                        'buckets_path' => 'BUCKETS_PATH',
+                        'script' => 'SCRIPT'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_pipeline_bucket_script_aggregation()
+    {
+        $this->aggregation->pipeline(function (Aggregation\Pipeline $pipeline) {
+            $pipeline->bucketScript('NAME', 'BUCKETS_PATH', 'SCRIPT');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'bucket_script' => [
+                        'buckets_path' => 'BUCKETS_PATH',
+                        'script' => 'SCRIPT'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
 }
