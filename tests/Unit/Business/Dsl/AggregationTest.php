@@ -153,6 +153,26 @@ class AggregationTest extends TestCase
     /**
      * @test
      */
+    public function it_builds_a_metric_extended_stats_aggregation()
+    {
+        $this->aggregation->metric(function (Aggregation\Metric $bucketing) {
+            $bucketing->extendedStats('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'extended_stats' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
     public function it_builds_a_metric_cardinality_aggregation()
     {
         $this->aggregation->metric(function (Aggregation\Metric $bucketing) {

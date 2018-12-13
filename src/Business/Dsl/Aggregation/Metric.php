@@ -3,6 +3,7 @@ namespace Triadev\Es\ODM\Business\Dsl\Aggregation;
 
 use ONGR\ElasticsearchDSL\Aggregation\Metric\AvgAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
+use ONGR\ElasticsearchDSL\Aggregation\Metric\ExtendedStatsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\GeoBoundsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\GeoCentroidAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\MaxAggregation;
@@ -45,8 +46,18 @@ class Metric extends Aggs
         return $this;
     }
     
-    public function extendedStats() : Metric
+    /**
+     * Extended stats
+     *
+     * @param string $name
+     * @param string $field
+     * @param string|null $sigma
+     * @param string|null $script
+     * @return Metric
+     */
+    public function extendedStats(string $name, string $field, ?string $sigma = null, ?string $script = null) : Metric
     {
+        $this->addAggregation(new ExtendedStatsAggregation($name, $field, $sigma, $script));
         return $this;
     }
     
