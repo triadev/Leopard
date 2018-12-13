@@ -51,11 +51,11 @@ class Metric extends Aggs
      *
      * @param string $name
      * @param string $field
-     * @param string|null $sigma
+     * @param int|null $sigma
      * @param string|null $script
      * @return Metric
      */
-    public function extendedStats(string $name, string $field, ?string $sigma = null, ?string $script = null) : Metric
+    public function extendedStats(string $name, string $field, ?int $sigma = null, ?string $script = null) : Metric
     {
         $this->addAggregation(new ExtendedStatsAggregation($name, $field, $sigma, $script));
         return $this;

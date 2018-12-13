@@ -42,14 +42,14 @@ trait Searchable
         static::saved(function (Model $model) {
             /** @var Model|Searchable $model */
             if ($model->shouldSyncDocument()) {
-                $model->document()->save($model);
+                $model->document()->save(/** @scrutinizer ignore-type */$model);
             }
         });
     
         static::deleted(function (Model $model) {
             /** @var Model|Searchable $model */
             if ($model->shouldSyncDocument()) {
-                $model->document()->delete($model);
+                $model->document()->delete(/** @scrutinizer ignore-type */$model);
             }
         });
     }
@@ -86,10 +86,10 @@ trait Searchable
     public function getDocumentType(): string
     {
         if (property_exists($this, 'documentType')) {
-            return $this->documentType;
+            return (string)$this->documentType;
         }
         
-        return $this->getTable();
+        return (string)$this->getTable();
     }
     
     /**

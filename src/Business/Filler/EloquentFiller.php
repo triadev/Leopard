@@ -34,7 +34,7 @@ class EloquentFiller implements FillerContract
      */
     public function fillModel(Model $model, array $hit = []) : Model
     {
-        $source = array_get($hit, '_source');
+        $source = array_get($hit, '_source', []);
         
         if ($id = array_get($hit, '_id', null)) {
             $source[$model->getKeyName()] = is_numeric($id) ? intval($id) : $id;
