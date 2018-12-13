@@ -1,6 +1,10 @@
 <?php
 namespace Tests\Unit\Business\Dsl;
 
+use ONGR\ElasticsearchDSL\Aggregation\Bucketing\HistogramAggregation;
+use ONGR\ElasticsearchDSL\Aggregation\Metric\AvgAggregation;
+use ONGR\ElasticsearchDSL\Aggregation\Metric\MinAggregation;
+use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Search;
 use Tests\TestCase;
 use Triadev\Es\ODM\Business\Dsl\Aggregation;
@@ -102,6 +106,291 @@ class AggregationTest extends TestCase
                             [
                                 'from' => 'now-10M/M',
                                 'to' => 'now-10M/M'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_filter_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $termFilter = new TermQuery('FIELD', 'VALUE');
+
+            $bucketing->filter('NAME', $termFilter, [
+                new AvgAggregation('AVG', 'FIELD')
+            ]);
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'filter' => [
+                        'term' => [
+                            'FIELD' => 'VALUE'
+                        ]
+                    ],
+                    'aggregations' => [
+                        'AVG' => [
+                            'avg' => [
+                                'field' => 'FIELD'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_filters_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $errorTermFilter = new TermQuery('body', 'error');
+    
+            $histogramAggregation = new HistogramAggregation('monthly', 'timestamp');
+            $histogramAggregation->setInterval('1M');
+            
+            $bucketing->filters('NAME', [
+                'error' => $errorTermFilter
+            ], [
+                $histogramAggregation
+            ]);
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'filters' => [
+                        'filters' => [
+                            'error' => [
+                                'term' => [
+                                    'body' => 'error'
+                                ]
+                            ]
+                        ]
+                    ],
+                    'aggregations' => [
+                        'monthly' => [
+                            'histogram' => [
+                                'field' => 'timestamp',
+                                'interval' => '1M'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_geo_distance_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $bucketing->geoDistance(
+                'NAME',
+                'location',
+                '52.3760, 4.894',
+                [
+                    ['to' => 100]
+                ]
+            );
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'geo_distance' => [
+                        'field' => 'location',
+                        'origin' => '52.3760, 4.894',
+                        'ranges' => [
+                            [
+                                'to' => 100
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_geo_hash_grid_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $bucketing->geoHashGrid(
+                'NAME',
+                'location',
+                3
+            );
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'geohash_grid' => [
+                        'field' => 'location',
+                        'precision' => 3
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_histogram_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $bucketing->histogram(
+                'NAME',
+                'FIELD',
+                50
+            );
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'histogram' => [
+                        'field' => 'FIELD',
+                        'interval' => 50
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_ipv4_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $bucketing->ipv4Range(
+                'NAME',
+                'FIELD',
+                [
+                    ['to' => '10.0.0.6'],
+                    ['from' => '10.0.0.5'],
+                ]
+            );
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'ip_range' => [
+                        'field' => 'FIELD',
+                        'ranges' => [
+                            [
+                                'to' => '10.0.0.6'
+                            ],
+                            [
+                                'from' => '10.0.0.5'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_missing_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $bucketing->missing(
+                'NAME',
+                'FIELD'
+            );
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'missing' => [
+                        'field' => 'FIELD'
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_nested_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $minAggregation = new MinAggregation('NAME', 'FIELD');
+            
+            $bucketing->nested(
+                'NAME',
+                'PATH',
+                [
+                    $minAggregation
+                ]
+            );
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'nested' => [
+                        'path' => 'PATH'
+                    ],
+                    'aggregations' => [
+                        'NAME' => [
+                            'min' => [
+                                'field' => 'FIELD'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_range_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $bucketing->range(
+                'NAME',
+                'FIELD',
+                [
+                    ['from' => 50, 'to' => 100]
+                ]
+            );
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'range' => [
+                        'field' => 'FIELD',
+                        'keyed' => false,
+                        'ranges' => [
+                            [
+                                'from' => 50,
+                                'to' => 100
                             ]
                         ]
                     ]
