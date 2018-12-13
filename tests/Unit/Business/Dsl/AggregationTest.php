@@ -2,6 +2,7 @@
 namespace Tests\Unit\Business\Dsl;
 
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\HistogramAggregation;
+use ONGR\ElasticsearchDSL\Aggregation\Bucketing\SignificantTermsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\AvgAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\MinAggregation;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
@@ -108,6 +109,29 @@ class AggregationTest extends TestCase
                                 'to' => 'now-10M/M'
                             ]
                         ]
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_diversified_sampler_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $bucketing->diversifiedSampler(
+                'NAME',
+                'FIELD'
+            );
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'diversified_sampler' => [
+                        'field' => 'FIELD'
                     ]
                 ]
             ]
@@ -393,6 +417,56 @@ class AggregationTest extends TestCase
                                 'to' => 100
                             ]
                         ]
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_sampler_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $bucketing->sampler('NAME', 'FIELD', 100, [
+                new SignificantTermsAggregation('keywords', 'text')
+            ]);
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'sampler' => [
+                        'field' => 'FIELD',
+                        'shard_size' => 100
+                    ],
+                    'aggregations' => [
+                        'keywords' => [
+                            'significant_terms' => [
+                                'field' => 'text'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $this->search->toArray());
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_bucketing_significant_terms_aggregation()
+    {
+        $this->aggregation->bucketing(function (Aggregation\Bucketing $bucketing) {
+            $bucketing->significantTerms('NAME', 'FIELD');
+        });
+        
+        $this->assertEquals([
+            'aggregations' => [
+                'NAME' => [
+                    'significant_terms' => [
+                        'field' => 'FIELD'
                     ]
                 ]
             ]

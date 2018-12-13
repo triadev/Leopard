@@ -14,6 +14,8 @@ use ONGR\ElasticsearchDSL\Aggregation\Bucketing\Ipv4RangeAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\MissingAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\NestedAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\RangeAggregation;
+use ONGR\ElasticsearchDSL\Aggregation\Bucketing\SamplerAggregation;
+use ONGR\ElasticsearchDSL\Aggregation\Bucketing\SignificantTermsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\BuilderInterface;
 
@@ -101,11 +103,11 @@ class Bucketing extends Aggs
      * Diversified sampler
      *
      * @param string $name
-     * @param string|null $field
+     * @param string $field
      * @param int|null $shardSize
      * @return Bucketing
      */
-    public function diversifiedSampler(string $name, ?string $field = null, ?int $shardSize = null) : Bucketing
+    public function diversifiedSampler(string $name, string $field, ?int $shardSize = null) : Bucketing
     {
         $this->addAggregation(new DiversifiedSamplerAggregation($name, $field, $shardSize));
         return $this;
@@ -326,13 +328,40 @@ class Bucketing extends Aggs
         return $this;
     }
     
-    public function samplerAgg() : Bucketing
+    /**
+     * Sampler
+     *
+     * @param string $name
+     * @param string $field
+     * @param int|null $shardSize
+     * @param array $aggregations
+     * @return Bucketing
+     */
+    public function sampler(string $name, string $field, ?int $shardSize = null, array $aggregations = []) : Bucketing
     {
+        $agg = new SamplerAggregation($name, $field, $shardSize);
+        
+        foreach ($aggregations as $aggregation) {
+            if ($aggregation instanceof BuilderInterface) {
+                $agg->addAggregation($aggregation);
+            }
+        }
+        
+        $this->addAggregation($agg);
         return $this;
     }
     
-    public function significantTerms() : Bucketing
+    /**
+     * Significant terms
+     *
+     * @param string $name
+     * @param string $field
+     * @param string|null $script
+     * @return Bucketing
+     */
+    public function significantTerms(string $name, string $field, ?string $script = null) : Bucketing
     {
+        $this->addAggregation(new SignificantTermsAggregation($name, $field, $script));
         return $this;
     }
     
