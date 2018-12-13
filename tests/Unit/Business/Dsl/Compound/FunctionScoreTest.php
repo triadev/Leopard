@@ -191,4 +191,73 @@ class FunctionScoreTest extends TestCase
             ]
         ], $result);
     }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_script_function_score_query()
+    {
+        $result = $this->manager->search()->functionScore(
+            function (Search $search) {
+                $search->term('FIELD1', 'VALUE1');
+            },
+            function (FunctionScore $functionScore) {
+                $functionScore->script(
+                    'INLINE'
+                );
+            }
+        )->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'function_score' => [
+                    'query' => [
+                        'term' => [
+                            'FIELD1' => 'VALUE1'
+                        ]
+                    ],
+                    'functions' => [
+                        [
+                            'script_score' => [
+                                'script' => [
+                                    'lang' => 'painless',
+                                    'inline' => 'INLINE'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_simple_function_score_query()
+    {
+        $result = $this->manager->search()->functionScore(
+            function (Search $search) {
+                $search->term('FIELD1', 'VALUE1');
+            },
+            function (FunctionScore $functionScore) {
+                $functionScore->simple([]);
+            }
+        )->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'function_score' => [
+                    'query' => [
+                        'term' => [
+                            'FIELD1' => 'VALUE1'
+                        ]
+                    ],
+                    'functions' => [
+                        []
+                    ]
+                ]
+            ]
+        ], $result);
+    }
 }
