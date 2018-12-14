@@ -1,0 +1,28 @@
+<?php
+
+use Triadev\Es\ODM\Business\Mapping\Blueprint;
+use Triadev\Es\ODM\Business\Mapping\Mapping;
+use Triadev\Es\ODM\Facade\EsManager;
+
+class DefaultClass extends Mapping
+{
+    /**
+     * Get mapped eloquent model class
+     *
+     * @return string
+     */
+    public function model(): string
+    {
+        return DefaultModel::class;
+    }
+    
+    /**
+     * Map
+     */
+    public function map()
+    {
+        EsManager::map(function (Blueprint $blueprint) {
+            $blueprint->keyword('EXAMPLE');
+        }, $this->getDocumentIndex(), $this->getDocumentType());
+    }
+}

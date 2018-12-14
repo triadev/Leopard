@@ -1,11 +1,10 @@
 <?php
 namespace Triadev\Es\ODM\Console\Commands\Mapping;
 
-use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Triadev\Es\ODM\Business\Mapping\Mapper;
 
-class Migrate extends Command
+class Migrate extends BaseCommand
 {
     use ConfirmableTrait;
     
@@ -39,10 +38,5 @@ class Migrate extends Command
             $this->option('index'),
             $this->option('type')
         );
-    }
-    
-    private function getMappingPath() : string
-    {
-        return app()->databasePath() . DIRECTORY_SEPARATOR . 'mappings';
     }
 }
