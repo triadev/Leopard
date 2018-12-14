@@ -9,7 +9,7 @@ class MakeTest extends TestCase
     /**
      * @test
      */
-    public function it_runs_a_mapping_update()
+    public function it_creates_a_new_mapping_file_via_artisan_command()
     {
         $filesystem = new Filesystem();
      
