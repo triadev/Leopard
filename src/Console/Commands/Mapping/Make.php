@@ -2,7 +2,6 @@
 namespace Triadev\Es\ODM\Console\Commands\Mapping;
 
 use Illuminate\Console\ConfirmableTrait;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Str;
