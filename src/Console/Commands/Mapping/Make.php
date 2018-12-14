@@ -16,7 +16,7 @@ class Make extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'triadev:mapping:make {mapping}';
+    protected $signature = 'triadev:mapping:make {mapping} {model}';
     
     /**
      * The console command description.
@@ -51,7 +51,11 @@ class Make extends BaseCommand
      */
     public function handle()
     {
-        $mapping = Str::studly($this->argument('mapping'));
+        $mapping = trim(
+            Str::studly(
+                $this->argument('mapping')
+            )
+        );
         
         $this->filesystem->put(
             $this->buildPath($mapping),
@@ -59,7 +63,8 @@ class Make extends BaseCommand
                 $this->filesystem->get(
                     __DIR__ . DIRECTORY_SEPARATOR . 'default.stub'
                 ),
-                $mapping
+                $mapping,
+                trim($this->argument('model'))
             )
         );
         
@@ -71,9 +76,11 @@ class Make extends BaseCommand
         return $this->getMappingPath() . DIRECTORY_SEPARATOR . $mapping . '.php';
     }
     
-    private function buildMapping(string $stub, string $mapping) : string
+    private function buildMapping(string $stub, string $mapping, string $model) : string
     {
         $stub = str_replace('DefaultClass', $mapping, $stub);
+        
+        $stub = str_replace('DefaultModel', $model, $stub);
         
         return $stub;
     }

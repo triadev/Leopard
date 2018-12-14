@@ -18,7 +18,8 @@ class MakeTest extends TestCase
         $this->assertFalse($filesystem->exists($mappingPath));
         
         $this->artisan('triadev:mapping:make', [
-            'mapping' => 'phpunit'
+            'mapping' => 'phpunit',
+            'model' => '\App\Test\Phpunit'
         ]);
     
         $this->assertTrue($filesystem->exists($mappingPath));
@@ -27,6 +28,11 @@ class MakeTest extends TestCase
             (string)$filesystem->get($mappingPath),
             'class Phpunit extends Mapping'
         ) !== false);
+    
+        $this->assertTrue(strpos(
+                (string)$filesystem->get($mappingPath),
+                'return \App\Test\Phpunit::class;'
+            ) !== false);
    
         $filesystem->delete($mappingPath);
     
