@@ -17,7 +17,7 @@ class ModelTest extends TestCase
     
         $this->refreshElasticsearchMappings();
     
-        app()->make(Mapper::class)->run(__DIR__. '/../../Resources/Database/mappings');
+        app()->make(Mapper::class)->run($this->getMappingsPath());
     }
     
     /**

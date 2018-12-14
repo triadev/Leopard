@@ -1,11 +1,10 @@
 <?php
-namespace Tests\Integration\Business\Mapping;
+namespace Tests\Integration\Console\Commands\Mapping;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Mapping\Mapper;
 use Triadev\Es\ODM\Facade\EsManager;
 
-class MapperTest extends TestCase
+class MigrationTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -28,8 +27,11 @@ class MapperTest extends TestCase
             ]
         ], EsManager::getEsClient()->indices()->getMapping(['index' => 'phpunit']));
         
-        app()->make(Mapper::class)->run($this->getMappingsPath());
-    
+        $this->artisan('triadev:mapping:migrate', [
+            '--index' => 'phpunit',
+            '--type' => 'test'
+        ]);
+        
         $this->assertEquals([
             'phpunit' => [
                 'mappings' => [

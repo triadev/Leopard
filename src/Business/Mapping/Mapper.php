@@ -21,8 +21,10 @@ class Mapper
      * Run mappings
      *
      * @param string $path
+     * @param string|null $index
+     * @param string|null $type
      */
-    public function run(string $path)
+    public function run(string $path, ?string $index = null, ?string $type = null)
     {
         $mappingFiles = $this->getMappingFiles($path);
         
@@ -31,6 +33,15 @@ class Mapper
             
             /** @var Mapping $mapping */
             $mapping = new $mappingFile();
+            
+            if ($index) {
+                $mapping->setDocumentIndex($index);
+            }
+            
+            if ($type) {
+                $mapping->setDocumentType($type);
+            }
+            
             $mapping->map();
         }
     }

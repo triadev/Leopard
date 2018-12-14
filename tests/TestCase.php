@@ -18,8 +18,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
     public function setUp()
     {
         parent::setUp();
-    
-        $this->loadMigrationsFrom(__DIR__ . '/Resources/Database/migrations');
+        
+        $this->loadMigrationsFrom($this->getMigrationsPath());
     }
     
     /**
@@ -43,6 +43,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        app()->setBasePath(__DIR__ . DIRECTORY_SEPARATOR . 'Resources');
+        
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
             'driver'   => 'sqlite',
@@ -83,5 +85,25 @@ class TestCase extends \Orchestra\Testbench\TestCase
         EsManager::getEsClient()->indices()->create([
             'index' => $model->getDocumentIndex()
         ]);
+    }
+    
+    /**
+     * Get mappings path
+     *
+     * @return string
+     */
+    public function getMappingsPath() : string
+    {
+        return app()->databasePath() . DIRECTORY_SEPARATOR . 'mappings';
+    }
+    
+    /**
+     * Get migrations path
+     *
+     * @return string
+     */
+    public function getMigrationsPath() : string
+    {
+        return app()->databasePath() . DIRECTORY_SEPARATOR . 'migrations';
     }
 }

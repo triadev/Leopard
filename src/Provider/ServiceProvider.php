@@ -4,6 +4,7 @@ namespace Triadev\Es\ODM\Provider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Triadev\Es\ODM\Business\Repository\ElasticsearchRepository;
+use Triadev\Es\ODM\Console\Commands\Mapping\Migrate;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
 use Triadev\Es\ODM\ElasticsearchManager;
@@ -12,6 +13,24 @@ use Triadev\Es\Provider\ElasticsearchServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
+    /**
+     * All of the container bindings that should be registered.
+     *
+     * @var array
+     */
+    public $bindings = [
+        ElasticsearchRepositoryContract::class => ElasticsearchRepository::class
+    ];
+    
+    /**
+     * All of the container singletons that should be registered.
+     *
+     * @var array
+     */
+    public $singletons = [
+        ElasticsearchManagerContract::class => ElasticsearchManager::class,
+    ];
+    
     /**
      * Bootstrap the application events.
      *
@@ -31,10 +50,9 @@ class ServiceProvider extends BaseServiceProvider
             __DIR__.'/Resources/Database' => database_path(),
         ], 'database');
         
-        $this->app->bind(
-            ElasticsearchRepositoryContract::class,
-            ElasticsearchRepository::class
-        );
+        $this->commands([
+            Migrate::class
+        ]);
     }
     
     /**
@@ -45,10 +63,6 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->app->register(ElasticsearchServiceProvider::class);
-    
-        $this->app->singleton(ElasticsearchManagerContract::class, function () {
-            return app()->make(ElasticsearchManager::class);
-        });
         
         AliasLoader::getInstance()->alias('EsManager', EsManager::class);
     }
