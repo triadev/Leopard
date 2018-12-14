@@ -46,32 +46,40 @@ class Make extends BaseCommand
     
     /**
      * Execute the console command.
-     *
-     * @throws FileNotFoundException
      */
     public function handle()
     {
-        $mapping = trim(
-            Str::studly(
-                $this->argument('mapping')
-            )
-        );
+        $mapping = $this->formatMappingName($this->argument('mapping'));
+        $model = $this->formatModelName($this->argument('model'));
         
         $this->filesystem->put(
-            $this->buildPath($mapping),
+            $this->buildMappingFilePath($mapping),
             $this->buildMapping(
-                $this->filesystem->get(
-                    __DIR__ . DIRECTORY_SEPARATOR . 'default.stub'
-                ),
+                $this->getDefaultStub(),
                 $mapping,
-                trim($this->argument('model'))
+                $model
             )
         );
         
         $this->composer->dumpAutoloads();
     }
     
-    private function buildPath(string $mapping) : string
+    private function formatMappingName(string $mapping) : string
+    {
+        return trim(Str::studly($mapping));
+    }
+    
+    private function formatModelName(string $model) : string
+    {
+        return trim($model);
+    }
+    
+    private function getDefaultStub() : string
+    {
+        return $this->filesystem->get(__DIR__ . DIRECTORY_SEPARATOR . 'default.stub');
+    }
+    
+    private function buildMappingFilePath(string $mapping) : string
     {
         return $this->getMappingPath() . DIRECTORY_SEPARATOR . $mapping . '.php';
     }
