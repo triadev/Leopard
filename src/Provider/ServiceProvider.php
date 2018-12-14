@@ -4,6 +4,7 @@ namespace Triadev\Es\ODM\Provider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Triadev\Es\ODM\Business\Repository\ElasticsearchRepository;
+use Triadev\Es\ODM\Console\Commands\Mapping\Make;
 use Triadev\Es\ODM\Console\Commands\Mapping\Migrate;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
@@ -47,10 +48,11 @@ class ServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom($source, 'triadev-elasticsearch-odm');
     
         $this->publishes([
-            __DIR__.'/Resources/Database' => database_path(),
+            __DIR__.'/Resources/database' => database_path(),
         ], 'database');
         
         $this->commands([
+            Make::class,
             Migrate::class
         ]);
     }

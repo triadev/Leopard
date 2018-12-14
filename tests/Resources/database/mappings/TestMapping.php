@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Eloquent\Model;
 use Tests\Integration\Model\Entity\TestModel;
 use Triadev\Es\ODM\Business\Mapping\Blueprint;
 use Triadev\Es\ODM\Business\Mapping\Mapping;
@@ -9,13 +8,13 @@ use Triadev\Es\ODM\Facade\EsManager;
 class TestMapping extends Mapping
 {
     /**
-     * Get mapped eloquent model
+     * Get mapped eloquent model class
      *
-     * @return Model
+     * @return string
      */
-    public function getMappedEloquentModel(): Model
+    public function model(): string
     {
-        return new TestModel();
+        return TestModel::class;
     }
     
     /**

@@ -1,10 +1,11 @@
 <?php
 namespace Tests\Unit\Business\Mapping;
 
-use Illuminate\Database\Eloquent\Model;
+use Tests\Integration\Model\Entity\TestModelNotSearchable;
+use Tests\Integration\Model\Entity\TestModelWithDefaultIndexAndType;
+use Tests\Integration\Model\Entity\TestModelWithIndividualIndexAndType;
 use Tests\TestCase;
 use Triadev\Es\ODM\Business\Mapping\Mapping;
-use Triadev\Es\ODM\Searchable;
 
 class MappingTest extends TestCase
 {
@@ -15,9 +16,9 @@ class MappingTest extends TestCase
     public function it_throws_an_exception_if_model_not_searchable()
     {
         new class extends Mapping {
-            public function getMappedEloquentModel(): Model
+            public function model(): string
             {
-                return new class extends Model {};
+                return TestModelNotSearchable::class;
             }
             
             public function map() {}
@@ -30,14 +31,9 @@ class MappingTest extends TestCase
     public function it_builds_mapping_with_individual_index_and_type()
     {
         $mapping = new class extends Mapping {
-            public function getMappedEloquentModel(): Model
+            public function model(): string
             {
-                return new class extends Model {
-                    use Searchable;
-                    
-                    public $documentIndex = 'index';
-                    public $documentType = 'type';
-                };
+                return TestModelWithIndividualIndexAndType::class;
             }
             
             public function map() {}
@@ -59,11 +55,9 @@ class MappingTest extends TestCase
     public function it_returns_default_index()
     {
         $mapping = new class extends Mapping {
-            public function getMappedEloquentModel(): Model
+            public function model(): string
             {
-                return new class extends Model {
-                    use Searchable;
-                };
+                return TestModelWithDefaultIndexAndType::class;
             }
         
             public function map() {}

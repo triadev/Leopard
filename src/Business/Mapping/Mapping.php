@@ -10,7 +10,7 @@ abstract class Mapping
 {
     use IsModelSearchable;
     
-    /** @var Searchable */
+    /** @var Model|Searchable */
     protected $model;
     
     /** @var string */
@@ -26,17 +26,18 @@ abstract class Mapping
      */
     public function __construct()
     {
-        $this->model = $this->getMappedEloquentModel();
+        $modelClass = $this->model();
+        $this->model = new $modelClass();
     
         $this->isModelSearchable($this->model);
     }
     
     /**
-     * Get mapped eloquent model
+     * Get mapped eloquent model class
      *
-     * @return Model
+     * @return string
      */
-    abstract public function getMappedEloquentModel() : Model;
+    abstract public function model() : string;
     
     /**
      * Map
