@@ -2,6 +2,7 @@
 namespace Triadev\Es\ODM\Business\Repository;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
 use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
 use Triadev\Es\ODM\Facade\EsManager;
@@ -81,10 +82,10 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
     /**
      * Bulk save
      *
-     * @param array $models
+     * @param array|Collection $models
      * @return array
      */
-    public function bulkSave(array $models) : array
+    public function bulkSave($models) : array
     {
         $params = [];
     

@@ -8,6 +8,7 @@ use Triadev\Es\ODM\Business\Dsl\Search;
 use Triadev\Es\ODM\Business\Dsl\Suggestion;
 use Triadev\Es\ODM\Business\Mapping\Builder;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
+use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
 
 class ElasticsearchManager implements ElasticsearchManagerContract
 {
@@ -61,6 +62,16 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     public function suggest() : Suggestion
     {
         return app()->make(Suggestion::class);
+    }
+    
+    /**
+     * Repository
+     *
+     * @return ElasticsearchRepositoryContract
+     */
+    public function repository() : ElasticsearchRepositoryContract
+    {
+        return app(ElasticsearchRepositoryContract::class);
     }
     
     /**

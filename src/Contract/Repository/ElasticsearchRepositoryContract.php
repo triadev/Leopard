@@ -2,6 +2,7 @@
 namespace Triadev\Es\ODM\Contract\Repository;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Triadev\Es\ODM\Searchable;
 
 interface ElasticsearchRepositoryContract
@@ -39,10 +40,10 @@ interface ElasticsearchRepositoryContract
     /**
      * Bulk save
      *
-     * @param array $models
+     * @param array|Collection $models
      * @return array
      */
-    public function bulkSave(array $models) : array;
+    public function bulkSave($models) : array;
     
     /**
      * Bulk delete

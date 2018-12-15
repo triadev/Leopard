@@ -42,24 +42,24 @@ trait Searchable
         static::saved(function (Model $model) {
             /** @var Model|Searchable $model */
             if ($model->shouldSyncDocument()) {
-                $model->document()->save(/** @scrutinizer ignore-type */$model);
+                $model->repository()->save(/** @scrutinizer ignore-type */$model);
             }
         });
     
         static::deleted(function (Model $model) {
             /** @var Model|Searchable $model */
             if ($model->shouldSyncDocument()) {
-                $model->document()->delete(/** @scrutinizer ignore-type */$model);
+                $model->repository()->delete(/** @scrutinizer ignore-type */$model);
             }
         });
     }
     
     /**
-     * Document
+     * Repository
      *
      * @return ElasticsearchRepositoryContract
      */
-    public function document() : ElasticsearchRepositoryContract
+    public function repository() : ElasticsearchRepositoryContract
     {
         return app(ElasticsearchRepositoryContract::class);
     }
@@ -156,7 +156,7 @@ trait Searchable
             return EsManager::search()->model($this);
         }
         
-        if ($name = 'suggest') {
+        if ($name == 'suggest') {
             return EsManager::suggest();
         }
         

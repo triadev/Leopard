@@ -51,6 +51,15 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+        
+        $app['config']->set('triadev-elasticsearch-odm.sync', [
+            'chunkSize' => 1000,
+            'models' => [
+                'phpunit' => [
+                    TestModel::class
+                ]
+            ]
+        ]);
     }
 
     /**
