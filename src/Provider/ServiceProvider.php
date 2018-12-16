@@ -4,11 +4,14 @@ namespace Triadev\Es\ODM\Provider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Triadev\Es\ODM\Business\Repository\ElasticsearchRepository;
+use Triadev\Es\ODM\Business\Repository\MappingLogRepository;
 use Triadev\Es\ODM\Console\Commands\Index\Sync;
 use Triadev\Es\ODM\Console\Commands\Mapping\Make;
 use Triadev\Es\ODM\Console\Commands\Mapping\Migrate;
+use Triadev\Es\ODM\Console\Commands\Mapping\Rollback;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
+use Triadev\Es\ODM\Contract\Repository\MappingLogRepositoryContract;
 use Triadev\Es\ODM\ElasticsearchManager;
 use Triadev\Es\ODM\Facade\EsManager;
 use Triadev\Es\Provider\ElasticsearchServiceProvider;
@@ -21,7 +24,8 @@ class ServiceProvider extends BaseServiceProvider
      * @var array
      */
     public $bindings = [
-        ElasticsearchRepositoryContract::class => ElasticsearchRepository::class
+        ElasticsearchRepositoryContract::class => ElasticsearchRepository::class,
+        MappingLogRepositoryContract::class => MappingLogRepository::class
     ];
     
     /**
@@ -48,6 +52,8 @@ class ServiceProvider extends BaseServiceProvider
     
         $this->mergeConfigFrom($source, 'triadev-elasticsearch-odm');
     
+        $this->loadMigrationsFrom(__DIR__ . '/../Resources/database/migrations');
+    
         $this->publishes([
             __DIR__.'/Resources/database' => database_path(),
         ], 'database');
@@ -55,6 +61,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->commands([
             Make::class,
             Migrate::class,
+            Rollback::class,
             Sync::class
         ]);
     }

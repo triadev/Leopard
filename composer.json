@@ -55,7 +55,7 @@
     "prefer-stable": true,
     "scripts": {
         "test": "phpunit",
-        "check-style": "phpcs -p --standard=PSR2 src --ignore=src/Database/**,src/Config/*",
-        "fix-style": "phpcbf -p --standard=PSR2 src --ignore=src/Database/**,src/Config/*"
+        "check-style": "phpcs -p --standard=PSR2 src --ignore=src/Database/**,src/Config/*,src/Resources/**",
+        "fix-style": "phpcbf -p --standard=PSR2 src --ignore=src/Database/**,src/Config/*,src/Resources/**"
     }
 }

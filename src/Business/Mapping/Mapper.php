@@ -2,19 +2,32 @@
 namespace Triadev\Es\ODM\Business\Mapping;
 
 use Illuminate\Filesystem\Filesystem;
+use Triadev\Es\ODM\Contract\Repository\MappingLogRepositoryContract;
 
 class Mapper
 {
     /** @var Filesystem */
     private $filesystem;
     
+    /** @var MappingLogRepositoryContract */
+    private $mappingLogRepository;
+    
+    /** @var array */
+    private $mappingLogs;
+    
     /**
      * Mapper constructor.
      * @param Filesystem $filesystem
+     * @param MappingLogRepositoryContract $mappingLogRepository
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, MappingLogRepositoryContract $mappingLogRepository)
     {
         $this->filesystem = $filesystem;
+        $this->mappingLogRepository = $mappingLogRepository;
+    
+        $this->mappingLogs = array_map(function ($log) {
+            return $log['mapping'];
+        }, $this->mappingLogRepository->all());
     }
     
     /**
@@ -23,12 +36,20 @@ class Mapper
      * @param string $path
      * @param string|null $index
      * @param string|null $type
+     *
+     * @throws \Throwable
      */
     public function run(string $path, ?string $index = null, ?string $type = null)
     {
         $mappingFiles = $this->getMappingFiles($path);
         
+        sort($mappingFiles);
+        
         foreach ($mappingFiles as $mappingFile) {
+            if ($this->isMappingAlreadyRun($mappingFile)) {
+                continue;
+            }
+            
             $this->filesystem->requireOnce($path . DIRECTORY_SEPARATOR . $mappingFile . '.php');
             
             /** @var Mapping $mapping */
@@ -43,6 +64,8 @@ class Mapper
             }
             
             $mapping->map();
+            
+            $this->mappingLogRepository->add($mappingFile);
         }
     }
     
@@ -53,5 +76,14 @@ class Mapper
         return array_map(function (string $file) {
             return str_replace('.php', '', basename($file));
         }, $files);
+    }
+    
+    private function isMappingAlreadyRun(string $mapping) : bool
+    {
+        if (in_array($mapping, $this->mappingLogs)) {
+            return true;
+        }
+        
+        return false;
     }
 }

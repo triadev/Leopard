@@ -26,6 +26,7 @@ class Migrate extends BaseCommand
      * Execute the console command.
      *
      * @param Mapper $mapper
+     * @throws \Throwable
      */
     public function handle(Mapper $mapper)
     {
