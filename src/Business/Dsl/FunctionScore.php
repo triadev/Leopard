@@ -1,9 +1,8 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl\Compound;
+namespace Triadev\Es\ODM\Business\Dsl;
 
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\FunctionScoreQuery;
-use Triadev\Es\ODM\Business\Dsl\Search;
 
 class FunctionScore
 {

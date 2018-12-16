@@ -1,8 +1,10 @@
 <?php
-namespace Tests\Unit\Business\Dsl\Compound;
+namespace Tests\Unit\Business\Dsl;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Dsl\Compound\FunctionScore;
+use Triadev\Es\ODM\Business\Dsl\Query\Compound;
+use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
+use Triadev\Es\ODM\Business\Dsl\FunctionScore;
 use Triadev\Es\ODM\Business\Dsl\Search;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 
@@ -26,21 +28,27 @@ class FunctionScoreTest extends TestCase
      */
     public function it_builds_a_field_function_score_query()
     {
-        $result = $this->manager->search()->functionScore(
-            function (Search $search) {
-                $search->term('FIELD1', 'VALUE1');
-            },
-            function (FunctionScore $functionScore) {
-                $functionScore->field(
-                    'FIELD2',
-                    0.2,
-                    'none',
-                    function (Search $search) {
-                        $search->term('FIELD3', 'VALUE3');
-                    }
-                );
-            }
-        )->toDsl();
+        $result = $this->manager->search()->compound(function (Compound $compound) {
+            $compound->functionScore(
+                function (Search $search) {
+                    $search->termLevel(function (TermLevel $boolQuery) {
+                        $boolQuery->term('FIELD1', 'VALUE1');
+                    });
+                },
+                function (FunctionScore $functionScore) {
+                    $functionScore->field(
+                        'FIELD2',
+                        0.2,
+                        'none',
+                        function (Search $search) {
+                            $search->termLevel(function (TermLevel $boolQuery) {
+                                $boolQuery->term('FIELD3', 'VALUE3');
+                            });
+                        }
+                    );
+                }
+            );
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -74,23 +82,29 @@ class FunctionScoreTest extends TestCase
      */
     public function it_builds_a_decay_function_score_query()
     {
-        $result = $this->manager->search()->functionScore(
-            function (Search $search) {
-                $search->term('FIELD1', 'VALUE1');
-            },
-            function (FunctionScore $functionScore) {
-                $functionScore->decay(
-                    'TYPE',
-                    'FIELD',
-                    [],
-                    [],
-                    function (Search $search) {
-                        $search->term('FIELD3', 'VALUE3');
-                    },
-                    2
-                );
-            }
-        )->toDsl();
+        $result = $this->manager->search()->compound(function (Compound $compound) {
+            $compound->functionScore(
+                function (Search $search) {
+                    $search->termLevel(function (TermLevel $boolQuery) {
+                        $boolQuery->term('FIELD1', 'VALUE1');
+                    });
+                },
+                function (FunctionScore $functionScore) {
+                    $functionScore->decay(
+                        'TYPE',
+                        'FIELD',
+                        [],
+                        [],
+                        function (Search $search) {
+                            $search->termLevel(function (TermLevel $boolQuery) {
+                                $boolQuery->term('FIELD3', 'VALUE3');
+                            });
+                        },
+                        2
+                    );
+                }
+            );
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -123,19 +137,25 @@ class FunctionScoreTest extends TestCase
      */
     public function it_builds_a_weight_function_score_query()
     {
-        $result = $this->manager->search()->functionScore(
-            function (Search $search) {
-                $search->term('FIELD1', 'VALUE1');
-            },
-            function (FunctionScore $functionScore) {
-                $functionScore->weight(
-                    1.1,
-                    function (Search $search) {
-                        $search->term('FIELD2', 'VALUE2');
-                    }
-                );
-            }
-        )->toDsl();
+        $result = $this->manager->search()->compound(function (Compound $compound) {
+            $compound->functionScore(
+                function (Search $search) {
+                    $search->termLevel(function (TermLevel $boolQuery) {
+                        $boolQuery->term('FIELD1', 'VALUE1');
+                    });
+                },
+                function (FunctionScore $functionScore) {
+                    $functionScore->weight(
+                        1.1,
+                        function (Search $search) {
+                            $search->termLevel(function (TermLevel $boolQuery) {
+                                $boolQuery->term('FIELD2', 'VALUE2');
+                            });
+                        }
+                    );
+                }
+            );
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -165,14 +185,18 @@ class FunctionScoreTest extends TestCase
      */
     public function it_builds_a_random_function_score_query()
     {
-        $result = $this->manager->search()->functionScore(
-            function (Search $search) {
-                $search->term('FIELD1', 'VALUE1');
-            },
-            function (FunctionScore $functionScore) {
-                $functionScore->random();
-            }
-        )->toDsl();
+        $result = $this->manager->search()->compound(function (Compound $compound) {
+            $compound->functionScore(
+                function (Search $search) {
+                    $search->termLevel(function (TermLevel $boolQuery) {
+                        $boolQuery->term('FIELD1', 'VALUE1');
+                    });
+                },
+                function (FunctionScore $functionScore) {
+                    $functionScore->random();
+                }
+            );
+        })->toDsl();
     
         $this->assertEquals([
             'query' => [
@@ -197,16 +221,20 @@ class FunctionScoreTest extends TestCase
      */
     public function it_builds_a_script_function_score_query()
     {
-        $result = $this->manager->search()->functionScore(
-            function (Search $search) {
-                $search->term('FIELD1', 'VALUE1');
-            },
-            function (FunctionScore $functionScore) {
-                $functionScore->script(
-                    'INLINE'
-                );
-            }
-        )->toDsl();
+        $result = $this->manager->search()->compound(function (Compound $compound) {
+            $compound->functionScore(
+                function (Search $search) {
+                    $search->termLevel(function (TermLevel $boolQuery) {
+                        $boolQuery->term('FIELD1', 'VALUE1');
+                    });
+                },
+                function (FunctionScore $functionScore) {
+                    $functionScore->script(
+                        'INLINE'
+                    );
+                }
+            );
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -236,14 +264,18 @@ class FunctionScoreTest extends TestCase
      */
     public function it_builds_a_simple_function_score_query()
     {
-        $result = $this->manager->search()->functionScore(
-            function (Search $search) {
-                $search->term('FIELD1', 'VALUE1');
-            },
-            function (FunctionScore $functionScore) {
-                $functionScore->simple([]);
-            }
-        )->toDsl();
+        $result = $this->manager->search()->compound(function (Compound $compound) {
+            $compound->functionScore(
+                function (Search $search) {
+                    $search->termLevel(function (TermLevel $boolQuery) {
+                        $boolQuery->term('FIELD1', 'VALUE1');
+                    });
+                },
+                function (FunctionScore $functionScore) {
+                    $functionScore->simple([]);
+                }
+            );
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [

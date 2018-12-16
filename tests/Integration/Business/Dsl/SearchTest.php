@@ -3,6 +3,7 @@ namespace Tests\Integration\Business\Dsl;
 
 use Tests\Integration\Model\Entity\TestModel;
 use Tests\TestCase;
+use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
 use Triadev\Es\ODM\Facade\EsManager;
 
 class SearchTest extends TestCase
@@ -49,7 +50,9 @@ class SearchTest extends TestCase
         
         $result = EsManager::search()
             ->model($model)
-            ->term('test', 'phpunit')
+            ->termLevel(function (TermLevel $boolQuery) {
+                $boolQuery->term('test', 'phpunit');
+            })
             ->get();
         
         $this->assertIsInt($result->getTook());
@@ -83,7 +86,9 @@ class SearchTest extends TestCase
         
         $result = EsManager::search()
             ->model($model)
-            ->term('test', 'phpunit')
+            ->termLevel(function (TermLevel $boolQuery) {
+                $boolQuery->term('test', 'phpunit');
+            })
             ->get();
         
         $this->assertIsInt($result->getTook());
