@@ -4,6 +4,7 @@ namespace Triadev\Es\ODM\Contract;
 use Elasticsearch\Client;
 use Triadev\Es\ODM\Business\Dsl\Search;
 use Triadev\Es\ODM\Business\Dsl\Suggestion;
+use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
 
 interface ElasticsearchManagerContract
 {
@@ -34,6 +35,13 @@ interface ElasticsearchManagerContract
      * @return Suggestion
      */
     public function suggest() : Suggestion;
+    
+    /**
+     * Repository
+     *
+     * @return ElasticsearchRepositoryContract
+     */
+    public function repository() : ElasticsearchRepositoryContract;
     
     /**
      * Map

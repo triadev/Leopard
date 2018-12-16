@@ -4,6 +4,7 @@ namespace Triadev\Es\ODM\Provider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Triadev\Es\ODM\Business\Repository\ElasticsearchRepository;
+use Triadev\Es\ODM\Console\Commands\Index\Sync;
 use Triadev\Es\ODM\Console\Commands\Mapping\Make;
 use Triadev\Es\ODM\Console\Commands\Mapping\Migrate;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
@@ -53,7 +54,8 @@ class ServiceProvider extends BaseServiceProvider
         
         $this->commands([
             Make::class,
-            Migrate::class
+            Migrate::class,
+            Sync::class
         ]);
     }
     

@@ -3,6 +3,7 @@ namespace Triadev\Es\ODM\Facade;
 
 use Elasticsearch\Client;
 use Illuminate\Support\Facades\Facade;
+use Triadev\Es\ODM\Business\Repository\ElasticsearchRepository;
 use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
 use Triadev\Es\ODM\Business\Dsl\Search;
 use Triadev\Es\ODM\Business\Dsl\Suggestion;
@@ -15,6 +16,7 @@ use Triadev\Es\ODM\Business\Dsl\Suggestion;
  * @method static string getEsDefaultIndex()
  * @method static Search search()
  * @method static Suggestion suggest()
+ * @method static ElasticsearchRepository repository()
  * @method static map(\Closure $blueprint, string $index, string $type)
  * @method static array searchStatement(array $params)
  * @method static array putMappingStatement(array $params)
