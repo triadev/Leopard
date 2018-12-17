@@ -36,6 +36,7 @@ build:
 filter:
   excluded_paths:
     - 'tests/*'
+    - 'src/Console/Commands/Mapping/default.stub'
 
 checks:
   php:
