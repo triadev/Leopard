@@ -39,6 +39,7 @@ filter:
     - 'src/Console/Commands/Mapping/default.stub'
     - 'src/Resources/database/mappings/*'
     - 'src/Resources/database/migrations/*'
+    - 'src/Config/config.php'
 
 checks:
   php:

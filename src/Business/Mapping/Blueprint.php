@@ -7,7 +7,7 @@ use Triadev\Leopard\Facade\Leopard;
 class Blueprint
 {
     /** @var Fluent[] */
-    private $fields = [];
+    private $_fields = [];
     
     /**
      * Blueprint constructor.
@@ -50,7 +50,7 @@ class Blueprint
      */
     public function toDsl() : array
     {
-        return (new Compiler())->compileFields($this->fields);
+        return (new Compiler())->compileFields($this->_fields);
     }
     
     /**
@@ -60,7 +60,7 @@ class Blueprint
      */
     public function getFields() : array
     {
-        return $this->fields;
+        return $this->_fields;
     }
     
     /**
@@ -341,7 +341,7 @@ class Blueprint
      */
     public function addField(string $type, string $name, array $attributes = []) : Fluent
     {
-        $this->fields[] = $field = new Fluent(
+        $this->_fields[] = $field = new Fluent(
             array_merge(
                 compact(
                     'type',

@@ -6,25 +6,25 @@ use Illuminate\Support\Collection;
 class SearchResult
 {
     /** @var int */
-    private $took;
+    private $_took;
     
     /** @var bool */
-    private $timedOut;
+    private $_timedOut;
     
     /** @var array */
-    private $shards;
+    private $_shards;
     
     /** @var Collection */
-    private $hits;
+    private $_hits;
     
     /** @var int */
-    private $totalHits;
+    private $_totalHits;
     
     /** @var float */
-    private $maxScore;
+    private $_maxScore;
     
     /** @var array|null */
-    private $aggregation;
+    private $_aggregation;
     
     /**
      * SearchResult constructor.
@@ -32,13 +32,13 @@ class SearchResult
      */
     public function __construct(array $result)
     {
-        $this->took = (int)array_get($result, 'took');
-        $this->timedOut = (bool)array_get($result, 'timed_out');
-        $this->shards = (array)array_get($result, '_shards');
-        $this->hits = new Collection(array_get($result, 'hits.hits'));
-        $this->totalHits = (int)array_get($result, 'hits.total');
-        $this->maxScore = (float)array_get($result, 'hits.max_score');
-        $this->aggregation = array_get($result, 'aggregations', null);
+        $this->_took = (int)array_get($result, 'took');
+        $this->_timedOut = (bool)array_get($result, 'timed_out');
+        $this->_shards = (array)array_get($result, '_shards');
+        $this->_hits = new Collection(array_get($result, 'hits.hits'));
+        $this->_totalHits = (int)array_get($result, 'hits.total');
+        $this->_maxScore = (float)array_get($result, 'hits.max_score');
+        $this->_aggregation = array_get($result, 'aggregations', null);
     }
     
     /**
@@ -46,7 +46,7 @@ class SearchResult
      */
     public function getTook(): int
     {
-        return $this->took;
+        return $this->_took;
     }
     
     /**
@@ -54,7 +54,7 @@ class SearchResult
      */
     public function isTimedOut(): bool
     {
-        return $this->timedOut;
+        return $this->_timedOut;
     }
     
     /**
@@ -62,7 +62,7 @@ class SearchResult
      */
     public function getShards(): array
     {
-        return $this->shards;
+        return $this->_shards;
     }
     
     /**
@@ -70,7 +70,7 @@ class SearchResult
      */
     public function getHits(): Collection
     {
-        return $this->hits;
+        return $this->_hits;
     }
     
     /**
@@ -78,7 +78,7 @@ class SearchResult
      */
     public function setHits(Collection $hits)
     {
-        $this->hits = $hits;
+        $this->_hits = $hits;
     }
     
     /**
@@ -86,7 +86,7 @@ class SearchResult
      */
     public function getTotalHits(): int
     {
-        return $this->totalHits;
+        return $this->_totalHits;
     }
     
     /**
@@ -94,7 +94,7 @@ class SearchResult
      */
     public function getMaxScore(): float
     {
-        return $this->maxScore;
+        return $this->_maxScore;
     }
     
     /**
@@ -102,6 +102,6 @@ class SearchResult
      */
     public function getAggregation(): ?array
     {
-        return $this->aggregation;
+        return $this->_aggregation;
     }
 }
