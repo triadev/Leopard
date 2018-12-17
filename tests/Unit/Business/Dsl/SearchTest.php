@@ -3,10 +3,16 @@ namespace Tests\Unit\Business\Dsl;
 
 use Illuminate\Database\Eloquent\Model;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
-use ONGR\ElasticsearchDSL\Query\TermLevel\TermsQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Tests\TestCase;
+use Triadev\Es\ODM\Busines\Dsl\Query\Specialized;
 use Triadev\Es\ODM\Business\Dsl\Aggregation;
+use Triadev\Es\ODM\Business\Dsl\Query\Compound;
+use Triadev\Es\ODM\Business\Dsl\Query\InnerHit;
+use Triadev\Es\ODM\Business\Dsl\Query\Joining;
+use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
+use Triadev\Es\ODM\Business\Dsl\Query\Fulltext;
+use Triadev\Es\ODM\Business\Dsl\Query\Geo;
 use Triadev\Es\ODM\Business\Dsl\Search;
 use Triadev\Es\ODM\Model\Location;
 use Triadev\Es\ODM\Searchable;
@@ -33,10 +39,9 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_match_all_query()
     {
-        $result = $this->searchDsl
-            ->must()
-                ->matchAll()
-            ->toDsl();
+        $result = $this->searchDsl->termLevel(function (TermLevel $boolQuery) {
+            $boolQuery->must()->matchAll();
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -91,31 +96,32 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_bool_terms_query()
     {
-        $result = $this->searchDsl
-            ->must()
-                ->term('FIELD_MUST', 'VALUE_MUST')
-            ->mustNot()
-                ->term('FIELD_MUST_NOT', 'VALUE_MUST_NOT')
-            ->should()
-                ->term('FIELD_SHOULD', 'VALUE_SHOULD')
-            ->filter()
-                ->term('FIELD_FILTER', 'VALUE_FILTER')
-                ->exists('FIELD')
-                ->fuzzy('FIELD', 'VALUE')
-                ->ids([1,2,3])
-                ->prefix('FIELD', 'VALUE')
-                ->range('FIELD', [
-                    'gt' => 10,
-                    'lt' => 20
-                ])
-                ->regexp('FIELD', 'VALUE')
-                ->terms('FIELD', [
-                    'VALUE1',
-                    'VALUE2'
-                ])
-                ->type('TYPE')
-                ->wildcard('FIELD', 'VALUE')
-            ->toDsl();
+        $result = $this->searchDsl->termLevel(function (TermLevel $boolQuery) {
+            $boolQuery
+                ->must()
+                    ->term('FIELD_MUST', 'VALUE_MUST')
+                ->mustNot()
+                    ->term('FIELD_MUST_NOT', 'VALUE_MUST_NOT')
+                ->should()
+                    ->term('FIELD_SHOULD', 'VALUE_SHOULD')
+                ->filter()
+                    ->term('FIELD_FILTER', 'VALUE_FILTER')
+                    ->exists('FIELD')
+                    ->fuzzy('FIELD', 'VALUE')
+                    ->ids([1,2,3])
+                    ->prefix('FIELD', 'VALUE')
+                    ->range('FIELD', [
+                        'gt' => 10,
+                        'lt' => 20
+                    ])
+                    ->regexp('FIELD', 'VALUE')
+                    ->terms('FIELD', [
+                        'VALUE1',
+                        'VALUE2'
+                    ])
+                    ->type('TYPE')
+                    ->wildcard('FIELD', 'VALUE');
+        })->toDsl();
         
         $this->assertEquals([
             [
@@ -214,19 +220,20 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_bool_fulltext_query()
     {
-        $result = $this->searchDsl
-            ->must()
-                ->match('FIELD', 'QUERY')
-                ->matchPhrase('FIELD', 'QUERY')
-                ->matchPhrasePrefix('FIELD', 'QUERY')
-                ->multiMatch([
-                    'FIELD1',
-                    'FIELD2'
-                ], 'QUERY')
-                ->queryString('QUERY')
-                ->simpleQueryString('QUERY')
-                ->commonTerms('FIELD', 'QUERY')
-            ->toDsl();
+        $result = $this->searchDsl->fulltext(function (Fulltext $fulltext) {
+            $fulltext
+                ->must()
+                    ->match('FIELD', 'QUERY')
+                    ->matchPhrase('FIELD', 'QUERY')
+                    ->matchPhrasePrefix('FIELD', 'QUERY')
+                    ->multiMatch([
+                        'FIELD1',
+                        'FIELD2'
+                    ], 'QUERY')
+                    ->queryString('QUERY')
+                    ->simpleQueryString('QUERY')
+                    ->commonTerms('FIELD', 'QUERY');
+        })->toDsl();
         
         $this->assertEquals([
             'match' => [
@@ -289,19 +296,20 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_bool_geo_query()
     {
-        $result = $this->searchDsl
-            ->filter()
-                ->geoShape([])
-                ->geoBoundingBox('FIELD', [
-                    new Location(1, 2),
-                    new Location(3, 4)
-                ])
-                ->geoDistance('FIELD', '10km', new Location(1, 2))
-                ->geoPolygon('FIELD', [
-                    new Location(1, 2),
-                    new Location(3, 4)
-                ])
-            ->toDsl();
+        $result = $this->searchDsl->geo(function (Geo $geo) {
+            $geo
+                ->filter()
+                    ->geoShape([])
+                    ->geoBoundingBox('FIELD', [
+                        new Location(1, 2),
+                        new Location(3, 4)
+                    ])
+                    ->geoDistance('FIELD', '10km', new Location(1, 2))
+                    ->geoPolygon('FIELD', [
+                        new Location(1, 2),
+                        new Location(3, 4)
+                    ]);
+        })->toDsl();
         
         $this->assertEquals([
             'geo_shape' => []
@@ -355,14 +363,16 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_nested_query()
     {
-        $result = $this->searchDsl
-            ->nested('PATH', function (Search $search) {
-                $search
-                    ->filter()
+        $result = $this->searchDsl->joining(function (Joining $joining) {
+            $joining->nested('PATH', function (Search $search) {
+                $search->termLevel(function (TermLevel $boolQuery) {
+                    $boolQuery
+                        ->filter()
                         ->term('FIELD1', 'VALUE1')
                         ->term('FIELD2', 'VALUE2');
-            })
-            ->toDsl();
+                });
+            });
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -394,14 +404,16 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_has_child_query()
     {
-        $result = $this->searchDsl
-            ->hasChild('TYPE', function (Search $search) {
-                $search
-                    ->filter()
-                    ->term('FIELD1', 'VALUE1')
-                    ->term('FIELD2', 'VALUE2');
-            })
-            ->toDsl();
+        $result = $this->searchDsl->joining(function (Joining $joining) {
+            $joining->hasChild('TYPE', function (Search $search) {
+                $search->termLevel(function (TermLevel $boolQuery) {
+                    $boolQuery
+                        ->filter()
+                        ->term('FIELD1', 'VALUE1')
+                        ->term('FIELD2', 'VALUE2');
+                });
+            });
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -433,14 +445,16 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_has_parent_query()
     {
-        $result = $this->searchDsl
-            ->hasParent('TYPE', function (Search $search) {
-                $search
-                    ->filter()
-                    ->term('FIELD1', 'VALUE1')
-                    ->term('FIELD2', 'VALUE2');
-            })
-            ->toDsl();
+        $result = $this->searchDsl->joining(function (Joining $joining) {
+            $joining->hasParent('TYPE', function (Search $search) {
+                $search->termLevel(function (TermLevel $boolQuery) {
+                    $boolQuery
+                        ->filter()
+                        ->term('FIELD1', 'VALUE1')
+                        ->term('FIELD2', 'VALUE2');
+                });
+            });
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -472,9 +486,9 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_more_like_this_query()
     {
-        $result = $this->searchDsl
-            ->moreLikeThis('LIKE')
-            ->toDsl();
+        $result = $this->searchDsl->specialized(function (Specialized $specialized) {
+            $specialized->moreLikeThis('LIKE');
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -491,7 +505,9 @@ class SearchTest extends TestCase
     public function it_builds_a_paginate_query()
     {
         $result = $this->searchDsl
-            ->term('FIELD', 'VALUE')
+            ->termLevel(function (TermLevel $boolQuery) {
+                $boolQuery->term('FIELD', 'VALUE');
+            })
             ->paginate(3, 25)
             ->toDsl();
     
@@ -512,7 +528,9 @@ class SearchTest extends TestCase
     public function it_builds_a_min_score_query()
     {
         $result = $this->searchDsl
-            ->term('FIELD', 'VALUE')
+            ->termLevel(function (TermLevel $boolQuery) {
+                $boolQuery->term('FIELD', 'VALUE');
+            })
             ->minScore(5)
             ->toDsl();
         
@@ -532,7 +550,9 @@ class SearchTest extends TestCase
     public function it_builds_a_sorted_query()
     {
         $result = $this->searchDsl
-            ->term('FIELD', 'VALUE')
+            ->termLevel(function (TermLevel $boolQuery) {
+                $boolQuery->term('FIELD', 'VALUE');
+            })
             ->sort('FIELD1', FieldSort::DESC)
             ->sort('FIELD2', FieldSort::ASC)
             ->toDsl();
@@ -583,11 +603,13 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_boosting_query()
     {
-        $result = $this->searchDsl->boosting(
-            new TermQuery('FIELD1', 'VALUE1'),
-            new TermQuery('FIELD2', 'VALUE2'),
-            1.2
-        )->toDsl();
+        $result = $this->searchDsl->compound(function (Compound $compound) {
+            $compound->boosting(
+                new TermQuery('FIELD1', 'VALUE1'),
+                new TermQuery('FIELD2', 'VALUE2'),
+                1.2
+            );
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -613,8 +635,12 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_constant_score_query()
     {
-        $result = $this->searchDsl->constantScore(function (Search $search) {
-            $search->term('FIELD', 'VALUE');
+        $result = $this->searchDsl->compound(function (Compound $compound) {
+            $compound->constantScore(function (Search $search) {
+                $search->termLevel(function (TermLevel $boolQuery) {
+                    $boolQuery->term('FIELD', 'VALUE');
+                });
+            });
         })->toDsl();
         
         $this->assertEquals([
@@ -635,9 +661,11 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_dis_max_query()
     {
-        $result = $this->searchDsl->disMax([
-            new TermQuery('FIELD', 'VALUE')
-        ])->toDsl();
+        $result = $this->searchDsl->compound(function (Compound $compound) {
+            $compound->disMax([
+                new TermQuery('FIELD', 'VALUE')
+            ]);
+        })->toDsl();
         
         $this->assertEquals([
             'query' => [
@@ -659,8 +687,12 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_nested_inner_hit_query()
     {
-        $result = $this->searchDsl->nestedInnerHit('NAME', 'PATH', function (Search $search) {
-            $search->term('FIELD', 'VALUE');
+        $result = $this->searchDsl->innerHit(function (InnerHit $innerHit) {
+            $innerHit->nestedInnerHit('NAME', 'PATH', function (Search $search) {
+                $search->termLevel(function (TermLevel $boolQuery) {
+                    $boolQuery->term('FIELD', 'VALUE');
+                });
+            });
         })->toDsl();
         
         $this->assertEquals([
@@ -685,8 +717,12 @@ class SearchTest extends TestCase
      */
     public function it_builds_a_parent_inner_hit_query()
     {
-        $result = $this->searchDsl->parentInnerHit('NAME', 'PATH', function (Search $search) {
-            $search->term('FIELD', 'VALUE');
+        $result = $this->searchDsl->innerHit(function (InnerHit $innerHit) {
+            $innerHit->parentInnerHit('NAME', 'PATH', function (Search $search) {
+                $search->termLevel(function (TermLevel $boolQuery) {
+                    $boolQuery->term('FIELD', 'VALUE');
+                });
+            });
         })->toDsl();
         
         $this->assertEquals([
