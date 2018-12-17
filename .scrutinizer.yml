@@ -37,6 +37,8 @@ filter:
   excluded_paths:
     - 'tests/*'
     - 'src/Console/Commands/Mapping/default.stub'
+    - 'src/Resources/database/mappings/*'
+    - 'src/Resources/database/migrations/*'
 
 checks:
   php:
