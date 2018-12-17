@@ -154,8 +154,11 @@ class Pipeline extends Aggs
      * @param string $script
      * @return Pipeline
      */
-    public function bucketSelector(string $name, string $bucketsPath, string $script) : Pipeline
-    {
+    public function bucketSelector(
+        string $name,
+        /** @scrutinizer ignore-type */ string $bucketsPath,
+        string $script
+    ) : Pipeline {
         $this->addAggregation(new BucketSelectorAggregation($name, $bucketsPath, $script));
         return $this;
     }
@@ -168,8 +171,11 @@ class Pipeline extends Aggs
      * @param string $script
      * @return Pipeline
      */
-    public function bucketScript(string $name, string $bucketsPath, string $script) : Pipeline
-    {
+    public function bucketScript(
+        string $name,
+        /** @scrutinizer ignore-type */ string $bucketsPath,
+        string $script
+    ) : Pipeline {
         $this->addAggregation(new BucketScriptAggregation($name, $bucketsPath, $script));
         return $this;
     }
