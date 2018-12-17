@@ -1,6 +1,6 @@
 {
-    "name": "triadev/laravel-elasticsearch-odm",
-    "description": "Elasticsearch odm for laravel.",
+    "name": "triadev/leopard",
+    "description": "Leopard is an elasticsearch odm (Object Document Mapper) for laravel eloquent.",
     "keywords": [
         "Laravel",
         "Elasticsearch",
