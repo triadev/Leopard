@@ -4,6 +4,7 @@ namespace Triadev\Es\ODM\Business\Dsl\Query;
 use ONGR\ElasticsearchDSL\InnerHit\NestedInnerHit;
 use ONGR\ElasticsearchDSL\InnerHit\ParentInnerHit;
 use Triadev\Es\ODM\Business\Dsl\Search;
+use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
 
 class InnerHit extends AbstractQuery
 {

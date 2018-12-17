@@ -2,11 +2,8 @@
 namespace Triadev\Es\ODM\Business\Dsl;
 
 use Illuminate\Database\Eloquent\Model;
-use ONGR\ElasticsearchDSL\InnerHit\NestedInnerHit;
-use ONGR\ElasticsearchDSL\InnerHit\ParentInnerHit;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Triadev\Es\ODM\Busines\Dsl\Query\Specialized;
-use Triadev\Es\ODM\Business\Dsl\Query\AbstractQuery;
 use Triadev\Es\ODM\Business\Dsl\Query\Compound;
 use Triadev\Es\ODM\Business\Dsl\Query\Fulltext;
 use Triadev\Es\ODM\Business\Dsl\Query\Geo;

@@ -7,6 +7,7 @@ use ONGR\ElasticsearchDSL\Query\Compound\ConstantScoreQuery;
 use ONGR\ElasticsearchDSL\Query\Compound\DisMaxQuery;
 use Triadev\Es\ODM\Business\Dsl\FunctionScore;
 use Triadev\Es\ODM\Business\Dsl\Search;
+use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
 
 class Compound extends AbstractQuery
 {

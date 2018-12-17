@@ -5,6 +5,7 @@ use Triadev\Es\ODM\Business\Dsl\Search;
 use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
 use ONGR\ElasticsearchDSL\Query\Joining\HasChildQuery;
 use ONGR\ElasticsearchDSL\Query\Joining\HasParentQuery;
+use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
 
 class Joining extends AbstractQuery
 {

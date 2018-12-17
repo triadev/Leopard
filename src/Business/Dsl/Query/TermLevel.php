@@ -12,6 +12,7 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermsQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TypeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\WildcardQuery;
+use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
 
 class TermLevel extends AbstractQuery
 {

@@ -1,10 +1,15 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl\Query;
+namespace Triadev\Es\ODM\Business\Dsl;
 
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Search;
 use Triadev\Es\ODM\Busines\Dsl\Query\Specialized;
+use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
+use Triadev\Es\ODM\Business\Dsl\Query\Fulltext;
+use Triadev\Es\ODM\Business\Dsl\Query\Geo;
+use Triadev\Es\ODM\Business\Dsl\Query\Joining;
+use Triadev\Es\ODM\Business\Dsl\Query\InnerHit;
 
 abstract class AbstractQuery
 {

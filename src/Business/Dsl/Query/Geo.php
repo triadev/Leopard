@@ -6,6 +6,7 @@ use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoPolygonQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 use Triadev\Es\ODM\Model\Location;
+use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
 
 class Geo extends AbstractQuery
 {

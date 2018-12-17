@@ -8,6 +8,7 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MultiMatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\QueryStringQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\SimpleQueryStringQuery;
+use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
 
 class Fulltext extends AbstractQuery
 {

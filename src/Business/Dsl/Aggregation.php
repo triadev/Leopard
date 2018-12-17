@@ -65,6 +65,10 @@ class Aggregation
         return $this;
     }
     
+    /**
+     * @param AbstractAggregation[] $aggs
+     * @return Aggregation
+     */
     private function append(array $aggs) : Aggregation
     {
         foreach ($aggs as $agg) {
