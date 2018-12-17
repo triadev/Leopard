@@ -56,7 +56,7 @@ This will create a mapping directory at ```database/mappings```.
 ### Configuration
 | Key        | Env | Value           | Description | Default |
 |:-------------:|:-------------:|:-------------:|:-----:|:-----:|
-| index | TRIADEV_ELASTICSEARCH_ODM_INDEX | STRING | elasticsearch index | default_index |
+| index | LEOPARD_INDEX | STRING | elasticsearch index | default_index |
 
 ## Reporting Issues
 If you do find an issue, please feel free to report it with GitHub's bug tracker for this project.
