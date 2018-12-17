@@ -48,7 +48,7 @@ class Make extends BaseCommand
      */
     public function handle()
     {
-        $mapping = $this->formatMappingName($this->argument('mapping'));
+        $mapping = $this->formatMappingName((string)$this->argument('mapping'));
         
         $model = $this->option('model') ?
             $this->formatModelName($this->option('model')) :
