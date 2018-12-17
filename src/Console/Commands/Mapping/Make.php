@@ -50,9 +50,7 @@ class Make extends BaseCommand
     {
         $mapping = $this->formatMappingName((string)$this->argument('mapping'));
         
-        $model = $this->option('model') ?
-            $this->formatModelName($this->option('model')) :
-            null;
+        $model = $this->option('model') ? $this->formatModelName($this->option('model')) : null;
         
         $this->filesystem->put(
             $this->buildMappingFilePath($mapping),
