@@ -70,10 +70,11 @@ class Sync extends Command
         foreach (config(sprintf("leopard.sync.models.%s", $index), []) as $modelClass) {
             /** @var Model|Searchable $model */
             $model = new $modelClass();
-    
-            $this->isModelSearchable($model);
-            
-            $models[$modelClass] = $model;
+            if ($model instanceof Model) {
+                $this->isModelSearchable($model);
+                
+                $models[$modelClass] = $model;
+            }
         }
         
         return $models;
