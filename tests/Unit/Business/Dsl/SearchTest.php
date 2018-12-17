@@ -366,4 +366,109 @@ class SearchTest extends TestCase
             ]
         ], $result);
     }
+    
+    /**
+     * @test
+     */
+    public function it_builds_a_nested_terms_level_query()
+    {
+        $result = $this->searchDsl->termLevel(function (TermLevel $boolQuery) {
+            $boolQuery
+                ->term('FIELD', 'VALUE')
+                ->termLevel(function (TermLevel $termLevel) {
+                    $termLevel
+                        ->term('FIELD1', 'VALUE1')
+                        ->term('FIELD2', 'VALUE2')
+                        ->fulltext(function (Fulltext $fulltext) {
+                            $fulltext
+                                ->match('FIELD1', 'QUERY1')
+                                ->matchPhrase('FIELD2', 'QUERY2');
+                        });
+                })
+                ->prefix('FIELD', 'VALUE')
+                ->fulltext(function (Fulltext $fulltext) {
+                    $fulltext
+                        ->filter()
+                        ->match('FIELD1', 'QUERY1')
+                        ->matchPhrase('FIELD2', 'QUERY2');
+                });
+        })->toDsl();
+        
+        $this->assertEquals([
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'term' => [
+                                'FIELD' => 'VALUE'
+                            ]
+                        ],
+                        [
+                            'bool' => [
+                                'must' => [
+                                    [
+                                        'term' => [
+                                            'FIELD1' => 'VALUE1'
+                                        ]
+                                    ],
+                                    [
+                                        'term' => [
+                                            'FIELD2' => 'VALUE2'
+                                        ]
+                                    ],
+                                    [
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'match' => [
+                                                        'FIELD1' => [
+                                                            'query' => 'QUERY1'
+                                                        ]
+                                                    ]
+                                                ],
+                                                [
+                                                    'match_phrase' => [
+                                                        'FIELD2' => [
+                                                            'query' => 'QUERY2'
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            'prefix' => [
+                                'FIELD' => [
+                                    'value' => 'VALUE'
+                                ]
+                            ]
+                        ],
+                        [
+                            'bool' => [
+                                'filter' => [
+                                    [
+                                        'match' => [
+                                            'FIELD1' => [
+                                                'query' => 'QUERY1'
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        'match_phrase' => [
+                                            'FIELD2' => [
+                                                'query' => 'QUERY2'
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ], $result);
+    }
 }

@@ -5,13 +5,27 @@ use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Search as OngrSearch;
 use Triadev\Leopard\Busines\Dsl\Query\Specialized;
+use Triadev\Leopard\Business\Dsl\Query\Compound;
 use Triadev\Leopard\Business\Dsl\Query\TermLevel;
 use Triadev\Leopard\Business\Dsl\Query\Fulltext;
 use Triadev\Leopard\Business\Dsl\Query\Geo;
 use Triadev\Leopard\Business\Dsl\Query\Joining;
 use Triadev\Leopard\Business\Dsl\Query\InnerHit;
 use Triadev\Leopard\Business\Dsl\Search as SearchDsl;
+use Triadev\Leopard\Facade\Leopard;
 
+/**
+ * Class AbstractQuery
+ * @package Triadev\Leopard\Business\Dsl
+ *
+ * @method TermLevel termLevel(\Closure $termLevel)
+ * @method Fulltext fulltext(\Closure $fulltext)
+ * @method Geo geo(\Closure $geo)
+ * @method Compound compound(\Closure $compound)
+ * @method Joining joining(\Closure $joining)
+ * @method Specialized specialized(\Closure $specialized)
+ * @method InnerHit innerHit(\Closure $innerHit)
+ */
 abstract class AbstractQuery
 {
     /** @var OngrSearch */
@@ -113,5 +127,43 @@ abstract class AbstractQuery
     {
         $this->boolState = BoolQuery::FILTER;
         return $this;
+    }
+    
+    /**
+     * Call
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return AbstractQuery|null
+     */
+    public function __call(string $name, array $arguments) : ?AbstractQuery
+    {
+        $validFunctions = [
+            'termLevel',
+            'fulltext',
+            'geo',
+            'compound',
+            'joining',
+            'specialized',
+            'innerHit'
+        ];
+        
+        if (in_array($name, $validFunctions)) {
+            $closure = $arguments[0];
+            
+            if (is_callable($closure)) {
+                /** @var Search $search */
+                $search = Leopard::search()->$name($closure);
+                
+                $this->search->addQuery(
+                    $search->getQuery()
+                );
+                
+                return $this;
+            }
+        }
+        
+        return null;
     }
 }
