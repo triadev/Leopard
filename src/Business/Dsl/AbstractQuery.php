@@ -10,10 +10,11 @@ use Triadev\Leopard\Business\Dsl\Query\Fulltext;
 use Triadev\Leopard\Business\Dsl\Query\Geo;
 use Triadev\Leopard\Business\Dsl\Query\Joining;
 use Triadev\Leopard\Business\Dsl\Query\InnerHit;
+use Triadev\Leopard\Business\Dsl\Search as SearchDsl;
 
 abstract class AbstractQuery
 {
-    /** @var \ONGR\ElasticsearchDSL\Search */
+    /** @var Search */
     public $search;
     
     /** @var string */
@@ -62,7 +63,7 @@ abstract class AbstractQuery
      * Append
      *
      * @param BuilderInterface $query
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
      */
     public function append(BuilderInterface $query) : AbstractQuery
     {
@@ -73,7 +74,7 @@ abstract class AbstractQuery
     /**
      * Bool state: must
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
      */
     public function must(): AbstractQuery
     {
@@ -84,7 +85,7 @@ abstract class AbstractQuery
     /**
      * Bool state: must not
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
      */
     public function mustNot(): AbstractQuery
     {
@@ -95,7 +96,7 @@ abstract class AbstractQuery
     /**
      * Bool state: should
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
      */
     public function should(): AbstractQuery
     {
@@ -106,7 +107,7 @@ abstract class AbstractQuery
     /**
      * Bool state: filter
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
      */
     public function filter(): AbstractQuery
     {
