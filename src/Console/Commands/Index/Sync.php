@@ -34,19 +34,19 @@ class Sync extends Command
         $index = $this->option('index') ?: Leopard::getEsDefaultIndex();
         
         if (!Leopard::getEsClient()->indices()->exists(['index' => $index])) {
-            $this->error(sprintf("The index does not exist: %s", $index));
+            $this->error(sprintf('The index does not exist: %s', $index));
             return;
         }
         
         $chunkSize = $this->getChunkSize();
         
         foreach ($this->getModelsToSync($index) as $modelClass => $model) {
-            $this->line(sprintf("Sync index with model: %s", $modelClass));
+            $this->line(sprintf('Sync index with model: %s', $modelClass));
             
             $model::chunk($chunkSize, function ($models) {
                 /** @var Collection $models */
                 Leopard::repository()->bulkSave($models);
-                $this->line(sprintf("Indexing a chunk of %s documents ...", count($models)));
+                $this->line(sprintf('Indexing a chunk of %s documents ...', count($models)));
             });
         }
     }
@@ -67,7 +67,7 @@ class Sync extends Command
     {
         $models = [];
     
-        foreach (config(sprintf("leopard.sync.models.%s", $index), []) as $modelClass) {
+        foreach (config(sprintf('leopard.sync.models.%s', $index), []) as $modelClass) {
             /** @var Model|Searchable $model */
             $model = new $modelClass();
             if ($model instanceof Model) {
