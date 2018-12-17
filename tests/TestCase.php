@@ -115,4 +115,13 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         return app()->databasePath() . DIRECTORY_SEPARATOR . 'migrations';
     }
+    
+    /**
+     * @param string|null $index
+     * @return array
+     */
+    public function getEsMapping(?string $index = null) : array
+    {
+        return EsManager::getEsClient()->indices()->getMapping(['index' => $index ?: 'phpunit']);
+    }
 }

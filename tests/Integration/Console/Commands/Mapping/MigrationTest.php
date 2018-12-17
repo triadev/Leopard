@@ -2,7 +2,6 @@
 namespace Tests\Integration\Console\Commands\Mapping;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Facade\EsManager;
 
 class MigrationTest extends TestCase
 {
@@ -25,7 +24,7 @@ class MigrationTest extends TestCase
             'phpunit' => [
                 'mappings' => []
             ]
-        ], EsManager::getEsClient()->indices()->getMapping(['index' => 'phpunit']));
+        ], $this->getEsMapping());
         
         $this->artisan('triadev:mapping:migrate', [
             '--index' => 'phpunit',
@@ -50,6 +49,6 @@ class MigrationTest extends TestCase
                     ]
                 ]
             ]
-        ], EsManager::getEsClient()->indices()->getMapping(['index' => 'phpunit']));
+        ], $this->getEsMapping());
     }
 }

@@ -8,12 +8,17 @@ use Triadev\Es\ODM\Facade\EsManager;
 
 class SearchTest extends TestCase
 {
+    /** @var TestModel */
+    private $testModel;
+    
     /**
      * Setup the test environment.
      */
     public function setUp()
     {
         parent::setUp();
+        
+        $this->testModel = new TestModel();
         
         $this->refreshElasticsearchMappings();
         
@@ -30,30 +35,39 @@ class SearchTest extends TestCase
         ]);
     }
     
-    /**
-     * @test
-     */
-    public function it_returns_an_elasticsearch_search_result_object()
+    private function buildPayload(array $payload = []) : array
     {
-        $model = new TestModel();
-        
-        EsManager::indexStatement([
-            'index' => $model->getDocumentIndex(),
-            'type' => $model->getDocumentType(),
+        return array_merge([
+            'index' => $this->testModel->getDocumentIndex(),
+            'type' => $this->testModel->getDocumentType()
+        ], $payload);
+    }
+    
+    private function createTestDocument()
+    {
+        EsManager::indexStatement($this->buildPayload([
             'id' => 1,
             'body' => [
                 'test' => 'phpunit'
             ]
-        ]);
+        ]));
     
         EsManager::getEsClient()->indices()->refresh();
+    }
+    
+    /**
+     * @test
+     */
+    public function it_returns_an_elasticsearch_search_result_object_with_array_documents()
+    {
+        $this->createTestDocument();
         
         $result = EsManager::search()
-            ->model($model)
+            ->overwriteIndex($this->testModel->getDocumentIndex())
+            ->overwriteType($this->testModel->getDocumentType())
             ->termLevel(function (TermLevel $boolQuery) {
                 $boolQuery->term('test', 'phpunit');
-            })
-            ->get();
+            })->get();
         
         $this->assertIsInt($result->getTook());
         $this->assertIsBool($result->isTimedOut());
@@ -64,6 +78,10 @@ class SearchTest extends TestCase
         $this->assertEquals(1, $result->getTotalHits());
         
         $this->assertNotEmpty($result->getHits());
+    
+        foreach ($result->getHits() as $hit) {
+            $this->assertTrue(is_array($hit));
+        }
     }
     
     /**
@@ -71,21 +89,10 @@ class SearchTest extends TestCase
      */
     public function it_returns_an_elasticsearch_search_result_object_with_eloquent_models()
     {
-        $model = new TestModel();
-        
-        EsManager::indexStatement([
-            'index' => $model->getDocumentIndex(),
-            'type' => $model->getDocumentType(),
-            'id' => 1,
-            'body' => [
-                'test' => 'phpunit'
-            ]
-        ]);
-        
-        EsManager::getEsClient()->indices()->refresh();
+        $this->createTestDocument();
         
         $result = EsManager::search()
-            ->model($model)
+            ->model($this->testModel)
             ->termLevel(function (TermLevel $boolQuery) {
                 $boolQuery->term('test', 'phpunit');
             })

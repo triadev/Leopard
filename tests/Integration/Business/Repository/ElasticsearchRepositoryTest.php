@@ -36,13 +36,13 @@ class ElasticsearchRepositoryTest extends TestCase
         app()->make(Mapper::class)->run($this->getMappingsPath());
     }
     
-    private function getSearchParamsFromModel() : array
+    private function searchForDocuments() : ?array
     {
-        return [
+        return EsManager::getStatement([
             'index' => $this->model->getDocumentIndex(),
             'type' => $this->model->getDocumentType(),
             'id' => 1
-        ];
+        ]);
     }
     
     /**
@@ -50,7 +50,7 @@ class ElasticsearchRepositoryTest extends TestCase
      */
     public function it_creates_a_document()
     {
-        $this->assertNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        $this->assertNull($this->searchForDocuments());
         
         $result = $this->repository->save($this->model);
         
@@ -59,7 +59,7 @@ class ElasticsearchRepositoryTest extends TestCase
         $this->assertEquals('test', array_get($result, '_type'));
         $this->assertEquals('1', array_get($result, '_id'));
     
-        $this->assertNotNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        $this->assertNotNull($this->searchForDocuments());
     }
     
     /**
@@ -67,7 +67,7 @@ class ElasticsearchRepositoryTest extends TestCase
      */
     public function it_updates_a_document()
     {
-        $this->assertNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        $this->assertNull($this->searchForDocuments());
         
         $result = $this->repository->save($this->model);
         
@@ -79,7 +79,7 @@ class ElasticsearchRepositoryTest extends TestCase
         $this->assertEquals(
             'PHPUNIT',
             array_get(
-                EsManager::getStatement($this->getSearchParamsFromModel()),
+                $this->searchForDocuments(),
                 '_source.name'
             )
         );
@@ -97,7 +97,7 @@ class ElasticsearchRepositoryTest extends TestCase
         $this->assertEquals(
             'UPDATE',
             array_get(
-                EsManager::getStatement($this->getSearchParamsFromModel()),
+                $this->searchForDocuments(),
                 '_source.name'
             )
         );
@@ -110,11 +110,11 @@ class ElasticsearchRepositoryTest extends TestCase
     {
         $this->repository->save($this->model);
     
-        $this->assertNotNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        $this->assertNotNull($this->searchForDocuments());
         
         $this->repository->delete($this->model);
     
-        $this->assertNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        $this->assertNull($this->searchForDocuments());
     }
     
     /**
@@ -122,11 +122,11 @@ class ElasticsearchRepositoryTest extends TestCase
      */
     public function it_creates_a_document_via_bulk()
     {
-        $this->assertNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        $this->assertNull($this->searchForDocuments());
         
         $this->repository->bulkSave([$this->model]);
         
-        $this->assertNotNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        $this->assertNotNull($this->searchForDocuments());
     }
     
     /**
@@ -136,10 +136,10 @@ class ElasticsearchRepositoryTest extends TestCase
     {
         $this->repository->save($this->model);
         
-        $this->assertNotNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        $this->assertNotNull($this->searchForDocuments());
         
         $this->repository->bulkDelete([$this->model]);
         
-        $this->assertNull(EsManager::getStatement($this->getSearchParamsFromModel()));
+        $this->assertNull($this->searchForDocuments());
     }
 }

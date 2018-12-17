@@ -3,7 +3,6 @@ namespace Tests\Integration\Business\Mapping;
 
 use Tests\TestCase;
 use Triadev\Es\ODM\Business\Mapping\Mapper;
-use Triadev\Es\ODM\Facade\EsManager;
 
 class MapperTest extends TestCase
 {
@@ -26,7 +25,7 @@ class MapperTest extends TestCase
             'phpunit' => [
                 'mappings' => []
             ]
-        ], EsManager::getEsClient()->indices()->getMapping(['index' => 'phpunit']));
+        ], $this->getEsMapping());
         
         app()->make(Mapper::class)->run($this->getMappingsPath());
     
@@ -48,6 +47,6 @@ class MapperTest extends TestCase
                     ]
                 ]
             ]
-        ], EsManager::getEsClient()->indices()->getMapping(['index' => 'phpunit']));
+        ], $this->getEsMapping());
     }
 }

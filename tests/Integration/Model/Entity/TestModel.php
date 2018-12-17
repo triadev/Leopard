@@ -4,6 +4,11 @@ namespace Tests\Integration\Model\Entity;
 use Illuminate\Database\Eloquent\Model;
 use Triadev\Es\ODM\Searchable;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ */
 class TestModel extends Model
 {
     use Searchable;

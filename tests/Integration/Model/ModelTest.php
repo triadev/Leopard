@@ -20,32 +20,31 @@ class ModelTest extends TestCase
         app()->make(Mapper::class)->run($this->getMappingsPath());
     }
     
+    private function getTestDocument() : ?array
+    {
+        return EsManager::getStatement([
+            'index' => 'phpunit',
+            'type' => 'test',
+            'id' => 1
+        ]);
+    }
+    
     /**
      * @test
      */
     public function it_creates_an_elasticsearch_document_with_an_eloquent_model()
     {
-        $this->assertNull(EsManager::getStatement([
-            'index' => 'phpunit',
-            'type' => 'test',
-            'id' => 1
-        ]));
+        $this->assertNull($this->getTestDocument());
         
         $model = new TestModel();
         $model->name = 'PHPUNIT';
         $model->email = 'test@test.de';
         $model->saveOrFail();
         
-        $document = EsManager::getStatement([
-            'index' => 'phpunit',
-            'type' => 'test',
-            'id' => 1
-        ]);
-        
         $this->assertEquals([
             'id' => 1,
-            'name' => 'PHPUNIT',
-            'email' => 'test@test.de'
-        ], array_get($document, '_source'));
+            'name' => $model->name,
+            'email' => $model->email
+        ], array_get($this->getTestDocument(), '_source'));
     }
 }
