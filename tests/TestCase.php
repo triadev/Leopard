@@ -8,7 +8,7 @@ use Triadev\Es\ODM\Facade\EsManager;
 use Triadev\Es\ODM\Provider\ServiceProvider;
 use Triadev\Es\Provider\ElasticsearchServiceProvider;
 
-class TestCase extends \Orchestra\Testbench\TestCase
+abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     use RefreshDatabase;
     

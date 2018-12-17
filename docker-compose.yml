@@ -1,8 +1,8 @@
 version: '2.2'
 services:
-  elasticsearch-laravel-odm:
+  leopard:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
-    container_name: elasticsearch-laravel-odm
+    container_name: leopard
     environment:
       - cluster.name=test-cluster
       - bootstrap.memory_lock=true
