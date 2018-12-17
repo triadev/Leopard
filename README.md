@@ -1,21 +1,18 @@
-# WORK IN PROGRESS
-
-# LaravelElasticsearchODM
+# Leopard
+Leopard is an elasticsearch odm (Object Document Mapper) for laravel eloquent.
 
 [![Software license][ico-license]](LICENSE)
 [![Travis][ico-travis]][link-travis]
-[![Coveralls](https://coveralls.io/repos/github/triadev/LaravelElasticsearchODM/badge.svg?branch=master)](https://coveralls.io/github/triadev/LaravelElasticsearchODM?branch=master)
-[![CodeCov](https://codecov.io/gh/triadev/LaravelElasticsearchODM/branch/master/graph/badge.svg)](https://codecov.io/gh/triadev/LaravelElasticsearchODM)
+[![Coveralls](https://coveralls.io/repos/github/triadev/Leopard/badge.svg?branch=master)](https://coveralls.io/github/triadev/Leopard?branch=master)
+[![CodeCov](https://codecov.io/gh/triadev/Leopard/branch/master/graph/badge.svg)](https://codecov.io/gh/triadev/Leopard)
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/triadev/LaravelElasticsearchODM/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/triadev/LaravelElasticsearchODM/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/triadev/LaravelElasticsearchODM/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/triadev/LaravelElasticsearchODM/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/triadev/LaravelElasticsearchODM/badges/build.png?b=master)](https://scrutinizer-ci.com/g/triadev/LaravelElasticsearchODM/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/triadev/Leopard/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/triadev/Leopard/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/triadev/Leopard/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/triadev/Leopard/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/triadev/Leopard/badges/build.png?b=master)](https://scrutinizer-ci.com/g/triadev/Leopard/build-status/master)
 
 [![Latest stable][ico-version-stable]][link-packagist]
 [![Latest development][ico-version-dev]][link-packagist]
 [![Monthly installs][ico-downloads-monthly]][link-downloads]
-
-Elasticsearch odm for laravel.
 
 ## Supported laravel versions
 [![Laravel 5.5][icon-l55]][link-laravel]
@@ -37,7 +34,7 @@ Elasticsearch odm for laravel.
 ## Installation
 
 ### Composer
-> composer require triadev/laravel-elasticsearch-odm
+> composer require triadev/leopard
 
 ### Application
 The package is registered through the package discovery of laravel and Composer.
@@ -80,21 +77,21 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 ## Other
 
 ### Project related links
-- [Wiki](https://github.com/triadev/LaravelElasticsearchODM/wiki)
-- [Issue tracker](https://github.com/triadev/LaravelElasticsearchODM/issues)
+- [Wiki](https://github.com/triadev/Leopard/wiki)
+- [Issue tracker](https://github.com/triadev/Leopard/issues)
 
 ### License
-The code for LaravelElasticsearchODM is distributed under the terms of the MIT license (see [LICENSE](LICENSE)).
+The code for Leopard is distributed under the terms of the MIT license (see [LICENSE](LICENSE)).
 
-[ico-license]: https://img.shields.io/github/license/triadev/LaravelElasticsearchODM.svg?style=flat-square
-[ico-version-stable]: https://img.shields.io/packagist/v/triadev/laravel-elasticsearch-odm.svg?style=flat-square
-[ico-version-dev]: https://img.shields.io/packagist/vpre/triadev/laravel-elasticsearch-odm.svg?style=flat-square
-[ico-downloads-monthly]: https://img.shields.io/packagist/dm/triadev/laravel-elasticsearch-odm.svg?style=flat-square
-[ico-travis]: https://travis-ci.org/triadev/LaravelElasticsearchODM.svg?branch=master
+[ico-license]: https://img.shields.io/github/license/triadev/Leopard.svg?style=flat-square
+[ico-version-stable]: https://img.shields.io/packagist/v/triadev/leopard.svg?style=flat-square
+[ico-version-dev]: https://img.shields.io/packagist/vpre/triadev/leopard.svg?style=flat-square
+[ico-downloads-monthly]: https://img.shields.io/packagist/dm/triadev/leopard.svg?style=flat-square
+[ico-travis]: https://travis-ci.org/triadev/Leopard.svg?branch=master
 
-[link-packagist]: https://packagist.org/packages/triadev/laravel-elasticsearch-odm
-[link-downloads]: https://packagist.org/packages/triadev/laravel-elasticsearch-odm/stats
-[link-travis]: https://travis-ci.org/triadev/LaravelElasticsearchODM
+[link-packagist]: https://packagist.org/packages/triadev/leopard
+[link-downloads]: https://packagist.org/packages/triadev/leopard/stats
+[link-travis]: https://travis-ci.org/triadev/Leopard
 
 [icon-l55]: https://img.shields.io/badge/Laravel-5.5-brightgreen.svg?style=flat-square
 [icon-l56]: https://img.shields.io/badge/Laravel-5.6-brightgreen.svg?style=flat-square
