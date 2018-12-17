@@ -3,7 +3,7 @@ namespace Triadev\Leopard\Business\Dsl;
 
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
-use ONGR\ElasticsearchDSL\Search;
+use ONGR\ElasticsearchDSL\Search as OngrSearch;
 use Triadev\Leopard\Busines\Dsl\Query\Specialized;
 use Triadev\Leopard\Business\Dsl\Query\TermLevel;
 use Triadev\Leopard\Business\Dsl\Query\Fulltext;
@@ -14,7 +14,7 @@ use Triadev\Leopard\Business\Dsl\Search as SearchDsl;
 
 abstract class AbstractQuery
 {
-    /** @var Search */
+    /** @var OngrSearch */
     public $search;
     
     /** @var string */
@@ -22,11 +22,11 @@ abstract class AbstractQuery
     
     /**
      * BoolQuery constructor.
-     * @param Search|null $search
+     * @param OngrSearch|null $search
      */
-    public function __construct(?Search $search = null)
+    public function __construct(?OngrSearch $search = null)
     {
-        $this->search = $search ?: new Search();
+        $this->search = $search ?: new OngrSearch();
     }
     
     /**
@@ -42,9 +42,9 @@ abstract class AbstractQuery
     /**
      * Get search
      *
-     * @return Search
+     * @return OngrSearch
      */
-    public function getSearch() : Search
+    public function getSearch() : OngrSearch
     {
         return $this->search;
     }
