@@ -8,10 +8,10 @@ use Triadev\Leopard\Facade\Leopard;
 class Suggestion
 {
     /** @var \ONGR\ElasticsearchDSL\Search */
-    private $search;
+    private $_search;
     
     /** @var ElasticsearchManagerContract */
-    private $manager;
+    private $_manager;
     
     /**
      * Suggestion constructor.
@@ -22,8 +22,8 @@ class Suggestion
         ElasticsearchManagerContract $manager,
         ?\ONGR\ElasticsearchDSL\Search $search = null
     ) {
-        $this->manager = $manager;
-        $this->search = $search ?: new \ONGR\ElasticsearchDSL\Search();
+        $this->_manager = $manager;
+        $this->_search = $search ?: new \ONGR\ElasticsearchDSL\Search();
     }
     
     /**
@@ -33,7 +33,7 @@ class Suggestion
      */
     public function toDsl(): array
     {
-        return $this->search->toArray();
+        return $this->_search->toArray();
     }
     
     /**
@@ -61,7 +61,7 @@ class Suggestion
      */
     public function term(string $name, string $text, string $field, array $params = []): Suggestion
     {
-        $this->search->addSuggest(new Suggest(
+        $this->_search->addSuggest(new Suggest(
             $name,
             'term',
             $text,
@@ -83,7 +83,7 @@ class Suggestion
      */
     public function phrase(string $name, string $text, string $field, array $params = []): Suggestion
     {
-        $this->search->addSuggest(new Suggest(
+        $this->_search->addSuggest(new Suggest(
             $name,
             'phrase',
             $text,
@@ -105,7 +105,7 @@ class Suggestion
      */
     public function completion(string $name, string $text, string $field, array $params = []): Suggestion
     {
-        $this->search->addSuggest(new Suggest(
+        $this->_search->addSuggest(new Suggest(
             $name,
             'completion',
             $text,

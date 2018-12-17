@@ -22,16 +22,16 @@ class Search extends AbstractQuery
     use IsModelSearchable;
     
     /** @var string */
-    private $index;
+    private $_index;
     
     /** @var string */
-    private $type;
+    private $_type;
     
     /** @var Model */
-    private $model;
+    private $_model;
     
     /** @var ElasticsearchManagerContract */
-    private $manager;
+    private $_manager;
     
     /**
      * Search constructor.
@@ -44,9 +44,9 @@ class Search extends AbstractQuery
     ) {
         parent::__construct($search);
         
-        $this->manager = $manager;
+        $this->_manager = $manager;
         
-        $this->index = config('leopard.index');
+        $this->_index = config('leopard.index');
     }
     
     /**
@@ -57,7 +57,7 @@ class Search extends AbstractQuery
      */
     public function overwriteIndex(string $index) : Search
     {
-        $this->index = $index;
+        $this->_index = $index;
         return $this;
     }
     
@@ -68,7 +68,7 @@ class Search extends AbstractQuery
      */
     public function getIndex() : string
     {
-        return $this->index;
+        return $this->_index;
     }
     
     /**
@@ -79,7 +79,7 @@ class Search extends AbstractQuery
      */
     public function overwriteType(string $type) : Search
     {
-        $this->type = $type;
+        $this->_type = $type;
         return $this;
     }
     
@@ -90,7 +90,7 @@ class Search extends AbstractQuery
      */
     public function getType() : ?string
     {
-        return $this->type;
+        return $this->_type;
     }
     
     /**
@@ -105,7 +105,7 @@ class Search extends AbstractQuery
     {
         $this->isModelSearchable($model);
         
-        $this->model = $model;
+        $this->_model = $model;
         
         if (is_string($index = $model->getDocumentIndex())) {
             $this->overwriteIndex($index);
@@ -126,9 +126,9 @@ class Search extends AbstractQuery
     {
         $searchResult = new SearchResult($this->getRaw());
         
-        if ($this->model) {
+        if ($this->_model) {
             $filler = $filler ?: new EloquentFiller();
-            $filler->fill($this->model, $searchResult);
+            $filler->fill($this->_model, $searchResult);
         }
         
         return $searchResult;
@@ -142,15 +142,15 @@ class Search extends AbstractQuery
     public function getRaw() : array
     {
         $params = [
-            'index' => $this->index,
+            'index' => $this->_index,
             'body' => $this->toDsl()
         ];
     
-        if ($this->type) {
-            $params['type'] = $this->type;
+        if ($this->_type) {
+            $params['type'] = $this->_type;
         }
         
-        return $this->manager->searchStatement($params);
+        return $this->_manager->searchStatement($params);
     }
     
     /**

@@ -69,7 +69,7 @@ class Bucketing extends Aggs
             'day',
             'hour',
             'minute',
-            'second'
+            'second',
         ];
         
         if (!in_array($interval, $validInterval)) {

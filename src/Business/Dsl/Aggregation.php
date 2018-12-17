@@ -9,7 +9,7 @@ use Triadev\Leopard\Business\Dsl\Aggregation\Pipeline;
 class Aggregation
 {
     /** @var \ONGR\ElasticsearchDSL\Search */
-    private $search;
+    private $_search;
     
     /**
      * Aggregation constructor.
@@ -17,7 +17,7 @@ class Aggregation
      */
     public function __construct(\ONGR\ElasticsearchDSL\Search $search)
     {
-        $this->search = $search;
+        $this->_search = $search;
     }
     
     /**
@@ -73,7 +73,7 @@ class Aggregation
     {
         foreach ($aggs as $agg) {
             if ($agg instanceof AbstractAggregation) {
-                $this->search->addAggregation($agg);
+                $this->_search->addAggregation($agg);
             }
         }
         
