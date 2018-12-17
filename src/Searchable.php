@@ -133,7 +133,7 @@ trait Searchable
             
             if ($result instanceof Collection) {
                 $result = $result->toArray();
-            } else if ($result instanceof Carbon) {
+            } elseif ($result instanceof Carbon) {
                 $result = $result->toDateTimeString();
             } else {
                 $result = $this->$value;
