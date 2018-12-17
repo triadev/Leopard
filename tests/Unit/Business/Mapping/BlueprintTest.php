@@ -2,7 +2,7 @@
 namespace Tests\Unit\Business\Mapping;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Mapping\Blueprint;
+use Triadev\Leopard\Business\Mapping\Blueprint;
 
 class BlueprintTest extends TestCase
 {

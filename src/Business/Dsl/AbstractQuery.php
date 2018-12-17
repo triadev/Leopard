@@ -1,15 +1,15 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl;
+namespace Triadev\Leopard\Business\Dsl;
 
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Search;
-use Triadev\Es\ODM\Busines\Dsl\Query\Specialized;
-use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
-use Triadev\Es\ODM\Business\Dsl\Query\Fulltext;
-use Triadev\Es\ODM\Business\Dsl\Query\Geo;
-use Triadev\Es\ODM\Business\Dsl\Query\Joining;
-use Triadev\Es\ODM\Business\Dsl\Query\InnerHit;
+use Triadev\Leopard\Busines\Dsl\Query\Specialized;
+use Triadev\Leopard\Business\Dsl\Query\TermLevel;
+use Triadev\Leopard\Business\Dsl\Query\Fulltext;
+use Triadev\Leopard\Business\Dsl\Query\Geo;
+use Triadev\Leopard\Business\Dsl\Query\Joining;
+use Triadev\Leopard\Business\Dsl\Query\InnerHit;
 
 abstract class AbstractQuery
 {
@@ -62,7 +62,7 @@ abstract class AbstractQuery
      * Append
      *
      * @param BuilderInterface $query
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Es\ODM\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
      */
     public function append(BuilderInterface $query) : AbstractQuery
     {
@@ -73,7 +73,7 @@ abstract class AbstractQuery
     /**
      * Bool state: must
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Es\ODM\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
      */
     public function must(): AbstractQuery
     {
@@ -84,7 +84,7 @@ abstract class AbstractQuery
     /**
      * Bool state: must not
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Es\ODM\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
      */
     public function mustNot(): AbstractQuery
     {
@@ -95,7 +95,7 @@ abstract class AbstractQuery
     /**
      * Bool state: should
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Es\ODM\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
      */
     public function should(): AbstractQuery
     {
@@ -106,7 +106,7 @@ abstract class AbstractQuery
     /**
      * Bool state: filter
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Es\ODM\Business\Dsl\Search|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|\Triadev\Leopard\Business\Dsl\Search|Joining|Specialized|InnerHit
      */
     public function filter(): AbstractQuery
     {

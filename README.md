@@ -42,13 +42,13 @@ The package is registered through the package discovery of laravel and Composer.
 
 Once installed you can now publish your config file and set your correct configuration for using the package.
 ```php
-php artisan vendor:publish --provider="Triadev\Es\ODM\Provider\ServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Triadev\Leopard\Provider\ServiceProvider" --tag="config"
 ```
 
-This will create a file ```config/triadev-elasticsearch-odm.php```.
+This will create a file ```config/leopard.php```.
 
 ```php
-php artisan vendor:publish --provider="Triadev\Es\ODM\Provider\ServiceProvider" --tag="database"
+php artisan vendor:publish --provider="Triadev\Leopard\Provider\ServiceProvider" --tag="database"
 ```
 
 This will create a mapping directory at ```database/mappings```.

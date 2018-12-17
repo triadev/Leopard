@@ -2,7 +2,7 @@
 namespace Tests\Integration\Business\Mapping;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Mapping\Mapper;
+use Triadev\Leopard\Business\Mapping\Mapper;
 
 class MapperTest extends TestCase
 {

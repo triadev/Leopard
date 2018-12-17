@@ -1,5 +1,5 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl\Aggregation;
+namespace Triadev\Leopard\Business\Dsl\Aggregation;
 
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\ChildrenAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\DateHistogramAggregation;

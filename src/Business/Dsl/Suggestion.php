@@ -1,9 +1,9 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl;
+namespace Triadev\Leopard\Business\Dsl;
 
 use ONGR\ElasticsearchDSL\Suggest\Suggest;
-use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Contract\ElasticsearchManagerContract;
+use Triadev\Leopard\Facade\Leopard;
 
 class Suggestion
 {
@@ -44,7 +44,7 @@ class Suggestion
      */
     public function get(string $index): array
     {
-        return EsManager::suggestStatement([
+        return Leopard::suggestStatement([
             'index' => $index,
             'body' => $this->toDsl()
         ]);

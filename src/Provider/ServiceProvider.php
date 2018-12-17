@@ -1,19 +1,19 @@
 <?php
-namespace Triadev\Es\ODM\Provider;
+namespace Triadev\Leopard\Provider;
 
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Triadev\Es\ODM\Business\Repository\ElasticsearchRepository;
-use Triadev\Es\ODM\Business\Repository\MappingLogRepository;
-use Triadev\Es\ODM\Console\Commands\Index\Sync;
-use Triadev\Es\ODM\Console\Commands\Mapping\Make;
-use Triadev\Es\ODM\Console\Commands\Mapping\Migrate;
-use Triadev\Es\ODM\Console\Commands\Mapping\Rollback;
-use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
-use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
-use Triadev\Es\ODM\Contract\Repository\MappingLogRepositoryContract;
-use Triadev\Es\ODM\ElasticsearchManager;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Business\Repository\ElasticsearchRepository;
+use Triadev\Leopard\Business\Repository\MappingLogRepository;
+use Triadev\Leopard\Console\Commands\Index\Sync;
+use Triadev\Leopard\Console\Commands\Mapping\Make;
+use Triadev\Leopard\Console\Commands\Mapping\Migrate;
+use Triadev\Leopard\Console\Commands\Mapping\Rollback;
+use Triadev\Leopard\Contract\ElasticsearchManagerContract;
+use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
+use Triadev\Leopard\Contract\Repository\MappingLogRepositoryContract;
+use Triadev\Leopard\ElasticsearchManager;
+use Triadev\Leopard\Facade\Leopard;
 use Triadev\Es\Provider\ElasticsearchServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
@@ -47,10 +47,10 @@ class ServiceProvider extends BaseServiceProvider
         $source = realpath(__DIR__ . '/../Config/config.php');
     
         $this->publishes([
-            __DIR__ . '/../Config/config.php' => config_path('triadev-elasticsearch-odm.php'),
+            __DIR__ . '/../Config/config.php' => config_path('leopard.php'),
         ], 'config');
     
-        $this->mergeConfigFrom($source, 'triadev-elasticsearch-odm');
+        $this->mergeConfigFrom($source, 'leopard');
     
         $this->loadMigrationsFrom(__DIR__ . '/../Resources/database/migrations');
     
@@ -75,6 +75,6 @@ class ServiceProvider extends BaseServiceProvider
     {
         $this->app->register(ElasticsearchServiceProvider::class);
         
-        AliasLoader::getInstance()->alias('EsManager', EsManager::class);
+        AliasLoader::getInstance()->alias('Leopard', Leopard::class);
     }
 }

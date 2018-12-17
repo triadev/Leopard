@@ -1,5 +1,5 @@
 <?php
-namespace Triadev\Es\ODM\Model\Entity;
+namespace Triadev\Leopard\Model\Entity;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -1,8 +1,8 @@
 <?php
-namespace Triadev\Es\ODM\Console\Commands\Mapping;
+namespace Triadev\Leopard\Console\Commands\Mapping;
 
 use Illuminate\Console\ConfirmableTrait;
-use Triadev\Es\ODM\Contract\Repository\MappingLogRepositoryContract;
+use Triadev\Leopard\Contract\Repository\MappingLogRepositoryContract;
 
 class Rollback extends BaseCommand
 {

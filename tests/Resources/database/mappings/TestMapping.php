@@ -1,9 +1,9 @@
 <?php
 
 use Tests\Integration\Model\Entity\TestModel;
-use Triadev\Es\ODM\Business\Mapping\Blueprint;
-use Triadev\Es\ODM\Business\Mapping\Mapping;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Business\Mapping\Blueprint;
+use Triadev\Leopard\Business\Mapping\Mapping;
+use Triadev\Leopard\Facade\Leopard;
 
 class TestMapping extends Mapping
 {
@@ -22,7 +22,7 @@ class TestMapping extends Mapping
      */
     public function map()
     {
-        EsManager::map(function (Blueprint $blueprint) {
+        Leopard::map(function (Blueprint $blueprint) {
             $blueprint->integer('id');
             $blueprint->text('name');
             $blueprint->keyword('email');

@@ -1,10 +1,10 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl;
+namespace Triadev\Leopard\Business\Dsl;
 
 use ONGR\ElasticsearchDSL\Aggregation\AbstractAggregation;
-use Triadev\Es\ODM\Business\Dsl\Aggregation\Bucketing;
-use Triadev\Es\ODM\Business\Dsl\Aggregation\Metric;
-use Triadev\Es\ODM\Business\Dsl\Aggregation\Pipeline;
+use Triadev\Leopard\Business\Dsl\Aggregation\Bucketing;
+use Triadev\Leopard\Business\Dsl\Aggregation\Metric;
+use Triadev\Leopard\Business\Dsl\Aggregation\Pipeline;
 
 class Aggregation
 {

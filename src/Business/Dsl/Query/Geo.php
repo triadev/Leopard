@@ -1,12 +1,12 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl\Query;
+namespace Triadev\Leopard\Business\Dsl\Query;
 
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoPolygonQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
-use Triadev\Es\ODM\Model\Location;
-use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
+use Triadev\Leopard\Model\Location;
+use Triadev\Leopard\Business\Dsl\AbstractQuery;
 
 class Geo extends AbstractQuery
 {

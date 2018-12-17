@@ -3,8 +3,8 @@ namespace Tests\Integration\Business\Dsl;
 
 use Tests\Integration\Model\Entity\TestModel;
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Business\Dsl\Query\TermLevel;
+use Triadev\Leopard\Facade\Leopard;
 
 class SearchTest extends TestCase
 {
@@ -21,8 +21,8 @@ class SearchTest extends TestCase
         $this->testModel = new TestModel();
         
         $this->refreshElasticsearchMappings();
-        
-        EsManager::getEsClient()->indices()->putMapping([
+    
+        Leopard::getEsClient()->indices()->putMapping([
             'index' => 'phpunit',
             'type' => 'test',
             'body' => [
@@ -45,14 +45,14 @@ class SearchTest extends TestCase
     
     private function createTestDocument()
     {
-        EsManager::indexStatement($this->buildPayload([
+        Leopard::indexStatement($this->buildPayload([
             'id' => 1,
             'body' => [
                 'test' => 'phpunit'
             ]
         ]));
     
-        EsManager::getEsClient()->indices()->refresh();
+        Leopard::getEsClient()->indices()->refresh();
     }
     
     /**
@@ -62,7 +62,7 @@ class SearchTest extends TestCase
     {
         $this->createTestDocument();
         
-        $result = EsManager::search()
+        $result = Leopard::search()
             ->overwriteIndex($this->testModel->getDocumentIndex())
             ->overwriteType($this->testModel->getDocumentType())
             ->termLevel(function (TermLevel $boolQuery) {
@@ -91,7 +91,7 @@ class SearchTest extends TestCase
     {
         $this->createTestDocument();
         
-        $result = EsManager::search()
+        $result = Leopard::search()
             ->model($this->testModel)
             ->termLevel(function (TermLevel $boolQuery) {
                 $boolQuery->term('test', 'phpunit');

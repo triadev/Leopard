@@ -1,16 +1,16 @@
 <?php
-namespace Triadev\Es\ODM\Facade;
+namespace Triadev\Leopard\Facade;
 
 use Elasticsearch\Client;
 use Illuminate\Support\Facades\Facade;
-use Triadev\Es\ODM\Business\Repository\ElasticsearchRepository;
-use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
-use Triadev\Es\ODM\Business\Dsl\Search;
-use Triadev\Es\ODM\Business\Dsl\Suggestion;
+use Triadev\Leopard\Business\Repository\ElasticsearchRepository;
+use Triadev\Leopard\Contract\ElasticsearchManagerContract;
+use Triadev\Leopard\Business\Dsl\Search;
+use Triadev\Leopard\Business\Dsl\Suggestion;
 
 /**
- * Class EsManager
- * @package Triadev\Es\ODM\Facade
+ * Class Leopard
+ * @package Triadev\Leopard\Facade
  *
  * @method static Client getEsClient()
  * @method static string getEsDefaultIndex()
@@ -28,7 +28,7 @@ use Triadev\Es\ODM\Business\Dsl\Suggestion;
  * @method static array suggestStatement(array $params)
  * @method static array bulkStatement(array $params)
  */
-class EsManager extends Facade
+class Leopard extends Facade
 {
     /**
      * Get a plastic manager instance for the default connection.

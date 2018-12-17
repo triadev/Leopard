@@ -1,12 +1,12 @@
 <?php
-namespace Triadev\Es\ODM\Console\Commands\Index;
+namespace Triadev\Leopard\Console\Commands\Index;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
-use Triadev\Es\ODM\Facade\EsManager;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Business\Helper\IsModelSearchable;
+use Triadev\Leopard\Facade\Leopard;
+use Triadev\Leopard\Searchable;
 
 class Sync extends Command
 {
@@ -31,9 +31,9 @@ class Sync extends Command
      */
     public function handle()
     {
-        $index = $this->option('index') ?: EsManager::getEsDefaultIndex();
+        $index = $this->option('index') ?: Leopard::getEsDefaultIndex();
         
-        if (!EsManager::getEsClient()->indices()->exists(['index' => $index])) {
+        if (!Leopard::getEsClient()->indices()->exists(['index' => $index])) {
             $this->error(sprintf("The index does not exist: %s", $index));
             return;
         }
@@ -45,7 +45,7 @@ class Sync extends Command
             
             $model::chunk($chunkSize, function ($models) {
                 /** @var Collection $models */
-                EsManager::repository()->bulkSave($models);
+                Leopard::repository()->bulkSave($models);
                 $this->line(sprintf("Indexing a chunk of %s documents ...", count($models)));
             });
         }
@@ -56,7 +56,7 @@ class Sync extends Command
      */
     private function getChunkSize() : int
     {
-        return config('triadev-elasticsearch-odm.sync.chunkSize');
+        return config('leopard.sync.chunkSize');
     }
     
     /**
@@ -67,7 +67,7 @@ class Sync extends Command
     {
         $models = [];
     
-        foreach (config(sprintf("triadev-elasticsearch-odm.sync.models.%s", $index), []) as $modelClass) {
+        foreach (config(sprintf("leopard.sync.models.%s", $index), []) as $modelClass) {
             /** @var Model|Searchable $model */
             $model = new $modelClass();
     

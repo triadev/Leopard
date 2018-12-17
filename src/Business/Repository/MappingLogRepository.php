@@ -1,9 +1,9 @@
 <?php
-namespace Triadev\Es\ODM\Business\Repository;
+namespace Triadev\Leopard\Business\Repository;
 
 use Illuminate\Support\Facades\DB;
-use Triadev\Es\ODM\Contract\Repository\MappingLogRepositoryContract;
-use Triadev\Es\ODM\Model\Entity\MappingLog;
+use Triadev\Leopard\Contract\Repository\MappingLogRepositoryContract;
+use Triadev\Leopard\Model\Entity\MappingLog;
 
 class MappingLogRepository implements MappingLogRepositoryContract
 {

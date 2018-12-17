@@ -1,8 +1,8 @@
 <?php
-namespace Triadev\Es\ODM\Business\Mapping;
+namespace Triadev\Leopard\Business\Mapping;
 
 use Illuminate\Filesystem\Filesystem;
-use Triadev\Es\ODM\Contract\Repository\MappingLogRepositoryContract;
+use Triadev\Leopard\Contract\Repository\MappingLogRepositoryContract;
 
 class Mapper
 {

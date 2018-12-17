@@ -1,16 +1,16 @@
 <?php
-namespace Triadev\Es\ODM;
+namespace Triadev\Leopard;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
-use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Contract\ElasticsearchManagerContract;
+use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
+use Triadev\Leopard\Facade\Leopard;
 
 /**
  * Trait Searchable
- * @package Triadev\Es\ODM
+ * @package Triadev\Leopard
  *
  * @property string $documentIndex
  * @property string $documentType
@@ -153,11 +153,11 @@ trait Searchable
     public function __call($name, $arguments)
     {
         if ($name == 'search') {
-            return EsManager::search()->model($this);
+            return Leopard::search()->model($this);
         }
         
         if ($name == 'suggest') {
-            return EsManager::suggest();
+            return Leopard::suggest();
         }
         
         return parent::__call($name, $arguments);

@@ -1,8 +1,8 @@
 <?php
-namespace Triadev\Es\ODM\Business\Helper;
+namespace Triadev\Leopard\Business\Helper;
 
 use Illuminate\Database\Eloquent\Model;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Searchable;
 
 trait IsModelSearchable
 {

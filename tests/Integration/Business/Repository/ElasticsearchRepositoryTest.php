@@ -4,10 +4,10 @@ namespace Tests\Integration\Business\Repository;
 use Illuminate\Database\Eloquent\Model;
 use Tests\Integration\Model\Entity\TestModel;
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Mapping\Mapper;
-use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
-use Triadev\Es\ODM\Facade\EsManager;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Business\Mapping\Mapper;
+use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
+use Triadev\Leopard\Facade\Leopard;
+use Triadev\Leopard\Searchable;
 
 class ElasticsearchRepositoryTest extends TestCase
 {
@@ -38,7 +38,7 @@ class ElasticsearchRepositoryTest extends TestCase
     
     private function searchForDocuments() : ?array
     {
-        return EsManager::getStatement([
+        return Leopard::getStatement([
             'index' => $this->model->getDocumentIndex(),
             'type' => $this->model->getDocumentType(),
             'id' => 1

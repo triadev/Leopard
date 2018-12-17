@@ -1,5 +1,5 @@
 <?php
-namespace Triadev\Es\ODM\Business\Mapping;
+namespace Triadev\Leopard\Business\Mapping;
 
 use Illuminate\Support\Fluent;
 

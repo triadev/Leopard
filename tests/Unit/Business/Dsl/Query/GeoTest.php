@@ -2,8 +2,8 @@
 namespace Tests\Unit\Business\Dsl\Query;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Dsl\Query\Geo;
-use Triadev\Es\ODM\Model\Location;
+use Triadev\Leopard\Business\Dsl\Query\Geo;
+use Triadev\Leopard\Model\Location;
 
 class GeoTest extends TestCase
 {

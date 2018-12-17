@@ -1,10 +1,10 @@
 <?php
-namespace Triadev\Es\ODM\Business\Mapping;
+namespace Triadev\Leopard\Business\Mapping;
 
 use Illuminate\Database\Eloquent\Model;
-use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
-use Triadev\Es\ODM\Facade\EsManager;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Business\Helper\IsModelSearchable;
+use Triadev\Leopard\Facade\Leopard;
+use Triadev\Leopard\Searchable;
 
 abstract class Mapping
 {
@@ -71,7 +71,7 @@ abstract class Mapping
             return $this->index;
         }
         
-        return $this->model->getDocumentIndex() ?: EsManager::getEsDefaultIndex();
+        return $this->model->getDocumentIndex() ?: Leopard::getEsDefaultIndex();
     }
     
     /**

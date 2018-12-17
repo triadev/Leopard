@@ -2,7 +2,7 @@
 namespace Tests\Unit\Business\Dsl;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Facade\Leopard;
 
 class SuggestionTest extends TestCase
 {
@@ -19,7 +19,7 @@ class SuggestionTest extends TestCase
      */
     public function it_builds_a_suggestion_term_query()
     {
-        $result = EsManager::suggest()->term('NAME', 'TEXT', 'FIELD')->toDsl();
+        $result = Leopard::suggest()->term('NAME', 'TEXT', 'FIELD')->toDsl();
         
         $this->assertEquals([
             'suggest' => [
@@ -38,7 +38,7 @@ class SuggestionTest extends TestCase
      */
     public function it_builds_a_suggestion_phrase_query()
     {
-        $result = EsManager::suggest()->phrase('NAME', 'TEXT', 'FIELD')->toDsl();
+        $result = Leopard::suggest()->phrase('NAME', 'TEXT', 'FIELD')->toDsl();
         
         $this->assertEquals([
             'suggest' => [
@@ -57,7 +57,7 @@ class SuggestionTest extends TestCase
      */
     public function it_builds_a_suggestion_completion_query()
     {
-        $result = EsManager::suggest()->completion('NAME', 'TEXT', 'FIELD')->toDsl();
+        $result = Leopard::suggest()->completion('NAME', 'TEXT', 'FIELD')->toDsl();
         
         $this->assertEquals([
             'suggest' => [

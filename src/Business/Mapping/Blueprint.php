@@ -1,8 +1,8 @@
 <?php
-namespace Triadev\Es\ODM\Business\Mapping;
+namespace Triadev\Leopard\Business\Mapping;
 
 use Illuminate\Support\Fluent;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Facade\Leopard;
 
 class Blueprint
 {
@@ -29,7 +29,7 @@ class Blueprint
      */
     public function build(string $index, string $type) : array
     {
-        return EsManager::putMappingStatement([
+        return Leopard::putMappingStatement([
             'index' => $index,
             'type' => $type,
             'body' => [

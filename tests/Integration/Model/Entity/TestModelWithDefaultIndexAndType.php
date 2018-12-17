@@ -2,7 +2,7 @@
 namespace Tests\Integration\Model\Entity;
 
 use Illuminate\Database\Eloquent\Model;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Searchable;
 
 class TestModelWithDefaultIndexAndType extends Model
 {

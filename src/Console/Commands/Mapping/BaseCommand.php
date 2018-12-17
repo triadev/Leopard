@@ -1,5 +1,5 @@
 <?php
-namespace Triadev\Es\ODM\Console\Commands\Mapping;
+namespace Triadev\Leopard\Console\Commands\Mapping;
 
 use Illuminate\Console\Command;
 

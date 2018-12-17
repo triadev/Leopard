@@ -1,10 +1,10 @@
 <?php
-namespace Triadev\Es\ODM\Contract;
+namespace Triadev\Leopard\Contract;
 
 use Elasticsearch\Client;
-use Triadev\Es\ODM\Business\Dsl\Search;
-use Triadev\Es\ODM\Business\Dsl\Suggestion;
-use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
+use Triadev\Leopard\Business\Dsl\Search;
+use Triadev\Leopard\Business\Dsl\Suggestion;
+use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
 
 interface ElasticsearchManagerContract
 {

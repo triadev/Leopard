@@ -1,21 +1,21 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl;
+namespace Triadev\Leopard\Business\Dsl;
 
 use Illuminate\Database\Eloquent\Model;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
-use Triadev\Es\ODM\Busines\Dsl\Query\Specialized;
-use Triadev\Es\ODM\Business\Dsl\Query\Compound;
-use Triadev\Es\ODM\Business\Dsl\Query\Fulltext;
-use Triadev\Es\ODM\Business\Dsl\Query\Geo;
-use Triadev\Es\ODM\Business\Dsl\Query\InnerHit;
-use Triadev\Es\ODM\Business\Dsl\Query\Joining;
-use Triadev\Es\ODM\Business\Filler\EloquentFiller;
-use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
-use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
-use Triadev\Es\ODM\Contract\FillerContract;
-use Triadev\Es\ODM\Searchable;
-use Triadev\Es\ODM\Model\SearchResult;
-use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
+use Triadev\Leopard\Busines\Dsl\Query\Specialized;
+use Triadev\Leopard\Business\Dsl\Query\Compound;
+use Triadev\Leopard\Business\Dsl\Query\Fulltext;
+use Triadev\Leopard\Business\Dsl\Query\Geo;
+use Triadev\Leopard\Business\Dsl\Query\InnerHit;
+use Triadev\Leopard\Business\Dsl\Query\Joining;
+use Triadev\Leopard\Business\Filler\EloquentFiller;
+use Triadev\Leopard\Business\Helper\IsModelSearchable;
+use Triadev\Leopard\Contract\ElasticsearchManagerContract;
+use Triadev\Leopard\Contract\FillerContract;
+use Triadev\Leopard\Searchable;
+use Triadev\Leopard\Model\SearchResult;
+use Triadev\Leopard\Business\Dsl\Query\TermLevel;
 
 class Search extends AbstractQuery
 {
@@ -46,7 +46,7 @@ class Search extends AbstractQuery
         
         $this->manager = $manager;
         
-        $this->index = config('triadev-elasticsearch-odm.index');
+        $this->index = config('leopard.index');
     }
     
     /**

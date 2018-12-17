@@ -1,5 +1,5 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl\Query;
+namespace Triadev\Leopard\Business\Dsl\Query;
 
 use ONGR\ElasticsearchDSL\Query\MatchAllQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\ExistsQuery;
@@ -12,7 +12,7 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermsQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TypeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\WildcardQuery;
-use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
+use Triadev\Leopard\Business\Dsl\AbstractQuery;
 
 class TermLevel extends AbstractQuery
 {

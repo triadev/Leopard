@@ -1,8 +1,8 @@
 <?php
 
-use Triadev\Es\ODM\Business\Mapping\Blueprint;
-use Triadev\Es\ODM\Business\Mapping\Mapping;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Business\Mapping\Blueprint;
+use Triadev\Leopard\Business\Mapping\Mapping;
+use Triadev\Leopard\Facade\Leopard;
 
 class DefaultClass extends Mapping
 {
@@ -21,7 +21,7 @@ class DefaultClass extends Mapping
      */
     public function map()
     {
-        EsManager::map(function (Blueprint $blueprint) {
+        Leopard::map(function (Blueprint $blueprint) {
             $blueprint->keyword('EXAMPLE');
         }, $this->getDocumentIndex(), $this->getDocumentType());
     }

@@ -4,7 +4,7 @@ namespace Tests\Integration\Console\Commands\Index;
 use Illuminate\Support\Facades\DB;
 use Tests\Integration\Model\Entity\TestModel;
 use Tests\TestCase;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Facade\Leopard;
 
 class SyncTest extends TestCase
 {
@@ -40,7 +40,7 @@ class SyncTest extends TestCase
      
         $model = new TestModel();
         
-        $this->assertEquals(0, EsManager::getEsClient()->count([
+        $this->assertEquals(0, Leopard::getEsClient()->count([
             'index' => $model->getDocumentIndex(),
             'type' => $model->getDocumentType()
         ])['count']);
@@ -50,10 +50,10 @@ class SyncTest extends TestCase
         ])
             ->expectsOutput('Sync index with model: Tests\Integration\Model\Entity\TestModel')
             ->expectsOutput('Indexing a chunk of 2 documents ...');
-        
-        EsManager::getEsClient()->indices()->refresh(['index' => $model->getDocumentIndex()]);
     
-        $this->assertEquals(2, EsManager::getEsClient()->count([
+        Leopard::getEsClient()->indices()->refresh(['index' => $model->getDocumentIndex()]);
+    
+        $this->assertEquals(2, Leopard::getEsClient()->count([
             'index' => $model->getDocumentIndex(),
             'type' => $model->getDocumentType()
         ])['count']);

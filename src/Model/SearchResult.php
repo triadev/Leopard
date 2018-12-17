@@ -1,5 +1,5 @@
 <?php
-namespace Triadev\Es\ODM\Model;
+namespace Triadev\Leopard\Model;
 
 use Illuminate\Support\Collection;
 

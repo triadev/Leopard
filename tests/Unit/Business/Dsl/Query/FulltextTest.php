@@ -2,7 +2,7 @@
 namespace Tests\Unit\Business\Dsl\Query;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Dsl\Query\Fulltext;
+use Triadev\Leopard\Business\Dsl\Query\Fulltext;
 
 class FulltextTest extends TestCase
 {

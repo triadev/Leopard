@@ -1,5 +1,5 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl;
+namespace Triadev\Leopard\Business\Dsl;
 
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\FunctionScoreQuery;

@@ -1,12 +1,12 @@
 <?php
-namespace Triadev\Es\ODM\Business\Filler;
+namespace Triadev\Leopard\Business\Filler;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
-use Triadev\Es\ODM\Contract\FillerContract;
-use Triadev\Es\ODM\Model\SearchResult;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Contract\FillerContract;
+use Triadev\Leopard\Model\SearchResult;
+use Triadev\Leopard\Searchable;
 
 class EloquentFiller implements FillerContract
 {

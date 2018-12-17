@@ -8,7 +8,7 @@ use ONGR\ElasticsearchDSL\Aggregation\Metric\MinAggregation;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Search;
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Dsl\Aggregation;
+use Triadev\Leopard\Business\Dsl\Aggregation;
 
 class AggregationTest extends TestCase
 {

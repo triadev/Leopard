@@ -3,8 +3,8 @@ namespace Tests\Unit\Business\Helper;
 
 use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Business\Helper\IsModelSearchable;
+use Triadev\Leopard\Searchable;
 
 class IsModelSearchableTest extends TestCase
 {

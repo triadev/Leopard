@@ -2,9 +2,9 @@
 namespace Tests\Unit\Business\Dsl\Query;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Dsl\Query\Joining;
-use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
-use Triadev\Es\ODM\Business\Dsl\Search;
+use Triadev\Leopard\Business\Dsl\Query\Joining;
+use Triadev\Leopard\Business\Dsl\Query\TermLevel;
+use Triadev\Leopard\Business\Dsl\Search;
 
 class JoiningTest extends TestCase
 {

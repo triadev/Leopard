@@ -5,17 +5,17 @@ use Illuminate\Database\Eloquent\Model;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Tests\TestCase;
-use Triadev\Es\ODM\Busines\Dsl\Query\Specialized;
-use Triadev\Es\ODM\Business\Dsl\Aggregation;
-use Triadev\Es\ODM\Business\Dsl\Query\Compound;
-use Triadev\Es\ODM\Business\Dsl\Query\InnerHit;
-use Triadev\Es\ODM\Business\Dsl\Query\Joining;
-use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
-use Triadev\Es\ODM\Business\Dsl\Query\Fulltext;
-use Triadev\Es\ODM\Business\Dsl\Query\Geo;
-use Triadev\Es\ODM\Business\Dsl\Search;
-use Triadev\Es\ODM\Model\Location;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Busines\Dsl\Query\Specialized;
+use Triadev\Leopard\Business\Dsl\Aggregation;
+use Triadev\Leopard\Business\Dsl\Query\Compound;
+use Triadev\Leopard\Business\Dsl\Query\InnerHit;
+use Triadev\Leopard\Business\Dsl\Query\Joining;
+use Triadev\Leopard\Business\Dsl\Query\TermLevel;
+use Triadev\Leopard\Business\Dsl\Query\Fulltext;
+use Triadev\Leopard\Business\Dsl\Query\Geo;
+use Triadev\Leopard\Business\Dsl\Search;
+use Triadev\Leopard\Model\Location;
+use Triadev\Leopard\Searchable;
 
 class SearchTest extends TestCase
 {

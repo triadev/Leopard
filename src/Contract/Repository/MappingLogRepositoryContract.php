@@ -1,7 +1,7 @@
 <?php
-namespace Triadev\Es\ODM\Contract\Repository;
+namespace Triadev\Leopard\Contract\Repository;
 
-use Triadev\Es\ODM\Model\Entity\MappingLog;
+use Triadev\Leopard\Model\Entity\MappingLog;
 
 interface MappingLogRepositoryContract
 {

@@ -1,9 +1,9 @@
 <?php
-namespace Triadev\Es\ODM\Contract\Repository;
+namespace Triadev\Leopard\Contract\Repository;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Searchable;
 
 interface ElasticsearchRepositoryContract
 {

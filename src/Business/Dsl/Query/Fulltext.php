@@ -1,5 +1,5 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl\Query;
+namespace Triadev\Leopard\Business\Dsl\Query;
 
 use ONGR\ElasticsearchDSL\Query\FullText\CommonTermsQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchPhrasePrefixQuery;
@@ -8,7 +8,7 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MultiMatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\QueryStringQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\SimpleQueryStringQuery;
-use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
+use Triadev\Leopard\Business\Dsl\AbstractQuery;
 
 class Fulltext extends AbstractQuery
 {

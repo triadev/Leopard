@@ -3,8 +3,8 @@ namespace Tests\Unit\Business\Mapping;
 
 use Illuminate\Support\Fluent;
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Mapping\Blueprint;
-use Triadev\Es\ODM\Business\Mapping\Compiler;
+use Triadev\Leopard\Business\Mapping\Blueprint;
+use Triadev\Leopard\Business\Mapping\Compiler;
 
 class CompilerTest extends TestCase
 {

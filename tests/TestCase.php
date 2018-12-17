@@ -4,8 +4,8 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Integration\Model\Entity\TestModel;
-use Triadev\Es\ODM\Facade\EsManager;
-use Triadev\Es\ODM\Provider\ServiceProvider;
+use Triadev\Leopard\Facade\Leopard;
+use Triadev\Leopard\Provider\ServiceProvider;
 use Triadev\Es\Provider\ElasticsearchServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
@@ -52,7 +52,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'prefix'   => '',
         ]);
         
-        $app['config']->set('triadev-elasticsearch-odm.sync', [
+        $app['config']->set('leopard.sync', [
             'chunkSize' => 1000,
             'models' => [
                 'phpunit' => [
@@ -87,11 +87,11 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         $model = new TestModel();
         
-        if (EsManager::getEsClient()->indices()->exists(['index' => $model->getDocumentIndex()])) {
-            EsManager::getEsClient()->indices()->delete(['index' => $model->getDocumentIndex()]);
+        if (Leopard::getEsClient()->indices()->exists(['index' => $model->getDocumentIndex()])) {
+            Leopard::getEsClient()->indices()->delete(['index' => $model->getDocumentIndex()]);
         }
     
-        EsManager::getEsClient()->indices()->create([
+        Leopard::getEsClient()->indices()->create([
             'index' => $model->getDocumentIndex()
         ]);
     }
@@ -122,6 +122,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      */
     public function getEsMapping(?string $index = null) : array
     {
-        return EsManager::getEsClient()->indices()->getMapping(['index' => $index ?: 'phpunit']);
+        return Leopard::getEsClient()->indices()->getMapping(['index' => $index ?: 'phpunit']);
     }
 }

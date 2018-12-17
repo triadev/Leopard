@@ -1,11 +1,11 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl\Query;
+namespace Triadev\Leopard\Business\Dsl\Query;
 
-use Triadev\Es\ODM\Business\Dsl\Search;
+use Triadev\Leopard\Business\Dsl\Search;
 use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
 use ONGR\ElasticsearchDSL\Query\Joining\HasChildQuery;
 use ONGR\ElasticsearchDSL\Query\Joining\HasParentQuery;
-use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
+use Triadev\Leopard\Business\Dsl\AbstractQuery;
 
 class Joining extends AbstractQuery
 {

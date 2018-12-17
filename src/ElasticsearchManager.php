@@ -1,14 +1,14 @@
 <?php
-namespace Triadev\Es\ODM;
+namespace Triadev\Leopard;
 
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Triadev\Es\Contract\ElasticsearchContract;
-use Triadev\Es\ODM\Business\Dsl\Search;
-use Triadev\Es\ODM\Business\Dsl\Suggestion;
-use Triadev\Es\ODM\Business\Mapping\Builder;
-use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
-use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
+use Triadev\Leopard\Business\Dsl\Search;
+use Triadev\Leopard\Business\Dsl\Suggestion;
+use Triadev\Leopard\Business\Mapping\Builder;
+use Triadev\Leopard\Contract\ElasticsearchManagerContract;
+use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
 
 class ElasticsearchManager implements ElasticsearchManagerContract
 {
@@ -41,7 +41,7 @@ class ElasticsearchManager implements ElasticsearchManagerContract
      */
     public function getEsDefaultIndex() : string
     {
-        return config('triadev-elasticsearch-odm.index');
+        return config('leopard.index');
     }
     
     /**

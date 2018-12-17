@@ -2,7 +2,7 @@
 namespace Tests\Unit\Business\Dsl\Query;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
+use Triadev\Leopard\Business\Dsl\Query\TermLevel;
 
 class TermLevelTest extends TestCase
 {

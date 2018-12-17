@@ -1,8 +1,8 @@
 <?php
-namespace Triadev\Es\ODM\Busines\Dsl\Query;
+namespace Triadev\Leopard\Busines\Dsl\Query;
 
 use ONGR\ElasticsearchDSL\Query\Specialized\MoreLikeThisQuery;
-use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
+use Triadev\Leopard\Business\Dsl\AbstractQuery;
 
 class Specialized extends AbstractQuery
 {

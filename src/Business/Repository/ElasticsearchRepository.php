@@ -1,12 +1,12 @@
 <?php
-namespace Triadev\Es\ODM\Business\Repository;
+namespace Triadev\Leopard\Business\Repository;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Triadev\Es\ODM\Business\Helper\IsModelSearchable;
-use Triadev\Es\ODM\Contract\Repository\ElasticsearchRepositoryContract;
-use Triadev\Es\ODM\Facade\EsManager;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Business\Helper\IsModelSearchable;
+use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
+use Triadev\Leopard\Facade\Leopard;
+use Triadev\Leopard\Searchable;
 
 class ElasticsearchRepository implements ElasticsearchRepositoryContract
 {
@@ -24,7 +24,7 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
     {
         $this->isModelSearchable($model);
         
-        return EsManager::indexStatement([
+        return Leopard::indexStatement([
             'index' => $model->getDocumentIndex(),
             'type' => $model->getDocumentType(),
             'id' => $model->getKey(),
@@ -44,7 +44,7 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
     {
         $this->isModelSearchable($model);
         
-        return EsManager::updateStatement([
+        return Leopard::updateStatement([
             'index' => $model->getDocumentIndex(),
             'type' => $model->getDocumentType(),
             'id' => $model->getKey(),
@@ -72,8 +72,8 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
             'id' => $model->getKey(),
         ];
         
-        if (EsManager::existStatement($params)) {
-            EsManager::deleteStatement($params);
+        if (Leopard::existStatement($params)) {
+            Leopard::deleteStatement($params);
         }
         
         return true;
@@ -89,7 +89,7 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
     {
         $params = [];
     
-        $defaultIndex = EsManager::getEsDefaultIndex();
+        $defaultIndex = Leopard::getEsDefaultIndex();
         
         foreach ($models as $model) {
             /** @var Model|Searchable $model */
@@ -106,7 +106,7 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
             $params['body'][] = $model->getDocumentData();
         }
         
-        return EsManager::bulkStatement($params);
+        return Leopard::bulkStatement($params);
     }
     
     /**
@@ -119,7 +119,7 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
     {
         $params = [];
     
-        $defaultIndex = EsManager::getEsDefaultIndex();
+        $defaultIndex = Leopard::getEsDefaultIndex();
         
         foreach ($models as $model) {
             /** @var Model|Searchable $model */
@@ -134,6 +134,6 @@ class ElasticsearchRepository implements ElasticsearchRepositoryContract
             ];
         }
     
-        return EsManager::bulkStatement($params);
+        return Leopard::bulkStatement($params);
     }
 }

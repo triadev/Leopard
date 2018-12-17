@@ -2,7 +2,7 @@
 namespace Tests\Integration\Console\Commands\Mapping;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Contract\Repository\MappingLogRepositoryContract;
+use Triadev\Leopard\Contract\Repository\MappingLogRepositoryContract;
 
 class RollbackTest extends TestCase
 {

@@ -1,13 +1,13 @@
 <?php
-namespace Triadev\Es\ODM\Business\Dsl\Query;
+namespace Triadev\Leopard\Business\Dsl\Query;
 
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoostingQuery;
 use ONGR\ElasticsearchDSL\Query\Compound\ConstantScoreQuery;
 use ONGR\ElasticsearchDSL\Query\Compound\DisMaxQuery;
-use Triadev\Es\ODM\Business\Dsl\FunctionScore;
-use Triadev\Es\ODM\Business\Dsl\Search;
-use Triadev\Es\ODM\Business\Dsl\AbstractQuery;
+use Triadev\Leopard\Business\Dsl\FunctionScore;
+use Triadev\Leopard\Business\Dsl\Search;
+use Triadev\Leopard\Business\Dsl\AbstractQuery;
 
 class Compound extends AbstractQuery
 {

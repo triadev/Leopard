@@ -5,7 +5,7 @@ use Tests\Integration\Model\Entity\TestModelNotSearchable;
 use Tests\Integration\Model\Entity\TestModelWithDefaultIndexAndType;
 use Tests\Integration\Model\Entity\TestModelWithIndividualIndexAndType;
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Mapping\Mapping;
+use Triadev\Leopard\Business\Mapping\Mapping;
 
 class MappingTest extends TestCase
 {

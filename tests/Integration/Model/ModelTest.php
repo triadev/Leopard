@@ -2,8 +2,8 @@
 namespace Tests\Integration\Model;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Mapping\Mapper;
-use Triadev\Es\ODM\Facade\EsManager;
+use Triadev\Leopard\Business\Mapping\Mapper;
+use Triadev\Leopard\Facade\Leopard;
 use Tests\Integration\Model\Entity\TestModel;
 
 class ModelTest extends TestCase
@@ -22,7 +22,7 @@ class ModelTest extends TestCase
     
     private function getTestDocument() : ?array
     {
-        return EsManager::getStatement([
+        return Leopard::getStatement([
             'index' => 'phpunit',
             'type' => 'test',
             'id' => 1

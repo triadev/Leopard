@@ -30,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Triadev\\Es\\ODM\\": "src/"
+            "Triadev\\Leopard\\": "src/"
         }
     },
     "autoload-dev": {
@@ -41,7 +41,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Triadev\\Es\\ODM\\Provider\\ServiceProvider"
+                "Triadev\\Leopard\\Provider\\ServiceProvider"
             ]
         }
     },

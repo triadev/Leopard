@@ -2,11 +2,11 @@
 namespace Tests\Unit\Business\Dsl;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Business\Dsl\Query\Compound;
-use Triadev\Es\ODM\Business\Dsl\Query\TermLevel;
-use Triadev\Es\ODM\Business\Dsl\FunctionScore;
-use Triadev\Es\ODM\Business\Dsl\Search;
-use Triadev\Es\ODM\Contract\ElasticsearchManagerContract;
+use Triadev\Leopard\Business\Dsl\Query\Compound;
+use Triadev\Leopard\Business\Dsl\Query\TermLevel;
+use Triadev\Leopard\Business\Dsl\FunctionScore;
+use Triadev\Leopard\Business\Dsl\Search;
+use Triadev\Leopard\Contract\ElasticsearchManagerContract;
 
 class FunctionScoreTest extends TestCase
 {

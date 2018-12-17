@@ -1,8 +1,8 @@
 <?php
-namespace Triadev\Es\ODM\Console\Commands\Mapping;
+namespace Triadev\Leopard\Console\Commands\Mapping;
 
 use Illuminate\Console\ConfirmableTrait;
-use Triadev\Es\ODM\Business\Mapping\Mapper;
+use Triadev\Leopard\Business\Mapping\Mapper;
 
 class Migrate extends BaseCommand
 {

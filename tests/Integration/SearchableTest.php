@@ -3,7 +3,7 @@ namespace Tests\Integration;
 
 use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
-use Triadev\Es\ODM\Searchable;
+use Triadev\Leopard\Searchable;
 
 class SearchableTest extends TestCase
 {

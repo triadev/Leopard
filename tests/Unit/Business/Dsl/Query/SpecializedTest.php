@@ -2,7 +2,7 @@
 namespace Tests\Unit\Business\Dsl\Query;
 
 use Tests\TestCase;
-use Triadev\Es\ODM\Busines\Dsl\Query\Specialized;
+use Triadev\Leopard\Busines\Dsl\Query\Specialized;
 
 class SpecializedTest extends TestCase
 {

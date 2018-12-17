@@ -1,8 +1,8 @@
 <?php
-namespace Triadev\Es\ODM\Contract;
+namespace Triadev\Leopard\Contract;
 
 use Illuminate\Database\Eloquent\Model;
-use Triadev\Es\ODM\Model\SearchResult;
+use Triadev\Leopard\Model\SearchResult;
 
 interface FillerContract
 {
