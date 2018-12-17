@@ -25,10 +25,10 @@ class Make extends BaseCommand
     protected $description = 'Make a new mapping';
     
     /** @var Filesystem */
-    private $_filesystem;
+    private $filesystem;
     
     /** @var Composer */
-    private $_composer;
+    private $composer;
     
     /**
      * Make constructor.
@@ -39,8 +39,8 @@ class Make extends BaseCommand
     {
         parent::__construct();
         
-        $this->_filesystem = $filesystem;
-        $this->_composer = $composer;
+        $this->filesystem = $filesystem;
+        $this->composer = $composer;
     }
     
     /**
@@ -54,7 +54,7 @@ class Make extends BaseCommand
             $this->formatModelName($this->option('model')) :
             null;
         
-        $this->_filesystem->put(
+        $this->filesystem->put(
             $this->buildMappingFilePath($mapping),
             $this->buildMapping(
                 $this->getDefaultStub(),
@@ -63,7 +63,7 @@ class Make extends BaseCommand
             )
         );
         
-        $this->_composer->dumpAutoloads();
+        $this->composer->dumpAutoloads();
     }
     
     private function formatMappingName(string $mapping) : string
@@ -78,7 +78,7 @@ class Make extends BaseCommand
     
     private function getDefaultStub() : string
     {
-        return $this->_filesystem->get(__DIR__ . DIRECTORY_SEPARATOR . 'default.stub');
+        return $this->filesystem->get(__DIR__ . DIRECTORY_SEPARATOR . 'default.stub');
     }
     
     private function buildMappingFilePath(string $mapping) : string

@@ -178,14 +178,17 @@ class Bucketing extends Aggs
         string $unit = null,
         string $distanceType = null
     ) : Bucketing {
-        $this->addAggregation(new GeoDistanceAggregation(
-            $name,
-            $field,
-            $origin,
-            $ranges,
-            $unit,
-            $distanceType
-        ));
+        $this->addAggregation(
+            new GeoDistanceAggregation(
+                $name,
+                $field,
+                $origin,
+                $ranges,
+                $unit,
+                $distanceType
+            )
+        );
+        
         return $this;
     }
     
@@ -206,13 +209,16 @@ class Bucketing extends Aggs
         ?int $size = null,
         ?int $shardSize = null
     ) : Bucketing {
-        $this->addAggregation(new GeoHashGridAggregation(
-            $name,
-            $field,
-            $precision,
-            $size,
-            $shardSize
-        ));
+        $this->addAggregation(
+            new GeoHashGridAggregation(
+                $name,
+                $field,
+                $precision,
+                $size,
+                $shardSize
+            )
+        );
+        
         return $this;
     }
     
@@ -241,17 +247,20 @@ class Bucketing extends Aggs
         ?int $extendedBoundsMax = null,
         bool $keyed = null
     ) : Bucketing {
-        $this->addAggregation(new HistogramAggregation(
-            $name,
-            $field,
-            $interval,
-            $minDocCount,
-            $orderMode,
-            $orderDirection,
-            $extendedBoundsMin,
-            $extendedBoundsMax,
-            $keyed
-        ));
+        $this->addAggregation(
+            new HistogramAggregation(
+                $name,
+                $field,
+                $interval,
+                $minDocCount,
+                $orderMode,
+                $orderDirection,
+                $extendedBoundsMin,
+                $extendedBoundsMax,
+                $keyed
+            )
+        );
+        
         return $this;
     }
     
@@ -265,11 +274,14 @@ class Bucketing extends Aggs
      */
     public function ipv4Range(string $name, string $field, array $ranges = []) : Bucketing
     {
-        $this->addAggregation(new Ipv4RangeAggregation(
-            $name,
-            $field,
-            $ranges
-        ));
+        $this->addAggregation(
+            new Ipv4RangeAggregation(
+                $name,
+                $field,
+                $ranges
+            )
+        );
+        
         return $this;
     }
     
