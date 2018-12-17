@@ -31,7 +31,7 @@ build:
         override:
           - php-scrutinizer-run --enable-security-analysis
           - command: phpcs-run
-            use_website_config: false
+            use_website_config: true
 
 filter:
   excluded_paths:
