@@ -27,9 +27,7 @@ class InnerHitTest extends TestCase
     public function it_builds_a_nested_inner_hit_query()
     {
         $result = $this->innerHit->nestedInnerHit('NAME', 'PATH', function (Search $search) {
-            $search->termLevel(function (TermLevel $boolQuery) {
-                $boolQuery->term('FIELD', 'VALUE');
-            });
+            $search->termLevel()->term('FIELD', 'VALUE');
         })->toDsl();
         
         $this->assertEquals([
@@ -55,9 +53,7 @@ class InnerHitTest extends TestCase
     public function it_builds_a_parent_inner_hit_query()
     {
         $result = $this->innerHit->parentInnerHit('NAME', 'PATH', function (Search $search) {
-            $search->termLevel(function (TermLevel $boolQuery) {
-                $boolQuery->term('FIELD', 'VALUE');
-            });
+            $search->termLevel()->term('FIELD', 'VALUE');
         })->toDsl();
         
         $this->assertEquals([

@@ -3,6 +3,7 @@ namespace Triadev\Leopard;
 
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Illuminate\Database\Eloquent\Model;
 use Triadev\Es\Contract\ElasticsearchContract;
 use Triadev\Leopard\Business\Dsl\Search;
 use Triadev\Leopard\Business\Dsl\Suggestion;
@@ -47,11 +48,18 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     /**
      * Search
      *
+     * @param \ONGR\ElasticsearchDSL\Search|null $search
+     * @param Model|null $model
      * @return Search
      */
-    public function search(): Search
-    {
-        return app()->make(Search::class);
+    public function search(
+        ?\ONGR\ElasticsearchDSL\Search $search = null,
+        ?Model $model = null
+    ) : Search {
+        return app()->make(Search::class, [
+            'search' => $search,
+            'model' => $model
+        ]);
     }
     
     /**

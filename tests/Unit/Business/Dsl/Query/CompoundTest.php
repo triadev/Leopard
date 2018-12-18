@@ -58,9 +58,7 @@ class CompoundTest extends TestCase
     public function it_builds_a_constant_score_query()
     {
         $result = $this->compound->constantScore(function (Search $search) {
-            $search->termLevel(function (TermLevel $boolQuery) {
-                $boolQuery->term('FIELD', 'VALUE');
-            });
+            $search->termLevel()->term('FIELD', 'VALUE');
         })->toDsl();
         
         $this->assertEquals([

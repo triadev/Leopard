@@ -2,7 +2,9 @@
 namespace Triadev\Leopard\Facade;
 
 use Elasticsearch\Client;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Facade;
+use phpDocumentor\Reflection\Types\Null_;
 use Triadev\Leopard\Business\Repository\ElasticsearchRepository;
 use Triadev\Leopard\Contract\ElasticsearchManagerContract;
 use Triadev\Leopard\Business\Dsl\Search;
@@ -14,7 +16,7 @@ use Triadev\Leopard\Business\Dsl\Suggestion;
  *
  * @method static Client getEsClient()
  * @method static string getEsDefaultIndex()
- * @method static Search search()
+ * @method static Search search(?\ONGR\ElasticsearchDSL\Search $search = null, ?Model $model = null)
  * @method static Suggestion suggest()
  * @method static ElasticsearchRepository repository()
  * @method static map(\Closure $blueprint, string $index, string $type, bool $createIndex = false)

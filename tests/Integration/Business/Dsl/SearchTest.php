@@ -3,7 +3,6 @@ namespace Tests\Integration\Business\Dsl;
 
 use Tests\Integration\Model\Entity\TestModel;
 use Tests\TestCase;
-use Triadev\Leopard\Business\Dsl\Query\TermLevel;
 use Triadev\Leopard\Facade\Leopard;
 
 class SearchTest extends TestCase
@@ -60,9 +59,9 @@ class SearchTest extends TestCase
         $result = Leopard::search()
             ->overwriteIndex($this->testModel->getDocumentIndex())
             ->overwriteType($this->testModel->getDocumentType())
-            ->termLevel(function (TermLevel $boolQuery) {
-                $boolQuery->term('test', 'phpunit');
-            })->get();
+            ->termLevel()
+                ->term('test', 'phpunit')
+            ->get();
         
         $this->assertIsInt($result->getTook());
         $this->assertIsBool($result->isTimedOut());
@@ -88,9 +87,8 @@ class SearchTest extends TestCase
         
         $result = Leopard::search()
             ->model($this->testModel)
-            ->termLevel(function (TermLevel $boolQuery) {
-                $boolQuery->term('test', 'phpunit');
-            })
+            ->termLevel()
+                ->term('test', 'phpunit')
             ->get();
         
         $this->assertIsInt($result->getTook());

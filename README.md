@@ -57,6 +57,7 @@ This will create a mapping directory at ```database/mappings```.
 | Key        | Env | Value           | Description | Default |
 |:-------------:|:-------------:|:-------------:|:-----:|:-----:|
 | index | LEOPARD_INDEX | STRING | elasticsearch index | default_index |
+| sync.chunkSize | LEOPARD_SYNC_CHUNK_SIZE | INTEGER | chunk size for sync | 1000 (max) |
 
 ## Reporting Issues
 If you do find an issue, please feel free to report it with GitHub's bug tracker for this project.
