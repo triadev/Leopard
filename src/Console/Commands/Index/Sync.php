@@ -10,6 +10,8 @@ use Triadev\Leopard\Searchable;
 
 class Sync extends Command
 {
+    const MAX_CHUNK_SIZE = 1000;
+    
     use IsModelSearchable;
     
     /**
@@ -56,7 +58,9 @@ class Sync extends Command
      */
     private function getChunkSize() : int
     {
-        return config('leopard.sync.chunkSize');
+        $chunkSize = config('leopard.sync.chunkSize');
+        
+        return $chunkSize > self::MAX_CHUNK_SIZE ? self::MAX_CHUNK_SIZE : $chunkSize;
     }
     
     /**
