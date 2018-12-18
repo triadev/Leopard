@@ -8,17 +8,12 @@ use Triadev\Leopard\Facade\Leopard;
 
 class SearchTest extends TestCase
 {
-    /** @var TestModel */
-    private $testModel;
-    
     /**
      * Setup the test environment.
      */
     public function setUp()
     {
         parent::setUp();
-        
-        $this->testModel = new TestModel();
         
         $this->refreshElasticsearchMappings();
     

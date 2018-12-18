@@ -93,6 +93,14 @@ interface ElasticsearchManagerContract
     public function existStatement(array $params) : bool;
     
     /**
+     * Exist index statement
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function existIndexStatement(array $params) : bool;
+    
+    /**
      * Delete statement
      *
      * @param array $params

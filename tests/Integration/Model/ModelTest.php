@@ -15,7 +15,7 @@ class ModelTest extends TestCase
     {
         parent::setUp();
     
-        $this->refreshElasticsearchMappings();
+        $this->deleteElasticsearchMappings();
     
         app()->make(Mapper::class)->run($this->getMappingsPath());
     }

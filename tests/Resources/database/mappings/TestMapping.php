@@ -26,6 +26,14 @@ class TestMapping extends Mapping
             $blueprint->integer('id');
             $blueprint->text('name');
             $blueprint->keyword('email');
-        }, $this->getDocumentIndex(), $this->getDocumentType());
+            
+            $blueprint->settings([
+                'index' => [
+                    'number_of_replicas' => 10,
+                    'number_of_shards' => 12,
+                    'refresh_interval' => '30s'
+                ]
+            ]);
+        }, $this->getDocumentIndex(), $this->getDocumentType(), true);
     }
 }

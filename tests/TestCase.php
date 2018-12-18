@@ -12,12 +12,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     use RefreshDatabase;
     
+    /** @var TestModel */
+    public $testModel;
+    
     /**
      * Setup the test environment.
      */
     public function setUp()
     {
         parent::setUp();
+        
+        $this->testModel = new TestModel();
         
         $this->loadMigrationsFrom($this->getMigrationsPath());
     }
@@ -85,15 +90,21 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      */
     public function refreshElasticsearchMappings()
     {
-        $model = new TestModel();
+        $this->deleteElasticsearchMappings();
         
-        if (Leopard::getEsClient()->indices()->exists(['index' => $model->getDocumentIndex()])) {
-            Leopard::getEsClient()->indices()->delete(['index' => $model->getDocumentIndex()]);
-        }
-    
         Leopard::getEsClient()->indices()->create([
-            'index' => $model->getDocumentIndex()
+            'index' => $this->testModel->getDocumentIndex()
         ]);
+    }
+    
+    /**
+     * Delete elasticsearch mappings
+     */
+    public function deleteElasticsearchMappings()
+    {
+        if (Leopard::getEsClient()->indices()->exists(['index' => $this->testModel->getDocumentIndex()])) {
+            Leopard::getEsClient()->indices()->delete(['index' => $this->testModel->getDocumentIndex()]);
+        }
     }
     
     /**
@@ -123,5 +134,14 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     public function getEsMapping(?string $index = null) : array
     {
         return Leopard::getEsClient()->indices()->getMapping(['index' => $index ?: 'phpunit']);
+    }
+    
+    /**
+     * @param string|null $index
+     * @return array
+     */
+    public function getEsSetting(?string $index = null) : array
+    {
+        return Leopard::getEsClient()->indices()->getSettings(['index' => $index ?: 'phpunit']);
     }
 }

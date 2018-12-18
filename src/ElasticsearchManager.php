@@ -80,10 +80,11 @@ class ElasticsearchManager implements ElasticsearchManagerContract
      * @param \Closure $blueprint
      * @param string $index
      * @param string $type
+     * @param bool $createIndex
      */
-    public function map(\Closure $blueprint, string $index, string $type)
+    public function map(\Closure $blueprint, string $index, string $type, bool $createIndex = false)
     {
-        (new Builder())->create($blueprint, $index, $type);
+        (new Builder())->create($blueprint, $index, $type, $createIndex);
     }
     
     /**
@@ -139,6 +140,17 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     public function existStatement(array $params) : bool
     {
         return $this->esClient->exists($params);
+    }
+    
+    /**
+     * Exist index statement
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function existIndexStatement(array $params) : bool
+    {
+        return $this->esClient->indices()->exists($params);
     }
     
     /**
