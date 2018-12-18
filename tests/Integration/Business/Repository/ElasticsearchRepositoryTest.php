@@ -31,7 +31,7 @@ class ElasticsearchRepositoryTest extends TestCase
         $this->model->name = 'PHPUNIT';
         $this->model->email = 'test@test.de';
         
-        $this->refreshElasticsearchMappings();
+        $this->deleteElasticsearchMappings();
     
         app()->make(Mapper::class)->run($this->getMappingsPath());
     }

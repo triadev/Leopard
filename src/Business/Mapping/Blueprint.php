@@ -9,6 +9,9 @@ class Blueprint
     /** @var Fluent[] */
     private $fields = [];
     
+    /** @var array|null */
+    private $settings;
+    
     /**
      * Blueprint constructor.
      * @param \Closure|null $callback
@@ -25,9 +28,44 @@ class Blueprint
      *
      * @param string $index
      * @param string $type
+     * @param bool $createIndex
      * @return array
      */
-    public function build(string $index, string $type) : array
+    public function build(string $index, string $type, bool $createIndex = false) : array
+    {
+        if ($this->shouldCreateIndex($index, $createIndex)) {
+            return $this->createIndex($index, $type);
+        }
+        
+        return $this->updateIndex($index, $type);
+    }
+    
+    private function shouldCreateIndex(string $index, bool $createIndex) : bool
+    {
+        return $createIndex && !Leopard::existIndexStatement(['index' => $index]);
+    }
+    
+    private function createIndex(string $index, string $type) : array
+    {
+        $body = [
+            'mappings' => [
+                $type => [
+                    'properties' => $this->toDsl()
+                ]
+            ]
+        ];
+    
+        if (is_array($this->settings)) {
+            $body['settings'] = $this->settings;
+        }
+    
+        return Leopard::getEsClient()->indices()->create([
+            'index' => $index,
+            'body' => $body
+        ]);
+    }
+    
+    private function updateIndex(string $index, string $type) : array
     {
         return Leopard::putMappingStatement([
             'index' => $index,
@@ -352,5 +390,15 @@ class Blueprint
         );
         
         return $field;
+    }
+    
+    /**
+     * Settings
+     *
+     * @param array $settings
+     */
+    public function settings(array $settings)
+    {
+        $this->settings = $settings;
     }
 }
