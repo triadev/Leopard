@@ -27,12 +27,9 @@ class JoiningTest extends TestCase
     public function it_builds_a_nested_query()
     {
         $result = $this->joining->nested('PATH', function (Search $search) {
-            $search->termLevel(function (TermLevel $boolQuery) {
-                $boolQuery
-                    ->filter()
-                    ->term('FIELD1', 'VALUE1')
-                    ->term('FIELD2', 'VALUE2');
-            });
+            $search->termLevel()->filter()
+                ->term('FIELD1', 'VALUE1')
+                ->term('FIELD2', 'VALUE2');
         })->toDsl();
         
         $this->assertEquals([
@@ -66,12 +63,9 @@ class JoiningTest extends TestCase
     public function it_builds_a_has_child_query()
     {
         $result = $this->joining->hasChild('TYPE', function (Search $search) {
-            $search->termLevel(function (TermLevel $boolQuery) {
-                $boolQuery
-                    ->filter()
-                    ->term('FIELD1', 'VALUE1')
-                    ->term('FIELD2', 'VALUE2');
-            });
+            $search->termLevel()->filter()
+                ->term('FIELD1', 'VALUE1')
+                ->term('FIELD2', 'VALUE2');
         })->toDsl();
         
         $this->assertEquals([
@@ -105,12 +99,9 @@ class JoiningTest extends TestCase
     public function it_builds_a_has_parent_query()
     {
         $result = $this->joining->hasParent('TYPE', function (Search $search) {
-            $search->termLevel(function (TermLevel $boolQuery) {
-                $boolQuery
-                    ->filter()
-                    ->term('FIELD1', 'VALUE1')
-                    ->term('FIELD2', 'VALUE2');
-            });
+            $search->termLevel()->filter()
+                ->term('FIELD1', 'VALUE1')
+                ->term('FIELD2', 'VALUE2');
         })->toDsl();
         
         $this->assertEquals([

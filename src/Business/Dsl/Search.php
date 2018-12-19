@@ -1,7 +1,6 @@
 <?php
 namespace Triadev\Leopard\Business\Dsl;
 
-use Illuminate\Database\Eloquent\Model;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Triadev\Leopard\Busines\Dsl\Query\Specialized;
 use Triadev\Leopard\Business\Dsl\Query\Compound;
@@ -9,150 +8,10 @@ use Triadev\Leopard\Business\Dsl\Query\Fulltext;
 use Triadev\Leopard\Business\Dsl\Query\Geo;
 use Triadev\Leopard\Business\Dsl\Query\InnerHit;
 use Triadev\Leopard\Business\Dsl\Query\Joining;
-use Triadev\Leopard\Business\Filler\EloquentFiller;
-use Triadev\Leopard\Business\Helper\IsModelSearchable;
-use Triadev\Leopard\Contract\ElasticsearchManagerContract;
-use Triadev\Leopard\Contract\FillerContract;
-use Triadev\Leopard\Searchable;
-use Triadev\Leopard\Model\SearchResult;
 use Triadev\Leopard\Business\Dsl\Query\TermLevel;
 
 class Search extends AbstractQuery
 {
-    use IsModelSearchable;
-    
-    /** @var string */
-    private $index;
-    
-    /** @var string */
-    private $type;
-    
-    /** @var Model */
-    private $model;
-    
-    /** @var ElasticsearchManagerContract */
-    private $manager;
-    
-    /**
-     * Search constructor.
-     * @param ElasticsearchManagerContract $manager
-     * @param \ONGR\ElasticsearchDSL\Search|null $search
-     */
-    public function __construct(
-        ElasticsearchManagerContract $manager,
-        ?\ONGR\ElasticsearchDSL\Search $search = null
-    ) {
-        parent::__construct($search);
-        
-        $this->manager = $manager;
-        
-        $this->index = config('leopard.index');
-    }
-    
-    /**
-     * Overwrite default index
-     *
-     * @param string $index
-     * @return Search
-     */
-    public function overwriteIndex(string $index) : Search
-    {
-        $this->index = $index;
-        return $this;
-    }
-    
-    /**
-     * Get index
-     *
-     * @return string
-     */
-    public function getIndex() : string
-    {
-        return $this->index;
-    }
-    
-    /**
-     * Overwrite default type
-     *
-     * @param string $type
-     * @return Search
-     */
-    public function overwriteType(string $type) : Search
-    {
-        $this->type = $type;
-        return $this;
-    }
-    
-    /**
-     * Get type
-     *
-     * @return string|null
-     */
-    public function getType() : ?string
-    {
-        return $this->type;
-    }
-    
-    /**
-     * Add model
-     *
-     * @param Model|Searchable $model
-     * @return Search
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function model(Model $model) : Search
-    {
-        $this->isModelSearchable($model);
-        
-        $this->model = $model;
-        
-        if (is_string($index = $model->getDocumentIndex())) {
-            $this->overwriteIndex($index);
-        }
-    
-        $this->overwriteType($model->getDocumentType());
-        
-        return $this;
-    }
-    
-    /**
-     * Get
-     *
-     * @param FillerContract|null $filler
-     * @return SearchResult
-     */
-    public function get(?FillerContract $filler = null) : SearchResult
-    {
-        $searchResult = new SearchResult($this->getRaw());
-        
-        if ($this->model) {
-            $filler = $filler ?: new EloquentFiller();
-            $filler->fill($this->model, $searchResult);
-        }
-        
-        return $searchResult;
-    }
-    
-    /**
-     * Get raw search result
-     *
-     * @return array
-     */
-    public function getRaw() : array
-    {
-        $params = [
-            'index' => $this->index,
-            'body' => $this->toDsl()
-        ];
-    
-        if ($this->type) {
-            $params['type'] = $this->type;
-        }
-        
-        return $this->manager->searchStatement($params);
-    }
-    
     /**
      * Aggregation
      *
@@ -168,85 +27,71 @@ class Search extends AbstractQuery
     /**
      * Term level
      *
-     * @param \Closure $termLevel
-     * @return Search
+     * @return TermLevel
      */
-    public function termLevel(\Closure $termLevel) : Search
+    public function termLevel() : TermLevel
     {
-        $termLevel(new TermLevel($this->search));
-        return $this;
+        return new TermLevel($this->search, $this->model);
     }
     
     /**
      * Fulltext
      *
-     * @param \Closure $fulltext
-     * @return Search
+     * @return Fulltext
      */
-    public function fulltext(\Closure $fulltext) : Search
+    public function fulltext() : Fulltext
     {
-        $fulltext(new Fulltext($this->search));
-        return $this;
+        return new Fulltext($this->search, $this->model);
     }
     
     /**
      * Geo
      *
-     * @param \Closure $geo
-     * @return Search
+     * @return Geo
      */
-    public function geo(\Closure $geo) : Search
+    public function geo() : Geo
     {
-        $geo(new Geo($this->search));
-        return $this;
+        return new Geo($this->search, $this->model);
     }
     
     /**
      * Compound
      *
-     * @param \Closure $compound
-     * @return Search
+     * @return Compound
      */
-    public function compound(\Closure $compound) : Search
+    public function compound() : Compound
     {
-        $compound(new Compound($this->search));
-        return $this;
+        return new Compound($this->search, $this->model);
     }
     
     /**
      * Joining
      *
-     * @param \Closure $joining
-     * @return Search
+     * @return Joining
      */
-    public function joining(\Closure $joining) : Search
+    public function joining() : Joining
     {
-        $joining(new Joining($this->search));
-        return $this;
+        return new Joining($this->search, $this->model);
     }
     
     /**
      * Specialized
      *
-     * @param \Closure $specialized
-     * @return Search
+     * @return Specialized
      */
-    public function specialized(\Closure $specialized) : Search
+    public function specialized() : Specialized
     {
-        $specialized(new Specialized($this->search));
-        return $this;
+        return new Specialized($this->search, $this->model);
     }
     
     /**
      * Inner hit
      *
-     * @param \Closure $innerHit
-     * @return Search
+     * @return InnerHit
      */
-    public function innerHit(\Closure $innerHit) : Search
+    public function innerHit() : InnerHit
     {
-        $innerHit(new InnerHit($this->search));
-        return $this;
+        return new InnerHit($this->search, $this->model);
     }
     
     /**
