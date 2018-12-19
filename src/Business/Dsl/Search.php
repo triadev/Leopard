@@ -1,7 +1,6 @@
 <?php
 namespace Triadev\Leopard\Business\Dsl;
 
-use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Triadev\Leopard\Busines\Dsl\Query\Specialized;
 use Triadev\Leopard\Business\Dsl\Query\Compound;
 use Triadev\Leopard\Business\Dsl\Query\Fulltext;
@@ -92,49 +91,5 @@ class Search extends AbstractQuery
     public function innerHit() : InnerHit
     {
         return new InnerHit($this->search, $this->model);
-    }
-    
-    /**
-     * Paginate
-     *
-     * @param int $page
-     * @param int $limit
-     * @return Search
-     */
-    public function paginate(int $page, int $limit = 25) : Search
-    {
-        $this->search->setFrom($limit * ($page - 1))->setSize($limit);
-        return $this;
-    }
-    
-    /**
-     * Min score
-     *
-     * @param int $minScore
-     * @return Search
-     */
-    public function minScore(int $minScore) : Search
-    {
-        $this->search->setMinScore($minScore);
-        return $this;
-    }
-    
-    /**
-     * Sort
-     *
-     * @param string $field
-     * @param string $order
-     * @param array $params
-     * @return Search
-     */
-    public function sort(string $field, string $order = FieldSort::DESC, array $params = []) : Search
-    {
-        $this->search->addSort(new FieldSort(
-            $field,
-            $order,
-            $params
-        ));
-        
-        return $this;
     }
 }

@@ -194,8 +194,9 @@ class SearchTest extends TestCase
     public function it_builds_a_paginate_query()
     {
         $result = $this->searchDsl
+            ->termLevel()
+                ->term('FIELD', 'VALUE')
             ->paginate(3, 25)
-            ->termLevel()->term('FIELD', 'VALUE')
             ->toDsl();
     
         $this->assertEquals([

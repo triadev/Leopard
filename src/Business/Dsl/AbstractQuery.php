@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Search as OngrSearch;
+use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use Triadev\Leopard\Busines\Dsl\Query\Specialized;
 use Triadev\Leopard\Business\Dsl\Query\Compound;
 use Triadev\Leopard\Business\Dsl\Query\TermLevel;
@@ -206,7 +207,7 @@ abstract class AbstractQuery
      * Append
      *
      * @param BuilderInterface $query
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit|Search
      */
     public function append(BuilderInterface $query) : AbstractQuery
     {
@@ -217,7 +218,7 @@ abstract class AbstractQuery
     /**
      * Bool state: must
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit|Search
      */
     public function must(): AbstractQuery
     {
@@ -228,7 +229,7 @@ abstract class AbstractQuery
     /**
      * Bool state: must not
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit|Search
      */
     public function mustNot(): AbstractQuery
     {
@@ -239,7 +240,7 @@ abstract class AbstractQuery
     /**
      * Bool state: should
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit|Search
      */
     public function should(): AbstractQuery
     {
@@ -250,7 +251,7 @@ abstract class AbstractQuery
     /**
      * Bool state: filter
      *
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|SearchDsl|Joining|Specialized|InnerHit|Search
      */
     public function filter(): AbstractQuery
     {
@@ -259,10 +260,54 @@ abstract class AbstractQuery
     }
     
     /**
+     * Paginate
+     *
+     * @param int $page
+     * @param int $limit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|Compound|Joining|Specialized|InnerHit|Search
+     */
+    public function paginate(int $page, int $limit = 25) : AbstractQuery
+    {
+        $this->search->setFrom($limit * ($page - 1))->setSize($limit);
+        return $this;
+    }
+    
+    /**
+     * Min score
+     *
+     * @param int $minScore
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|Compound|Joining|Specialized|InnerHit|Search
+     */
+    public function minScore(int $minScore) : AbstractQuery
+    {
+        $this->search->setMinScore($minScore);
+        return $this;
+    }
+    
+    /**
+     * Sort
+     *
+     * @param string $field
+     * @param string $order
+     * @param array $params
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|Compound|Joining|Specialized|InnerHit|Search
+     */
+    public function sort(string $field, string $order = FieldSort::DESC, array $params = []) : AbstractQuery
+    {
+        $this->search->addSort(new FieldSort(
+            $field,
+            $order,
+            $params
+        ));
+        
+        return $this;
+    }
+    
+    /**
      * Search
      *
      * @param \Closure $search
-     * @return AbstractQuery|TermLevel|Fulltext|Geo|Compound|Joining|Specialized|InnerHit
+     * @return AbstractQuery|TermLevel|Fulltext|Geo|Compound|Joining|Specialized|InnerHit|Search
      */
     public function bool(\Closure $search) : AbstractQuery
     {
