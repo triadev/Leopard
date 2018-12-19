@@ -27,37 +27,18 @@ Leopard is an elasticsearch odm (Object Document Mapper) for laravel eloquent.
 [![Elasticsearch 6.4][icon-e64]][link-elasticsearch]
 
 ## Main features
-- DSL for elasticsearch search
+- Storing eloquent models in elasticsearch
+- DSL for elasticsearch: search, mapping
 - Update elasticsearch mapping via file
-- Storing eloquent model content in elasticsearch
 
-## Installation
-
-### Composer
-> composer require triadev/leopard
-
-### Application
-The package is registered through the package discovery of laravel and Composer.
->https://laravel.com/docs/5.7/packages
-
-Once installed you can now publish your config file and set your correct configuration for using the package.
-```php
-php artisan vendor:publish --provider="Triadev\Leopard\Provider\ServiceProvider" --tag="config"
-```
-
-This will create a file ```config/leopard.php```.
-
-```php
-php artisan vendor:publish --provider="Triadev\Leopard\Provider\ServiceProvider" --tag="database"
-```
-
-This will create a mapping directory at ```database/mappings```.
-
-### Configuration
-| Key        | Env | Value           | Description | Default |
-|:-------------:|:-------------:|:-------------:|:-----:|:-----:|
-| index | LEOPARD_INDEX | STRING | elasticsearch index | default_index |
-| sync.chunkSize | LEOPARD_SYNC_CHUNK_SIZE | INTEGER | chunk size for sync | 1000 (max) |
+## [Documentation](https://github.com/triadev/Leopard/wiki)
+* [Home](https://github.com/triadev/Leopard/wiki/Home/_edit)
+* [Installation](https://github.com/triadev/Leopard/wiki/Installation)
+* [Configuration](https://github.com/triadev/Leopard/wiki/Configuration)
+* [Searchable eloquent models](https://github.com/triadev/Leopard/wiki/Searchable-eloquent-models)
+* [DSL](https://github.com/triadev/Leopard/wiki/DSL)
+* [Mapping](https://github.com/triadev/Leopard/wiki/Mapping)
+* [Sync database with elasticsearch](https://github.com/triadev/Leopard/wiki/Sync-database-with-elasticsearch)
 
 ## Reporting Issues
 If you do find an issue, please feel free to report it with GitHub's bug tracker for this project.
