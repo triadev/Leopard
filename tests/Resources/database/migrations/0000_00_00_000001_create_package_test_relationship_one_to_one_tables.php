@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreatePackageTestTables extends \Illuminate\Database\Migrations\Migration
+class CreatePackageTestRelationshipOneToOneTables extends \Illuminate\Database\Migrations\Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreatePackageTestTables extends \Illuminate\Database\Migrations\Migration
     public function up()
     {
         Schema::enableForeignKeyConstraints();
-        
-        Schema::create('test', function (Blueprint $table) {
+    
+        Schema::create('relationship_one_to_one', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('email');
+            
+            $table->integer('test_id')->unsigned();
+            $table->foreign('test_id')->references('id')->on('test')->onDelete('cascade');
+            
+            $table->string('title');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class CreatePackageTestTables extends \Illuminate\Database\Migrations\Migration
      */
     public function down()
     {
-        Schema::drop('test');
+        Schema::drop('relationship_one_to_one');
     }
 }
