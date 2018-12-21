@@ -1,6 +1,8 @@
 <?php
 namespace Triadev\Leopard\Model;
 
+use Illuminate\Database\Eloquent\Model;
+
 class SyncRelationship
 {
     /** @var string */
@@ -59,9 +61,15 @@ class SyncRelationship
      *
      * @return string
      */
-    public function getForeignKey() : ?string
+    public function getForeignKey() : string
     {
-        return $this->foreignKey ?: (new $this->relatedClass())->getForeignKey();
+        if ($this->foreignKey) {
+            return $this->foreignKey;
+        }
+        
+        /** @var Model $eloquentModel */
+        $eloquentModel = new $this->relatedClass();
+        return $eloquentModel->getForeignKey();
     }
     
     /**
