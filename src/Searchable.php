@@ -3,10 +3,13 @@ namespace Triadev\Leopard;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
+use Triadev\Leopard\Business\Helper\IsModelSearchable;
 use Triadev\Leopard\Contract\ElasticsearchManagerContract;
 use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
 use Triadev\Leopard\Facade\Leopard;
+use Triadev\Leopard\Model\SyncRelationship;
 
 /**
  * Trait Searchable
@@ -20,11 +23,14 @@ use Triadev\Leopard\Facade\Leopard;
  * @method static ElasticsearchManagerContract search()
  * @methdo static ElasticsearchManagerContract suggest()
  * @method array buildDocument()
+ * @method SyncRelationship[] buildSyncRelationships()
  * @method array toArray()
  * @method string getTable()
  */
 trait Searchable
 {
+    use IsModelSearchable;
+    
     /** @var bool */
     public $isDocument = false;
     
@@ -42,15 +48,19 @@ trait Searchable
         static::saved(function (Model $model) {
             /** @var Model|Searchable $model */
             if ($model->shouldSyncDocument()) {
-                $model->repository()->save(/** @scrutinizer ignore-type */$model);
+                $model->repository()->save($model);
             }
-        });
     
+            $model->syncRelationships();
+        });
+        
         static::deleted(function (Model $model) {
             /** @var Model|Searchable $model */
             if ($model->shouldSyncDocument()) {
-                $model->repository()->delete(/** @scrutinizer ignore-type */$model);
+                $model->repository()->delete($model);
             }
+    
+            $model->syncRelationships();
         });
     }
     
@@ -59,7 +69,7 @@ trait Searchable
      *
      * @return ElasticsearchRepositoryContract
      */
-    public function repository() : ElasticsearchRepositoryContract
+    public function repository(): ElasticsearchRepositoryContract
     {
         return app(ElasticsearchRepositoryContract::class);
     }
@@ -97,13 +107,44 @@ trait Searchable
      *
      * @return bool
      */
-    public function shouldSyncDocument() : bool
+    public function shouldSyncDocument(): bool
     {
         if (property_exists($this, 'syncDocument')) {
             return (bool)$this->syncDocument;
         }
         
         return true;
+    }
+    
+    /**
+     * Sync relationships
+     */
+    public function syncRelationships()
+    {
+        if (method_exists($this, 'buildSyncRelationships')) {
+            foreach ($this->buildSyncRelationships() as $syncRelationship) {
+                if (!$syncRelationship instanceof SyncRelationship) {
+                    continue;
+                }
+                
+                /** @var BelongsTo $relation */
+                $relation = $this->belongsTo(
+                    $syncRelationship->getRelatedClass(),
+                    $syncRelationship->getForeignKey(),
+                    $syncRelationship->getOwnerKey(),
+                    $syncRelationship->getRelation()
+                );
+    
+                foreach ($relation->get() as $r) {
+                    /** @var Model|Searchable $r */
+                    if (!$r || !$this->isModelSearchable($r)) {
+                        continue;
+                    }
+        
+                    $r->repository()->save($r);
+                }
+            }
+        }
     }
     
     /**

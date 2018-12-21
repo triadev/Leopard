@@ -39,7 +39,28 @@ class TestModel extends Model
         return [
             'id' => $this->getAttribute('id'),
             'name' => $this->getAttribute('name'),
-            'email' => $this->getAttribute('email')
+            'email' => $this->getAttribute('email'),
+            'oneToOneTitle' => $this->getOneToOneRelationshipTitle(),
+            'oneToManyTitle' => $this->getOneToManyRelationshipTitle()
         ];
+    }
+    
+    private function getOneToOneRelationshipTitle() : ?string
+    {
+        $relationship = $this->hasOne(TestRelationshipOneToOneModel::class, 'test_id')->first();
+        return $relationship ? $relationship->title : null;
+    }
+    
+    private function getOneToManyRelationshipTitle() : ?array
+    {
+        $relationship = $this->hasMany(TestRelationshipOneToManyModel::class)->get();
+        
+        $titles = [];
+        
+        foreach ($relationship as $r) {
+            $titles[] = $r->title;
+        }
+        
+        return $titles;
     }
 }
