@@ -34,8 +34,6 @@ use Triadev\Leopard\Business\Dsl\Suggestion;
 class Leopard extends Facade
 {
     /**
-     * Get an elasticsearch manager instance
-     *
      * @return ElasticsearchManagerContract
      */
     protected static function getFacadeAccessor()
