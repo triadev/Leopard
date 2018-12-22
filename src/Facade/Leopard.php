@@ -34,7 +34,7 @@ use Triadev\Leopard\Business\Dsl\Suggestion;
 class Leopard extends Facade
 {
     /**
-     * Get a plastic manager instance for the default connection.
+     * Get an elasticsearch manager instance
      *
      * @return ElasticsearchManagerContract
      */
