@@ -28,7 +28,8 @@ Leopard is an elasticsearch odm (Object Document Mapper) for laravel eloquent.
 
 ## Main features
 - Storing eloquent models in elasticsearch
-- DSL for elasticsearch: search, mapping
+- DSL for elasticsearch
+- Fluent mapping builder
 - Update elasticsearch mapping via file
 
 ## [Documentation](https://github.com/triadev/Leopard/wiki)

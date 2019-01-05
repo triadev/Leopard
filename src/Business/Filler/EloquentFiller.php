@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Triadev\Leopard\Contract\FillerContract;
-use Triadev\Leopard\Model\SearchResult;
+use Triadev\Es\Dsl\Model\SearchResult;
 use Triadev\Leopard\Searchable;
 
 class EloquentFiller implements FillerContract

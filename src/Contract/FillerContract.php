@@ -2,7 +2,7 @@
 namespace Triadev\Leopard\Contract;
 
 use Illuminate\Database\Eloquent\Model;
-use Triadev\Leopard\Model\SearchResult;
+use Triadev\Es\Dsl\Model\SearchResult;
 
 interface FillerContract
 {
