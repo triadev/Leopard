@@ -3,9 +3,11 @@ namespace Triadev\Leopard\Contract;
 
 use Elasticsearch\Client;
 use Illuminate\Database\Eloquent\Model;
-use Triadev\Leopard\Business\Dsl\Search;
-use Triadev\Leopard\Business\Dsl\Suggestion;
+use Triadev\Es\Dsl\Dsl\Search;
+use Triadev\Es\Dsl\Dsl\Suggestion;
+use Triadev\Leopard\Business\Dsl\SearchDsl;
 use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
+use Triadev\Leopard\Searchable;
 
 interface ElasticsearchManagerContract
 {
@@ -27,13 +29,13 @@ interface ElasticsearchManagerContract
      * Search
      *
      * @param \ONGR\ElasticsearchDSL\Search|null $search
-     * @param Model|null $model
-     * @return Search
+     * @param Model|Searchable|null $model
+     * @return SearchDsl|Search
      */
     public function search(
         ?\ONGR\ElasticsearchDSL\Search $search = null,
         ?Model $model = null
-    ) : Search;
+    ) : SearchDsl;
     
     /**
      * Suggestion

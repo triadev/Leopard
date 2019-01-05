@@ -5,14 +5,19 @@ use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Database\Eloquent\Model;
 use Triadev\Es\Contract\ElasticsearchContract;
-use Triadev\Leopard\Business\Dsl\Search;
-use Triadev\Leopard\Business\Dsl\Suggestion;
+use Triadev\Es\Dsl\Dsl\Search;
+use Triadev\Es\Dsl\Dsl\Suggestion;
+use Triadev\Es\Dsl\Facade\ElasticDsl;
+use Triadev\Leopard\Business\Dsl\SearchDsl;
+use Triadev\Leopard\Business\Helper\IsModelSearchable;
 use Triadev\Leopard\Business\Mapping\Builder;
 use Triadev\Leopard\Contract\ElasticsearchManagerContract;
 use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
 
 class ElasticsearchManager implements ElasticsearchManagerContract
 {
+    use IsModelSearchable;
+    
     /** @var Client */
     private $esClient;
     
@@ -49,14 +54,14 @@ class ElasticsearchManager implements ElasticsearchManagerContract
      * Search
      *
      * @param \ONGR\ElasticsearchDSL\Search|null $search
-     * @param Model|null $model
-     * @return Search
+     * @param Model|Searchable|null $model
+     * @return SearchDsl|Search
      */
     public function search(
         ?\ONGR\ElasticsearchDSL\Search $search = null,
         ?Model $model = null
-    ) : Search {
-        return app()->make(Search::class, [
+    ) : SearchDsl {
+        return app()->make(SearchDsl::class, [
             'search' => $search,
             'model' => $model
         ]);
@@ -69,7 +74,7 @@ class ElasticsearchManager implements ElasticsearchManagerContract
      */
     public function suggest() : Suggestion
     {
-        return app()->make(Suggestion::class);
+        return ElasticDsl::suggest();
     }
     
     /**

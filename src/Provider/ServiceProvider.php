@@ -73,6 +73,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
+        $this->app->register(\Triadev\Es\Dsl\Provider\ServiceProvider::class);
         $this->app->register(ElasticsearchServiceProvider::class);
         
         AliasLoader::getInstance()->alias('Leopard', Leopard::class);
