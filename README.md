@@ -13,6 +13,7 @@ Leopard is an elasticsearch odm (Object Document Mapper) for laravel eloquent.
 [![Latest stable][ico-version-stable]][link-packagist]
 [![Latest development][ico-version-dev]][link-packagist]
 [![Monthly installs][ico-downloads-monthly]][link-downloads]
+[![Total Downloads](https://img.shields.io/packagist/dt/triadev/leopard.svg?style=flat-square)](https://packagist.org/packages/triadev/leopard)
 
 ## Supported laravel versions
 [![Laravel 5.5][icon-l55]][link-laravel]

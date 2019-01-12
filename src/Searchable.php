@@ -26,6 +26,8 @@ use Triadev\Leopard\Model\SyncRelationship;
  * @method SyncRelationship[] buildSyncRelationships()
  * @method array toArray()
  * @method string getTable()
+ *
+ * @method BelongsTo belongsTo($related, $foreignKey = null, $ownerKey = null, $relation = null)
  */
 trait Searchable
 {

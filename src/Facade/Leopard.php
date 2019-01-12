@@ -19,7 +19,6 @@ use Triadev\Es\Dsl\Dsl\Suggestion;
  * @method static SearchDsl|Search search(?\ONGR\ElasticsearchDSL\Search $search = null, ?Model $model = null)
  * @method static Suggestion suggest()
  * @method static ElasticsearchRepository repository()
- * @method static map(\Closure $blueprint, string $index, string $type, bool $createIndex = false)
  * @method static array searchStatement(array $params)
  * @method static array putMappingStatement(array $params)
  * @method static array indexStatement(array $params)
