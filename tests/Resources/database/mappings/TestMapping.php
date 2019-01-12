@@ -1,9 +1,9 @@
 <?php
 
 use Tests\Integration\Model\Entity\TestModel;
-use Triadev\Leopard\Business\Mapping\Blueprint;
 use Triadev\Leopard\Business\Mapping\Mapping;
-use Triadev\Leopard\Facade\Leopard;
+use Triadev\Es\Mapping\Facade\ElasticMapping;
+use Triadev\Es\Mapping\Mapping\Blueprint;
 
 class TestMapping extends Mapping
 {
@@ -22,11 +22,11 @@ class TestMapping extends Mapping
      */
     public function map()
     {
-        Leopard::map(function (Blueprint $blueprint) {
+        ElasticMapping::map(function (Blueprint $blueprint) {
             $blueprint->integer('id');
             $blueprint->text('name');
             $blueprint->keyword('email');
-            
+    
             $blueprint->settings([
                 'index' => [
                     'number_of_replicas' => 10,
@@ -34,6 +34,6 @@ class TestMapping extends Mapping
                     'refresh_interval' => '30s'
                 ]
             ]);
-        }, $this->getDocumentIndex(), $this->getDocumentType(), true);
+        }, $this->getDocumentIndex(), $this->getDocumentType());
     }
 }

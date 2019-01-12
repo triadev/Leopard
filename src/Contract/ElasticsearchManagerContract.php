@@ -52,15 +52,6 @@ interface ElasticsearchManagerContract
     public function repository() : ElasticsearchRepositoryContract;
     
     /**
-     * Map
-     *
-     * @param \Closure $blueprint
-     * @param string $index
-     * @param string $type
-     */
-    public function map(\Closure $blueprint, string $index, string $type);
-    
-    /**
      * Search statement
      *
      * @param array $params

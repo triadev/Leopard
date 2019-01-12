@@ -10,7 +10,6 @@ use Triadev\Es\Dsl\Dsl\Suggestion;
 use Triadev\Es\Dsl\Facade\ElasticDsl;
 use Triadev\Leopard\Business\Dsl\SearchDsl;
 use Triadev\Leopard\Business\Helper\IsModelSearchable;
-use Triadev\Leopard\Business\Mapping\Builder;
 use Triadev\Leopard\Contract\ElasticsearchManagerContract;
 use Triadev\Leopard\Contract\Repository\ElasticsearchRepositoryContract;
 
@@ -85,19 +84,6 @@ class ElasticsearchManager implements ElasticsearchManagerContract
     public function repository() : ElasticsearchRepositoryContract
     {
         return app(ElasticsearchRepositoryContract::class);
-    }
-    
-    /**
-     * Map
-     *
-     * @param \Closure $blueprint
-     * @param string $index
-     * @param string $type
-     * @param bool $createIndex
-     */
-    public function map(\Closure $blueprint, string $index, string $type, bool $createIndex = false)
-    {
-        (new Builder())->create($blueprint, $index, $type, $createIndex);
     }
     
     /**
